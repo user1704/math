@@ -1,13 +1,13 @@
-<html lang="zh-cn">
+
 <script src="LunarCalendar.min.js"></script>
 <head>
-<title>Ò»Ôª¶ş´Î·½³ÌÇó¸ù¹«Ê½</title>
+<title>ä¸€å…ƒäºŒæ¬¡æ–¹ç¨‹æ±‚æ ¹å…¬å¼</title>
 <script>
-var tgString = "¸ıĞÁÈÉ¹ï¼×ÒÒ±û¶¡Îì¼º";
-var dzString = "ÉêÓÏĞçº¥×Ó³óÒúÃ®³½ËÈÎçÎ´";
-var dateString = "  ³õÒ»³õ¶ş³õÈı³õËÄ³õÎå³õÁù³õÆß³õ°Ë³õ¾Å³õÊ®Ê®Ò»Ê®¶şÊ®ÈıÊ®ËÄÊ®ÎåÊ®ÁùÊ®ÆßÊ®°ËÊ®¾ÅØ¥Ê®Ø¥Ò»Ø¥¶şØ¥ÈıØ¥ËÄØ¥ÎåØ¥ÁùØ¥ÆßØ¥°ËØ¥¾ÅÈıÊ®"
+var tgString = "åºšè¾›å£¬ç™¸ç”²ä¹™ä¸™ä¸æˆŠå·±";
+var dzString = "ç”³é…‰æˆŒäº¥å­ä¸‘å¯…å¯è¾°å·³åˆæœª";
+var dateString = "  åˆä¸€åˆäºŒåˆä¸‰åˆå››åˆäº”åˆå…­åˆä¸ƒåˆå…«åˆä¹åˆååä¸€åäºŒåä¸‰åå››åäº”åå…­åä¸ƒåå…«åä¹å»¿åå»¿ä¸€å»¿äºŒå»¿ä¸‰å»¿å››å»¿äº”å»¿å…­å»¿ä¸ƒå»¿å…«å»¿ä¹ä¸‰å"
 
-var monthString = " Õı¶şÈıËÄÎåÁùÆß°Ë¾ÅÊ®¶¬À°";
+var monthString = " æ­£äºŒä¸‰å››äº”å…­ä¸ƒå…«ä¹åå†¬è…Š";
 function start()
 {
 var year=new Date().getUTCFullYear()
@@ -15,13 +15,13 @@ var month=new Date().getUTCMonth()+1
 var date=new Date().getUTCDate()
 var day=new Date().getUTCDay()
 var week=new Array()
-week[0]="ĞÇÆÚÈÕ"
-week[1]="ĞÇÆÚÒ»"
-week[2]="ĞÇÆÚ¶ş"
-week[3]="ĞÇÆÚÈı"
-week[4]="ĞÇÆÚËÄ"
-week[5]="ĞÇÆÚÎå"
-week[6]="ĞÇÆÚÁù"
+week[0]="æ˜ŸæœŸæ—¥"
+week[1]="æ˜ŸæœŸä¸€"
+week[2]="æ˜ŸæœŸäºŒ"
+week[3]="æ˜ŸæœŸä¸‰"
+week[4]="æ˜ŸæœŸå››"
+week[5]="æ˜ŸæœŸäº”"
+week[6]="æ˜ŸæœŸå…­"
 var hour=new Date().getUTCHours()
 var minute=new Date().getUTCMinutes()
 var second=new Date().getUTCSeconds()
@@ -45,7 +45,7 @@ var lunaryear=tgString[LunarCalendar.solarToLunar(year,month,date)["lunarYear"]%
 var lunarmonth=monthString[LunarCalendar.solarToLunar(year,month,date)["lunarMonth"]]
 var lunardate=dateString[LunarCalendar.solarToLunar(year,month,date)["lunarDay"]*2]+dateString[LunarCalendar.solarToLunar(year,month,date)["lunarDay"]*2+1]
 setTimeout("start()",100)
-document.getElementById("time").innerHTML=("ÏÖÔÚÊÇ¹«Ôª"+year+"Äê"+month+"ÔÂ"+date+"ÈÕ "+week[day]+" Å©Àú"+lunaryear+"Äê"+lunarmonth+"ÔÂ"+lunardate+" ±±¾©&#26102;&#38388;"+hour+":"+minute+":"+second+"."+decisecond)
+document.getElementById("time").innerHTML=("ç°åœ¨æ˜¯å…¬å…ƒ"+year+"å¹´"+month+"æœˆ"+date+"æ—¥ "+week[day]+" å†œå†"+lunaryear+"å¹´"+lunarmonth+"æœˆ"+lunardate+" åŒ—äº¬&#26102;&#38388;"+hour+":"+minute+":"+second+"."+decisecond)
 }
 function Equation0102(){document.getElementById("pic").innerHTML="<img src=../Photo/Solution_01.png width=560px><img src=../Photo/Solution_02.png width=560px>"}
 function Equation0304(){document.getElementById("pic").innerHTML="<img src=../Photo/Solution_03.png width=560px><img src=../Photo/Solution_04.png width=560px>"}
@@ -55,28 +55,28 @@ function Cancel(){document.getElementById("pic").innerHTML=""}
 <body background="../Background.png" onload="start()">
 <font face="SimSun">
 <div id="time" align="left"></div>
-<a href="Formula02.html">Ò»Ôª¶ş´Î·½³ÌÇó½â¹¤¾ß</a>
+<a href="Formula02.html">ä¸€å…ƒäºŒæ¬¡æ–¹ç¨‹æ±‚è§£å·¥å…·</a>
 <hr>
 <table border="1"><tr><td>
-<font size=5>Ò»Ôª¶ş´Î·½³ÌÇó¸ù¹«Ê½</font></td></tr></table>
-<font size=4>ÍêÕû¹«Ê½</font>
+<font size=5>ä¸€å…ƒäºŒæ¬¡æ–¹ç¨‹æ±‚æ ¹å…¬å¼</font></td></tr></table>
+<font size=4>å®Œæ•´å…¬å¼</font>
 <hr>
-¡¡¡¡Çë¼ûpdf£º<a href="Formula02.pdf">Formula02</a>(215.4KB£¬µã»÷Á´½ÓÏÂÔØ»òÔÚä¯ÀÀÆ÷ÖĞ²é¿´)<br>
-<font size=4>¶¨Àí</font>
+ã€€ã€€è¯·è§pdfï¼š<a href="Formula02.pdf">Formula02</a>(215.4KBï¼Œç‚¹å‡»é“¾æ¥ä¸‹è½½æˆ–åœ¨æµè§ˆå™¨ä¸­æŸ¥çœ‹)<br>
+<font size=4>å®šç†</font>
 <hr>
-(1)ÅĞ±ğ·¨Ôò<br>
-¡¡¡¡ÈÎºÎÊµÏµÊıÒ»Ôª¶ş´Î·½³Ì¶¼¿ÉÒÔÓÃ´Ë¹«Ê½Çó½â¡£<br>
-¡¡¡¡µ±×ÜÅĞ±ğÊ½Îª0Ê±·½³Ì´æÔÚÖØ¸ù¡£<br>
-(2)ÆäËû<br>
-¡¡¡¡¹«Ê½ÖĞ£¬ÈÎºÎ¸ùºÅÖĞ²»´æÔÚĞéÊı¡£<br>
-¡¡¡¡¹«Ê½ÖĞ£¬ÈÎºÎÅ¼´Î¸ùºÅÖĞ²»´æÔÚ¸ºÊı¡£<br>
-<font size=4>ÀıÌâ</font>
+(1)åˆ¤åˆ«æ³•åˆ™<br>
+ã€€ã€€ä»»ä½•å®ç³»æ•°ä¸€å…ƒäºŒæ¬¡æ–¹ç¨‹éƒ½å¯ä»¥ç”¨æ­¤å…¬å¼æ±‚è§£ã€‚<br>
+ã€€ã€€å½“æ€»åˆ¤åˆ«å¼ä¸º0æ—¶æ–¹ç¨‹å­˜åœ¨é‡æ ¹ã€‚<br>
+(2)å…¶ä»–<br>
+ã€€ã€€å…¬å¼ä¸­ï¼Œä»»ä½•æ ¹å·ä¸­ä¸å­˜åœ¨è™šæ•°ã€‚<br>
+ã€€ã€€å…¬å¼ä¸­ï¼Œä»»ä½•å¶æ¬¡æ ¹å·ä¸­ä¸å­˜åœ¨è´Ÿæ•°ã€‚<br>
+<font size=4>ä¾‹é¢˜</font>
 <hr>
-¡¡¡¡µã»÷ÏÂÁĞ°´Å¥Ñ¡Ôñ¹«Ê½ÖĞ²»Í¬·ÖÀàÏÂµÄÀıÌâ¡£¹«Ê½1²»´æÔÚÀıÌâ£¬ÆäÓà¸÷¹«Ê½´æÔÚ2µÀÀıÌâ¡£<br>
-¡¡¡¡Îª¼ÆËã·½±ã£¬ÀıÌâÖĞ¶ş´ÎÏîÏµÊı¾ùÎª1¡£<br>
-¡¡¡¡<button onclick="Equation0102()"><font face="SimSun">¹«Ê½2</font></button>
-¡¡¡¡<button onclick="Equation0304()"><font face="SimSun">¹«Ê½3</font></button>
-¡¡¡¡<button onclick="Cancel()"><font face="SimSun">Òş²Ø</font></button>
+ã€€ã€€ç‚¹å‡»ä¸‹åˆ—æŒ‰é’®é€‰æ‹©å…¬å¼ä¸­ä¸åŒåˆ†ç±»ä¸‹çš„ä¾‹é¢˜ã€‚å…¬å¼1ä¸å­˜åœ¨ä¾‹é¢˜ï¼Œå…¶ä½™å„å…¬å¼å­˜åœ¨2é“ä¾‹é¢˜ã€‚<br>
+ã€€ã€€ä¸ºè®¡ç®—æ–¹ä¾¿ï¼Œä¾‹é¢˜ä¸­äºŒæ¬¡é¡¹ç³»æ•°å‡ä¸º1ã€‚<br>
+ã€€ã€€<button onclick="Equation0102()"><font face="SimSun">å…¬å¼2</font></button>
+ã€€ã€€<button onclick="Equation0304()"><font face="SimSun">å…¬å¼3</font></button>
+ã€€ã€€<button onclick="Cancel()"><font face="SimSun">éšè—</font></button>
 <br><div id="pic"></div>
 </div>
 </font>
