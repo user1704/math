@@ -1,5 +1,5 @@
+ <script charset="utf-8" src="skin/js/layer/layer.js"></script>
 <html>
-  <script charset="utf-8" src="skin/js/layer/layer.js"></script>
   <body background="Background.png"></body>
 <script src="algebrite.bundle-for-browser.js"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -81,7 +81,7 @@ function myFunction()
   else if(Algebrite.run("delta>0")==1)
   {
     Algebrite.run("x01r=(-b+"+sqrt(Algebrite.run("delta"))+")/(2*a)")
-    Algebrite.run("x01r=(-b-"+sqrt(Algebrite.run("delta"))+")/(2*a)")
+    Algebrite.run("x02r=(-b-"+sqrt(Algebrite.run("delta"))+")/(2*a)")
     Algebrite.run("x01i=0")
     Algebrite.run("x02i=0")
   }
