@@ -95,7 +95,12 @@ function sqrt(x){
     return sqrt(anwser1)+'*'+sqrt(anwser2)
   }
   else{
-    return '('+x+')^(1/3)'
+    if(Algebrite.run('x>=0')==1){
+      return '('+x+')^(1/3)'
+    }
+    else{
+      return '(-'+x+')^(1/3)'
+    }
   }
 }
 function myFunction()
