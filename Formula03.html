@@ -62,6 +62,9 @@ function sqrt(x){
   }
 }
   function cbrt(x){
+    if(Algebrite.run(x+'==0')==1){
+      return 0
+    }
   var sim=Algebrite.run('simplify('+x+')')
     if(!isNaN(x)){
       var fac=Algebrite.run('factor(abs('+x+'))')
@@ -150,8 +153,8 @@ function myFunction()
     Algebrite.run("x02r=(-2*b+("+cbrt(Algebrite.run("y1"))+")+("+cbrt(Algebrite.run("y2"))+"))/(6*a)")
     Algebrite.run("x03r=(-2*b+("+cbrt(Algebrite.run("y1"))+")+("+cbrt(Algebrite.run("y2"))+"))/(6*a)")
     Algebrite.run("x01i=0")
-    Algebrite.run("x02i=sqrt(3)*(("+cbrt(Algebrite.run("y1"))+")+("+cbrt(Algebrite.run("y2"))+"))/(6*a)")
-    Algebrite.run("x03i=-sqrt(3)*(("+cbrt(Algebrite.run("y1"))+")+("+cbrt(Algebrite.run("y2"))+"))/(6*a)")
+    Algebrite.run("x02i=3^(1/2)*(("+cbrt(Algebrite.run("y1"))+")+("+cbrt(Algebrite.run("y2"))+"))/(6*a)")
+    Algebrite.run("x03i=-3^(1/2)*(("+cbrt(Algebrite.run("y1"))+")+("+cbrt(Algebrite.run("y2"))+"))/(6*a)")
   }
 document.getElementById("input").value = 'x_1='+Algebrite.run("printlatex(x01r)")+'+(' +Algebrite.run("printlatex(x01i)")+')i,'+
                                           'x_2='+Algebrite.run("printlatex(x02r)")+'+(' +Algebrite.run("printlatex(x02i)")+')i,'+
