@@ -101,17 +101,16 @@ function sqrt(x){
     return cbrt(anwser1)+'*'+cbrt(anwser2)
   }
   else{
-    if(Algebrite.run('x>=0')==1){
+    if(Algebrite.run(x+'>=0')==1){
       return '('+x+')^(1/3)'
     }
     else{
-      return '-('+x+')^(1/3)'
+      return '-(-('+x+'))^(1/3)'
     }
   }
 }
 function myFunction()
 {
-  alert(cbrt('-8'))
   Algebrite.run("a="+Algebrite.run(document.getElementById("a").value))
   Algebrite.run("b="+Algebrite.run(document.getElementById("b").value))
   Algebrite.run("c="+Algebrite.run(document.getElementById("c").value))
