@@ -64,8 +64,7 @@ function sqrt(x){
   function cbrt(x){
   var sim=Algebrite.run('simplify('+x+')')
     if(!isNaN(x)){
-      var fac=Algebrite.run('factor('+x+')')
-      var anwser='('
+      var fac=Algebrite.run('factor(abs('+x+'))')
       for(var i=0;i<fac.length;i++){
         if(fac[i]=='*'){
           anwser+=')^(1/3)*('
@@ -75,7 +74,12 @@ function sqrt(x){
         }
       }
       anwser+=')^(1/3)'
-      return anwser
+      if(Algebrite.run(x)>=0){
+        return anwser
+        }
+      else{
+        return '-'+anwser
+      }
     }
   else if(Algebrite.run(x)!=sim){
     var anwser1=''
@@ -92,7 +96,7 @@ function sqrt(x){
         anwser2+=sim[i]
       }
     }
-    return sqrt(anwser1)+'*'+sqrt(anwser2)
+    return cbrt(anwser1)+'*'+cbrt(anwser2)
   }
   else{
     if(Algebrite.run('x>=0')==1){
@@ -103,7 +107,6 @@ function sqrt(x){
     }
   }
 }
-  alert(cbrt('-8'))
 function myFunction()
 {
   Algebrite.run("a="+Algebrite.run(document.getElementById("a").value))
