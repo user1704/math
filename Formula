@@ -1,0 +1,117 @@
+<script charset="utf-8" src="skin/js/layer/layer.js"></script>
+<html>
+  <body background="Background.png"></body>
+<script src="algebrite.bundle-for-browser.js"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</script>
+<font face="SimSun">
+  <div id="time" align="left"></div>
+  <a href="Passage03.html">返回</a>
+  <hr>
+一元三次方程求解器：<br>
+<input type="text" name="a" id="a"><span>x<sup>3</sup>+</span>
+<input type="text" name="b" id="b"><span>x<sup>2</sup>+</span>
+<input type="text" name="c" id="c"><span>x+</span>
+<input type="text" name="d" id="d"><span>=0</span>
+<br><button onclick="myFunction()">求解</button>
+<div id="frame">
+  <textarea id="input" rows="10" cols="10" hidden="hidden">
+  </textarea>
+  <textarea id="input2" rows="10" cols="10" hidden="hidden">
+  </textarea>
+  <br clear="all" />
+  <div id="output"></div>
+  </div>
+<script>
+  
+function sqrt(x){
+  var t=new Date()
+  var sim=Algebrite.run('simplify('+x+')')
+    if(!isNaN(x)){
+      var fac=Algebrite.run('factor('+x+')')
+      var anwser='('
+      for(var i=0;i<fac.length;i++){
+        if(fac[i]=='*'){
+          anwser+=')^(1/2)*('
+        }
+        else{
+          anwser+=fac[i]
+        }
+      }
+      anwser+=')^(1/2)'
+      return anwser
+    }
+  else if(Algebrite.run(x)!=sim){
+    var anwser1=''
+    var anwser2=''
+    var part=true
+    for(var i=0;i<sim.length;i++){
+      if(part&&sim[i]=='*'){
+        part=false
+      }
+      else if(part){
+        anwser1+=sim[i]
+      }
+      else{
+        anwser2+=sim[i]
+      }
+    }
+    return sqrt(anwser1)+'*'+sqrt(anwser2)
+  }
+  else{
+    return '('+x+')^(1/2)'
+  }
+}
+function myFunction()
+{
+  Algebrite.run("a="+Algebrite.run(document.getElementById("a").value))
+  Algebrite.run("b="+Algebrite.run(document.getElementById("b").value))
+  Algebrite.run("c="+Algebrite.run(document.getElementById("c").value))
+  Algebrite.run("d="+Algebrite.run(document.getElementById("d").value))
+  Algebrite.run("A=b^2-3*a*c")
+  Algebrite.run("B=2*b^3-9*a*c+27*a^2*d")
+  Algebrite.run("x01r=NaN")
+  Algebrite.run("x02r=NaN")
+  Algebrite.run("x03r=NaN")
+  Algebrite.run("x01i=NaN")
+  Algebrite.run("x02i=NaN")
+  Algebrite.run("x03i=NaN")
+  if(Algebrite.run("and(A==0,B==0)")==1)
+  {
+    Algebrite.run("x01r=-b/(3*a)")
+    Algebrite.run("x02r=-b/(3*a)")
+    Algebrite.run("x03r=-b/(3*a)")
+    Algebrite.run("x01i=0")
+    Algebrite.run("x02i=0")
+    Algebrite.run("x03i=0")
+  }
+document.getElementById("input").value = 'x_1='+Algebrite.run("printlatex(x01r)")+'+(' +Algebrite.run("printlatex(x01i)")+')i,'+
+                                          'x_2='+Algebrite.run("printlatex(x02r)")+'+(' +Algebrite.run("printlatex(x02i)")+')i,'+
+                                          'x_3='+Algebrite.run("printlatex(x03r)")+'+(' +Algebrite.run("printlatex(x03i)")+')i,'
+                                          
+                                          
+document.getElementById("input2").value = 'x_1='+Algebrite.run("float(x01r)")+'+' +Algebrite.run("float(x01i)")+'i,'+
+                                          'x_2='+Algebrite.run("float(x02r)")+'+' +Algebrite.run("float(x02i)")+'i,'+
+                                          'x_3='+Algebrite.run("float(x03r)")+'+' +Algebrite.run("float(x03i)")+'i,'
+  convert('input')
+  convert('input2')
+  
+}
+function convert(str) {
+      var inp = document.getElementById(str).value.trim();
+      var button = document.getElementById("render");
+      output = document.getElementById('output');
+      output.innerHTML = '';
+
+      MathJax.texReset();
+      var options = MathJax.getMetricsFor(output);
+      MathJax.tex2chtmlPromise(inp, options).then(function (node) {
+        output.appendChild(node);
+        MathJax.startup.document.clear();
+        MathJax.startup.document.updateDocument();
+      }).catch(function (err) {
+        output.appendChild(document.createElement('pre')).appendChild(document.createTextNode(err.message));
+      }).then(function () {
+      });
+    }
+</script>
