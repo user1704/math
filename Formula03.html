@@ -147,7 +147,11 @@ function myFunction()
     Algebrite.run("y1=(B+"+sqrt(Algebrite.run("delta"))+")/2")
     Algebrite.run("y2=(B-"+sqrt(Algebrite.run("delta"))+")/2")
     Algebrite.run("x01r=(-b-("+cbrt(Algebrite.run("y1"))+")-("+cbrt(Algebrite.run("y2"))+"))/(3*a)")
+    Algebrite.run("x02r=(-2*b+("+cbrt(Algebrite.run("y1"))+")+("+cbrt(Algebrite.run("y2"))+"))/(6*a)")
+    Algebrite.run("x03r=(-2*b+("+cbrt(Algebrite.run("y1"))+")+("+cbrt(Algebrite.run("y2"))+"))/(6*a)")
     Algebrite.run("x01i=0")
+    Algebrite.run("x02i=sqrt(3)*(("+cbrt(Algebrite.run("y1"))+")+("+cbrt(Algebrite.run("y2"))+"))/(6*a)")
+    Algebrite.run("x03i=-sqrt(3)*(("+cbrt(Algebrite.run("y1"))+")+("+cbrt(Algebrite.run("y2"))+"))/(6*a)")
   }
 document.getElementById("input").value = 'x_1='+Algebrite.run("printlatex(x01r)")+'+(' +Algebrite.run("printlatex(x01i)")+')i,'+
                                           'x_2='+Algebrite.run("printlatex(x02r)")+'+(' +Algebrite.run("printlatex(x02i)")+')i,'+
