@@ -144,8 +144,8 @@ function myFunction()
   }
    else if(Algebrite.run("delta>0")==1)
   {
-    Algebrite.run("y1=(-B+"+sqrt(Algebrite.run("delta"))+")/2")
-    Algebrite.run("y2=(-B-"+sqrt(Algebrite.run("delta"))+")/2")
+    Algebrite.run("y1=(B+"+sqrt(Algebrite.run("delta"))+")/2")
+    Algebrite.run("y2=(B-"+sqrt(Algebrite.run("delta"))+")/2")
     Algebrite.run("x01r=(-b-("+cbrt(Algebrite.run("y1"))+")-("+cbrt(Algebrite.run("y2"))+"))/(3*a)")
     Algebrite.run("x01i=0")
   }
