@@ -86,6 +86,15 @@ function myFunction()
     Algebrite.run("x02i=0")
     Algebrite.run("x03i=0")
   }
+    else if(Algebrite.run("and(A!=0,delta==0)")==1)
+  {
+    Algebrite.run("x01r=(-b*A-B)/(3*a*A)")
+    Algebrite.run("x02r=(-2*b*A+B)/(6*a*A)")
+    Algebrite.run("x03r=(-2*b*A+B)/(6*a*A)")
+    Algebrite.run("x01i=0")
+    Algebrite.run("x02i=0")
+    Algebrite.run("x03i=0")
+  }
 document.getElementById("input").value = 'x_1='+Algebrite.run("printlatex(x01r)")+'+(' +Algebrite.run("printlatex(x01i)")+')i,'+
                                           'x_2='+Algebrite.run("printlatex(x02r)")+'+(' +Algebrite.run("printlatex(x02i)")+')i,'+
                                           'x_3='+Algebrite.run("printlatex(x03r)")+'+(' +Algebrite.run("printlatex(x03i)")+')i,'
