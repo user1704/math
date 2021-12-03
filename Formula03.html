@@ -25,7 +25,6 @@
 <script>
   
 function sqrt(x){
-  var t=new Date()
   var sim=Algebrite.run('simplify('+x+')')
     if(!isNaN(x)){
       var fac=Algebrite.run('factor('+x+')')
@@ -63,7 +62,6 @@ function sqrt(x){
   }
 }
   function cbrt(x){
-  var t=new Date()
   var sim=Algebrite.run('simplify('+x+')')
     if(!isNaN(x)){
       var fac=Algebrite.run('factor('+x+')')
