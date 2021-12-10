@@ -1,0 +1,40 @@
+<script charset="utf-8" src="skin/js/layer/layer.js"></script>
+<head>
+<title>一元三次方程求根公式</title>
+<script>
+function Equation0102(){document.getElementById("pic").innerHTML="<img src=Solution_0301.png width=560px><img src=Solution_0302.png width=560px>"}
+function Equation0304(){document.getElementById("pic").innerHTML="<img src=Solution_0303.png width=560px><img src=Solution_0304.png width=560px>"}
+function Equation0506(){document.getElementById("pic").innerHTML="<img src=Solution_0305.png width=560px><img src=Solution_0306.png width=560px>"}
+function Cancel(){document.getElementById("pic").innerHTML=""}
+</script>
+</head>
+<body background="Background.png" onload="start()">
+<font face="SimSun">
+<a href="Formula07.html">一元七次方程求解工具</a> <a href="Passage00.html">返回主页</a>
+<hr>
+<table border="1"><tr><td>
+<font size=5>一元七次方程求根公式</font></td></tr></table>
+<font size=4>完整公式</font>
+<hr>
+　　请见pdf：<a href="Formula03.pdf">Formula07</a>(94.17KB，点击链接下载或在浏览器中查看)<br>
+<font size=4>定理</font>
+<hr>
+(1)判别法则<br>
+　　任何实系数一元三次方程都可以用此公式求解。<br>
+　　当总判别式为0时方程存在重根。<br>
+(2)其他<br>
+　　公式中，任何根号中不存在虚数。<br>
+　　公式中，任何偶次根号中不存在负数。<br>
+<font size=4>例题</font>
+<hr>
+　　点击下列按钮选择公式中不同分类下的例题。公式1不存在例题，其余各公式存在2道例题。<br>
+　　为计算方便，例题中七次项系数均为1。<br>
+　　<button onclick="Equation0102()"><font face="SimSun">公式2</font></button>
+　　<button onclick="Equation0304()"><font face="SimSun">公式3</font></button>
+  　<button onclick="Equation0506()"><font face="SimSun">公式4</font></button>
+　　<button onclick="Cancel()"><font face="SimSun">隐藏</font></button>
+<br><div id="pic"></div>
+</div>
+</font>
+</body>
+</html>
