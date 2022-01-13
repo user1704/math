@@ -751,6 +751,7 @@ var rangen=[1,-1,2,-2,3,-3]
 		return ml
 	}
 function search(color, depth, alpha, beta) {
+	var ffp=false
 	A+=1
 	var score=value(color)
 	if (depth <= 0||score>=1000||score<=-1000) {
@@ -761,7 +762,15 @@ function search(color, depth, alpha, beta) {
 			var i=ML[I]
 			chessBox[i]=color
 			l.push(i)
-			var score = -search(3-color, depth - 1, -beta, -alpha)
+			if(ffp){
+				var score=-search(3-color,depth-1,-alpha-1,-alpha)
+				if(score>alpha&&score<beta){
+					var score = -search(3-color, depth - 1, -beta, -alpha)
+				}
+			}
+			else{
+				var score = -search(3-color, depth - 1, -beta, -alpha)
+			}
     		chessBox[i] = 0;
 			l.pop()
 			if (score >= beta) {
@@ -769,8 +778,9 @@ function search(color, depth, alpha, beta) {
         	}
 			if (score > alpha) {
 				
-				var alpha = score;
-				var bestmove =i;
+				var alpha = score
+				var bestmove =i
+				ffp=true
     		}
 	}
 	if(depth==D){return [alpha,bestmove]};
