@@ -756,7 +756,9 @@ function search(color, depth, alpha, beta) {
 	if (depth <= 0||score>=1000||score<=-1000) {
 		return value(color)
 	}
+	l.push(-1)
 	val=-search(3-color,depth-3,-beta,-beta+1)
+	l.pop()
 	if(val>=beta){
 		return beta
 	}
