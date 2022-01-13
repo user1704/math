@@ -3,7 +3,6 @@
 <a href="Passage00.html">返回主页</a>
 <hr>
 <canvas id="mycanvas" width="900px" height="900px"></canvas><br>
-版本：V1.1<br>
 <button onclick="newgame()">新局</button>
 <button onclick="retract()">悔棋</button>
 <button onclick="deeping()">计算</button>
@@ -754,9 +753,12 @@ var rangen=[1,-1,2,-2,3,-3]
 function search(color, depth, alpha, beta) {
 	var ffp=false
 	A+=1
-	var score=value(color)
 	if (depth <= 0||score>=1000||score<=-1000) {
-		return score
+		return value(color)
+	}
+	val=-search(3-color,depth-3,-beta,-beta+1)
+	if(val>=beta){
+		return beta
 	}
 	var ML=movelist(color)
 	for (var I=0;I<ML.length;I++){
@@ -836,6 +838,7 @@ chess.onclick=function(e){
   if(i>=0&&i<=14&&j>=0&&j<=14){oneStep(i*15+j,me)}}
 function retract()
 {
+	if(l.length!=0){
   var i=l[l.length-1]
   chessBox[i]=0
   context.clearRect(Math.floor(i/15)*60-15,825-i%15*60,60,60)
@@ -853,6 +856,7 @@ function retract()
   l.pop()
   if(l.length%2==0){black.pop()}
   if(l.length%2==1){white.pop()}
+}
 }
 function newgame(){var t=l.length;for(i=0;i<t;i++){retract()};if(check0.checked){solve()}}
 function T(i,d){if(d==0){return i};if(d==1){return 210-i%15*15+Math.floor(i/15)};if(d==2){return 224-i};if(d==3){return i%15*15+14-Math.floor(i/15)};if(d==4){return 210-i+i%15*2};if(d==5){i%15*15+Math.floor(i/15)};if(d==6){14+i-i%15*2};if(d==7){return 224-i%15*15-Math.floor(i/15)}}
