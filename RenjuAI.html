@@ -891,7 +891,7 @@ function deeping(){
   for(j=0;j<findlist.length;j++){for(d=0;d<8;d++){if(same(black,Tlist(findlist[j][0],d))&&same(white,Tlist(findlist[j][1],d))){oneStep(T(findlist[j][2],d),me);var find=true;break}};if(find==true){break}}
   if(find){selMoveList.add(createOption(color[l.length%2]+l.length.toString()+':find'))}
   else{
-	var deep=3;
+	var deep=4
 	for(D=1;D<=deep;D++){
 	A=0
       if(me){Bestmove=search(1,D,-1001,1001)
