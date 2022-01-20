@@ -1,0 +1,272 @@
+<html>
+<body background="Background.png" onload="start()"></body>
+<a href="Passage00.html">返回主页</a>
+<link rel="stylesheet" href="chessboard-1.0.0.css">
+<link rel="stylesheet" href="style.css">
+<script src="jquery-3.6.0.min.js"></script>
+<script src="chess.js"></script>
+<script src="chessboard-1.0.0.js"></script>
+<div id="board" style="width: 400px"></div>
+<button id="solveBtn" onclick="makeMove()">计算</button>
+<button id="undoBtn" onclick="Undo()">悔棋</button>
+<input type="text" name="settext" id="settext">
+<button id="setBtn" onclick="Set()">设定</button>
+<br>节点数=<span id="jiedian"></span>
+<br>计算速度(节点/秒)=<span id="jssd"></span>
+<br>时间=<span id="time"></span>
+<br>分数=<span id="val"></span>
+</html>
+<script>
+var game = new Chess()
+var board = null
+var pos=['a8','b8','c8','d8','e8','f8','g8','h8','a7','b7','c7','d7','e7','f7','g7','h7','a6','b6','c6','d6','e6','f6','g6','h6','a5','b5','c5','d5','e5','f5','g5','h5','a4','b4','c4','d4','e4','f4','g4','h4','a3','b3','c3','d3','e3','f3','g3','h3','a2','b2','c2','d2','e2','f2','g2','h2','a1','b1','c1','d1','e1','f1','g1','h1']
+function Undo(){
+    game.undo()
+    var config = {
+  draggable: true,
+  position:game.fen(),
+  onDragStart: onDragStart,
+  onDrop: onDrop,
+  onSnapEnd: onSnapEnd,
+}
+board = Chessboard('board', config)
+}
+function Set(){
+    var fen=document.getElementById('settext').value
+    game.load(fen)
+    var config = {
+  draggable: true,
+  position:game.fen(),
+  onDragStart: onDragStart,
+  onDrop: onDrop,
+  onSnapEnd: onSnapEnd,
+}
+board = Chessboard('board', config)
+}
+var reverseArray = function(array) {
+    return array.slice().reverse();
+};
+var Pawn =
+    [
+        [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
+        [5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0],
+        [1.0,  1.0,  2.0,  3.0,  3.0,  2.0,  1.0,  1.0],
+        [0.5,  0.5,  1.0,  2.5,  2.5,  1.0,  0.5,  0.5],
+        [0.0,  0.0,  0.0,  2.0,  2.0,  0.0,  0.0,  0.0],
+        [0.5, -0.5, -1.0,  0.0,  0.0, -1.0, -0.5,  0.5],
+        [0.5,  1.0, 1.0,  -2.0, -2.0,  1.0,  1.0,  0.5],
+        [0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0]
+    ];
+
+var pawn = reverseArray(Pawn);
+
+var Knight =
+    [
+        [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0],
+        [-4.0, -2.0,  0.0,  0.0,  0.0,  0.0, -2.0, -4.0],
+        [-3.0,  0.0,  1.0,  1.5,  1.5,  1.0,  0.0, -3.0],
+        [-3.0,  0.5,  1.5,  2.0,  2.0,  1.5,  0.5, -3.0],
+        [-3.0,  0.0,  1.5,  2.0,  2.0,  1.5,  0.0, -3.0],
+        [-3.0,  0.5,  1.0,  1.5,  1.5,  1.0,  0.5, -3.0],
+        [-4.0, -2.0,  0.0,  0.5,  0.5,  0.0, -2.0, -4.0],
+        [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]
+    ];
+var knight=reverseArray(Knight)
+var Bishop = [
+    [ -2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0],
+    [ -1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+    [ -1.0,  0.0,  0.5,  1.0,  1.0,  0.5,  0.0, -1.0],
+    [ -1.0,  0.5,  0.5,  1.0,  1.0,  0.5,  0.5, -1.0],
+    [ -1.0,  0.0,  1.0,  1.0,  1.0,  1.0,  0.0, -1.0],
+    [ -1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0, -1.0],
+    [ -1.0,  0.5,  0.0,  0.0,  0.0,  0.0,  0.5, -1.0],
+    [ -2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0]
+];
+
+var bishop = reverseArray(Bishop);
+
+var Rook = [
+    [  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
+    [  0.5,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  0.5],
+    [ -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+    [ -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+    [ -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+    [ -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+    [ -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+    [  0.0,   0.0, 0.0,  0.5,  0.5,  0.0,  0.0,  0.0]
+];
+
+var rook = reverseArray(Rook);
+
+var Queen = [
+    [ -2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0],
+    [ -1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+    [ -1.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+    [ -0.5,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+    [  0.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+    [ -1.0,  0.5,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+    [ -1.0,  0.0,  0.5,  0.0,  0.0,  0.0,  0.0, -1.0],
+    [ -2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0]
+];
+
+var queen=reverseArray(Queen)
+
+var King = [
+
+    [ -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+    [ -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+    [ -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+    [ -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+    [ -2.0, -3.0, -3.0, -4.0, -4.0, -3.0, -3.0, -2.0],
+    [ -1.0, -2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -1.0],
+    [  2.0,  2.0,  0.0,  0.0,  0.0,  0.0,  2.0,  2.0 ],
+    [  2.0,  3.0,  1.0,  0.0,  0.0,  1.0,  3.0,  2.0 ]
+];
+
+var king = reverseArray(King);
+function fenscore(){
+    var wscore=0;
+    var bscore=0;
+    var K=0;
+    var Q=0;
+    var R=0;
+    var B=0;
+    var N=0;
+    var P=0;
+    var k=0;
+    var q=0;
+    var r=0;
+    var b1=0;
+    var n=0;
+    var p=0;
+    for(var i=0;i<64;i++){
+            var t=game.get(pos[i])
+            if(t!=null){
+            var t1=t.type
+            var t2=t.color
+            var a=Math.floor(i/8)
+            var b=i%8
+            if(t1=='k'&&t2=='w'){wscore+=9000+King[a][b]}
+            else if(t1=='q'&&t2=='w'){wscore+=90+Queen[a][b]}
+            else if(t1=='r'&&t2=='w'){wscore+=50+Rook[a][b]}
+            else if(t1=='b'&&t2=='w'){wscore+=30+Bishop[a][b]}
+            else if(t1=='n'&&t2=='w'){wscore+=30+knight[a][b]}
+            else if(t1=='p'&&t2=='w'){wscore+=10+Pawn[a][b]}
+            else if(t1=='k'&&t2=='b'){bscore+=9000+king[a][b]}
+            else if(t1=='q'&&t2=='b'){bscore+=90+queen[a][b]}
+            else if(t1=='r'&&t2=='b'){bscore+=50+rook[a][b]}
+            else if(t1=='b'&&t2=='b'){bscore+=30+bishop[a][b]}
+            else if(t1=='n'&&t2=='b'){bscore+=30+knight[a][b]}
+            else{bscore+=10+pawn[a][b]}   
+            }
+    }
+    if(game.turn()=='w'){
+        wscore+=1.5
+        return wscore-bscore
+    }
+    else{
+        bscore+=1.5
+        return bscore-wscore
+    }
+}
+var minimax =function(depth, game,alpha,beta) {
+var ffoundpv=false;
+if (depth <= 0) {
+	return fenscore();
+}
+var newGameMoves = game.ugly_moves();
+if(newGameMoves.length==0){
+    if(game.in_check()){
+        return -8999.5 + D/2-depth/2
+    }
+    else{
+        return 0
+    }
+}
+if(game.in_threefold_repetition()){
+      return 0
+    }
+for (var i = 0; i < newGameMoves.length; i++) {
+    game.ugly_move(newGameMoves[i]);
+    positionCount++;
+    if(ffoundpv){
+        bestMove=-minimax(depth - 1, game, -alpha-0.5, -alpha);
+        if(bestMove>alpha&&bestMove<beta){
+            bestMove = -minimax(depth - 1, game, -beta, -alpha);
+        }
+    }
+    else{
+        bestMove = -minimax(depth - 1, game, -beta, -alpha);
+    }
+    game.undo();
+    if (bestMove>=beta) {
+        return beta;
+    }
+    if (bestMove>alpha) {
+        alpha=bestMove
+        bestMoveFound=newGameMoves[i]
+        ffoundpv=true;
+    }
+}
+if(depth==D){return [bestMoveFound,alpha]}
+return alpha
+};
+
+function onDragStart (source, piece, position, orientation) {
+  // do not pick up pieces if the game is over
+  if (game.game_over()) return false
+
+return true
+}
+
+var makeMove = function () {
+    var bestMove = getMove();
+    game.ugly_move(bestMove);
+    board.position(game.fen());
+    renderMoveHistory(game.history());
+};
+
+function getMove () {
+    positionCount = 0;
+    D = 4;
+
+    var d = new Date().getTime();
+    var bestMoveandvalue = minimax(D, game,-9000.5,9000.5);
+    var bestMove=bestMoveandvalue[0]
+    var value=bestMoveandvalue[1]
+    var d2 = new Date().getTime();
+    var moveTime = (d2 - d)/1000;
+    var positionsPerS = ( positionCount/ moveTime);
+    document.getElementById("jiedian").innerHTML=positionCount
+    document.getElementById("jssd").innerHTML=positionsPerS
+    document.getElementById("time").innerHTML=moveTime
+    document.getElementById("val").innerHTML=value
+    return bestMove;
+}
+function onDrop (source, target) {
+  // see if the move is legal
+  var move = game.move({
+    from: source,
+    to: target,
+    promotion: 'q' // NOTE: always promote to a queen for example simplicity
+  })
+
+  // illegal move
+  if (move === null) return 'snapback'
+
+}
+
+// update the board position after the piece snap
+// for castling, en passant, pawn promotion
+function onSnapEnd () {
+  board.position(game.fen())
+}
+var config = {
+  draggable: true,
+  position: 'start',
+  onDragStart: onDragStart,
+  onDrop: onDrop,
+  onSnapEnd: onSnapEnd,
+}
+board = Chessboard('board', config)
+</script>
