@@ -6,18 +6,19 @@
 <script src="jquery-3.6.0.min.js"></script>
 <script src="chess.js"></script>
 <script src="chessboard-1.0.0.js"></script>
-<div id="board" style="width: 400px"></div>
+<div id="board" style="width: 750px"></div>
 <button id="solveBtn" onclick="makeMove()">计算</button>
 <button id="undoBtn" onclick="Undo()">悔棋</button>
 <input type="text" name="settext" id="settext">
 <button id="setBtn" onclick="Set()">设定</button>
+<br>深度=<span id="d"></span>
 <br>节点数=<span id="jiedian"></span>
 <br>计算速度(节点/秒)=<span id="jssd"></span>
-<br>时间=<span id="time"></span>
+<br>时间(秒)=<span id="time"></span>
 <br>分数=<span id="val"></span>
 </html>
 <script>
-document.body.addEventListener('touchmove', function(e){e.preventDefault();}, { passive: false });
+document.body.addEventListener('touchmove', function(e){e.preventDefault();}, { passive: false })
 var game = new Chess()
 var board = null
 var pos=['a8','b8','c8','d8','e8','f8','g8','h8','a7','b7','c7','d7','e7','f7','g7','h7','a6','b6','c6','d6','e6','f6','g6','h6','a5','b5','c5','d5','e5','f5','g5','h5','a4','b4','c4','d4','e4','f4','g4','h4','a3','b3','c3','d3','e3','f3','g3','h3','a2','b2','c2','d2','e2','f2','g2','h2','a1','b1','c1','d1','e1','f1','g1','h1']
@@ -229,15 +230,23 @@ var makeMove = function () {
 
 function getMove () {
     positionCount = 0;
-    D = 4;
+    D = 0;
 
     var d = new Date().getTime();
-    var bestMoveandvalue = minimax(D, game,-9000.5,9000.5);
-    var bestMove=bestMoveandvalue[0]
-    var value=bestMoveandvalue[1]
-    var d2 = new Date().getTime();
-    var moveTime = (d2 - d)/1000;
-    var positionsPerS = ( positionCount/ moveTime);
+    var d2= new Date().getTime();
+    var value=0
+    var alpha=-Infinity
+    var beta=Infinity
+    while(d2-d<=3000&&Math.abs(value)<20000){
+      D++
+      var bestMoveandvalue = minimax(D, game,alpha,beta);
+      var d2 = new Date().getTime();
+      var bestMove=bestMoveandvalue[0]
+      var value=bestMoveandvalue[1]
+      var moveTime = (d2 - d)/1000;
+      var positionsPerS = ( positionCount/ moveTime);
+    }
+    document.getElementById("d").innerHTML=D
     document.getElementById("jiedian").innerHTML=positionCount
     document.getElementById("jssd").innerHTML=positionsPerS
     document.getElementById("time").innerHTML=moveTime
