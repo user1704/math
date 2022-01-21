@@ -1,0 +1,289 @@
+﻿<html>
+<body background="Background.png" onload="start()"></body>
+<a href="Passage00.html">返回主页</a>
+<link rel="stylesheet" href="xiangqiboard-0.3.3.css">
+<script src="jquery-3.6.0.min.js"></script>
+<script src="xiangqi.js"></script>
+<script src="xiangqiboard-0.3.3.js"></script>
+<div id="myBoard" style="width: 650px"></div>
+<button id="solveBtn" onclick="makeMove()">计算</button>
+<button id="undoBtn" onclick="Undo()">悔棋</button>
+<input type="text" name="settext" id="settext">
+<button id="setBtn" onclick="Set()">设定</button>
+<br>深度=<span id="d"></span>
+<br>节点数=<span id="jiedian"></span>
+<br>计算速度(节点/秒)=<span id="jssd"></span>
+<br>时间=<span id="time"></span>
+<br>着法=<span id="move"></span>
+<br>分数=<span id="val"></span>
+</html>
+<script>
+document.body.addEventListener('touchmove', function(e){e.preventDefault();}, { passive: false })
+let board = null;
+let game = new Xiangqi();
+var letter=['a','b','c','d','e','f','g','h','i']
+var number=['0','1','2','3','4','5','6','7','8','9']
+var reverseArray = function(array) {
+    return array.slice().reverse();
+};
+var P=[
+    [9,  9,  9, 11, 13, 11,  9,  9,  9],
+    [19, 24, 34, 42, 44, 42, 34, 24, 19],
+    [19, 24, 32, 37, 37, 37, 32, 24, 19],
+    [ 19, 23, 27, 29, 30, 29, 27, 23, 19],
+    [ 14, 18, 20, 27, 29, 27, 20, 18, 14],
+    [7,  0, 13,  0, 16,  0, 13,  0,  7],
+    [7,  0,  7,  0, 15,  0,  7,  0,  7],
+    [0,  0,  0,  0,  0,  0,  0,  0,  0],
+    [0,  0,  0,  0,  0,  0,  0,  0,  0],
+    [0,  0,  0,  0,  0,  0,  0,  0,  0] 
+]
+var p=reverseArray(P)
+var R=[
+    [206,208,207,213,214,213,207,208,206],
+    [206,212,209,216,233,216,209,212,206],
+    [206,208,207,214,216,214,207,208,206],
+    [206,213,213,216,216,216,213,213,206],
+    [208,211,211,214,215,214,211,211,208],
+    [208,212,212,214,215,214,212,212,208],
+    [204,209,204,212,214,212,204,209,204],
+    [198,208,204,212,212,212,204,208,198],
+    [200,208,206,212,200,212,206,208,200],
+    [194,206,204,212,200,212,204,206,194]]
+var r=reverseArray(R)
+var C=[[100,100, 96, 91, 90, 91, 96,100,100],
+    [98, 98, 96, 92, 89, 92, 96, 98, 98],
+    [97, 97, 96, 91, 92, 91, 96, 97, 97],
+    [ 96, 99, 99, 98,100, 98, 99, 99, 96],
+    [ 96, 96, 96, 96,100, 96, 96, 96, 96],
+    [ 95, 96, 99, 96,100, 96, 99, 96, 95],
+    [ 96, 96, 96, 96, 96, 96, 96, 96, 96],
+    [ 97, 96,100, 99,101, 99,100, 96, 97],
+    [96, 97, 98, 98, 98, 98, 98, 97, 96],
+    [96, 96, 97, 99, 99, 99, 97, 96, 96]]
+var c=reverseArray(C)
+var N=[[90, 90, 90, 96, 90, 96, 90, 90, 90], 
+    [90, 96,103, 97, 94, 97,103, 96, 90],
+    [92, 98, 99,103, 99,103, 99, 98, 92], 
+     [93,108,100,107,100,107,100,108, 93], 
+     [90,100, 99,103,104,103, 99,100, 90],  
+    [90, 98,101,102,103,102,101, 98, 90], 
+    [92, 94, 98, 95, 98, 95, 98, 94, 92], 
+    [93, 92, 94, 95, 92, 95, 94, 92, 93], 
+     [85, 90, 92, 93, 78, 93, 92, 90, 85], 
+    [88, 85, 90, 88, 90, 88, 90, 85, 88]]
+var n=reverseArray(N)
+var A=[ 
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  20,0,20,  0,  0,  0],
+[0,  0,  0,  0,23,0,  0,  0,  0],
+[0,  0,  0,  20,0,20,  0,0,  0]
+]
+var a=reverseArray(A)
+var B=[
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  20,  0,  0,  0,  20,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[18,  0,  0,  0,  23, 0,  0,  0,  18],
+[0,  0,  0,  0,  0, 0,  0,  0,  0],
+[0,  0,  20,  0, 0, 0,  20,0,  0]
+]
+var b=reverseArray(B)
+var K=[
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  0,  0,  0,  0,  0,  0],
+[0,  0,  0,  1,1,1,  0,  0,  0],
+[0,  0,  0,  2,2,2,  0,  0,  0],
+[0,  0,  0,  11,15,11,  0,0,  0]
+]
+var k=reverseArray(K)
+function Undo(){
+    game.undo()
+    var config = {
+  draggable: true,
+  position:game.fen(),
+  onDragStart: onDragStart,
+  onDrop: onDrop,
+  onSnapEnd: onSnapEnd,
+}
+
+board = Xiangqiboard('myBoard', config)
+}
+function Set(){
+    var fen=document.getElementById('settext').value
+    game.load(fen)
+    var config = {
+  draggable: true,
+  position:game.fen(),
+  onDragStart: onDragStart,
+  onDrop: onDrop,
+  onSnapEnd: onSnapEnd,
+}
+board = Xiangqiboard('myBoard', config)
+}
+function fenscore(){
+  var rscore=0;
+    var bscore=0;
+    var board=game.board()
+    var K1=0;
+    var R1=0;
+    var N1=0;
+    var C1=0;
+    var A1=0;
+    var B1=0;
+    var P1=0;
+    var k1=0;
+    var r1=0;
+    var n1=0;
+    var c1=0;
+    var a1=0;
+    var b1=0;
+    var p1=0;
+    for(var i=0;i<10;i++){
+      for(var j=0;j<9;j++){
+        var t=board[i][j]
+            if(t!=null){
+            var t1=t.type
+            var t2=t.color
+            if(t1=='k'&&t2=='r'){rscore+=K[i][j];K1++}
+            else if(t1=='r'&&t2=='r'){rscore+=R[i][j];R1++}
+            else if(t1=='n'&&t2=='r'){rscore+=N[i][j];N1++}
+            else if(t1=='c'&&t2=='r'){rscore+=C[i][j];C1++}
+            else if(t1=='a'&&t2=='r'){rscore+=A[i][j];A1++}
+            else if(t1=='b'&&t2=='r'){rscore+=B[i][j];B1++}
+            else if(t1=='p'&&t2=='r'){rscore+=P[i][j];P1++}
+            else if(t1=='k'&&t2=='b'){bscore+=k[i][j];k1++}
+            else if(t1=='r'&&t2=='b'){bscore+=r[i][j];r1++}
+            else if(t1=='n'&&t2=='b'){bscore+=n[i][j];n1++}
+            else if(t1=='c'&&t2=='b'){bscore+=c[i][j];c1++}
+            else if(t1=='a'&&t2=='b'){bscore+=a[i][j];a1++}
+            else if(t1=='b'&&t2=='b'){bscore+=b[i][j];b1++}
+            else{bscore+=p[i][j];p1++} 
+            }
+    }
+  }
+    if(game.turn()=='r'){
+        rscore+=3
+        return rscore-bscore
+    }
+    else{
+        bscore+=3
+        return bscore-rscore
+    }
+}
+var minimax =function(depth, game,alpha,beta) {
+var ffoundpv=false;
+if (depth <= 0) {
+	return fenscore();
+}
+var newGameMoves = game.moves();
+if(newGameMoves.length==0){
+    return -29999+D-depth
+}
+if(game.in_threefold_repetition()){
+    return -30000+D-depth
+}
+for (var i = 0; i < newGameMoves.length; i++) {
+    game.move(newGameMoves[i]);
+    positionCount++;
+    if(ffoundpv){
+        bestMove=-minimax(depth - 1, game, -alpha-1, -alpha);
+        if(bestMove>alpha&&bestMove<beta){
+            bestMove = -minimax(depth - 1, game, -beta, -alpha);
+        }
+    }
+    else{
+        bestMove = -minimax(depth - 1, game, -beta, -alpha);
+    }
+    game.undo();
+    if (bestMove>=beta) {
+        return beta;
+    }
+    if (bestMove>alpha) {
+        alpha=bestMove
+        bestMoveFound=newGameMoves[i]
+        ffoundpv=true;
+    }
+}
+if(depth==D){return [bestMoveFound,alpha]}
+return alpha
+};
+var makeMove = function () {
+    var bestMove = getMove();
+    game.move(bestMove);
+    board.position(game.fen());
+    renderMoveHistory(game.history());
+};
+function getMove () {
+    positionCount = 0;
+    D = 0;
+
+    var d = new Date().getTime();
+    var d2= new Date().getTime();
+    var value=0
+    var alpha=-Infinity
+    var beta=Infinity
+    while(d2-d<=3000&&Math.abs(value)<20000){
+      D++
+      var bestMoveandvalue = minimax(D, game,alpha,beta);
+      var d2 = new Date().getTime();
+      var bestMove=bestMoveandvalue[0]
+      var value=bestMoveandvalue[1]
+      var moveTime = (d2 - d)/1000;
+      var positionsPerS = ( positionCount/ moveTime);
+    }
+    document.getElementById("d").innerHTML=D
+    document.getElementById("jiedian").innerHTML=positionCount
+    document.getElementById("jssd").innerHTML=positionsPerS
+    document.getElementById("time").innerHTML=moveTime
+    document.getElementById("move").innerHTML=bestMove
+    document.getElementById("val").innerHTML=value
+    return bestMove;
+}
+function onDragStart (source, piece, position, orientation) {
+  // do not pick up pieces if the game is over
+  if (game.game_over()) return false;
+}
+
+function onDrop (source, target) {
+  // see if the move is legal
+  let move = game.move({
+    from: source,
+    to: target,
+    promotion: 'q' // NOTE: always promote to a queen for example simplicity
+  });
+
+  // illegal move
+  if (move === null) return 'snapback';
+}
+
+// update the board position after the piece snap
+// for castling, en passant, pawn promotion
+function onSnapEnd () {
+  board.position(game.fen());
+}
+
+let config = {
+  draggable: true,
+  position: 'start',
+  onDragStart: onDragStart,
+  onDrop: onDrop,
+  onSnapEnd: onSnapEnd
+};
+board = Xiangqiboard('myBoard', config);
+</script>
