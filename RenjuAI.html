@@ -892,7 +892,7 @@ function deeping(){
   if(find){selMoveList.add(createOption(color[l.length%2]+l.length.toString()+':find'))}
   else{
 	var deep=4
-	for(D=1;D<=deep;D++){
+	for(D=2;D<=deep;D+=2){
 	A=0
       if(me){Bestmove=search(1,D,-1001,1001)
       }
