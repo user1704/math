@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="webix.css" type="text/css" charset="utf-8">
+        <script src="webix.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body>
+        <script type="text/javascript" charset="utf-8">
+var m=[
+	['0287300','弯']
+].sort()
+function save_row1(){
+	var values = $$("myform").getValues();
+	for(var h=0;h<values['zi'].length;h++){
+		for(var i=0;i<m.length;i++){
+			if(m[i][1]==values['zi'][h]){
+				$$("mylist").add({'zi':m[i][1],'ma':m[i][0]+' - http://www.yedict.com/zscontent.asp?uni='+m[i][1].charCodeAt().toString(16)})
+			}
+		}
+	}
+}
+function save_row2(){
+	var values = $$("myform").getValues();
+	var bool1=false
+    for(var i=0;i<m.length;i++){
+      for(var j=0;j<values['ma'].length;j++){
+        var bool2=false
+        if(m[i][0][j]!=values['ma'][j]){break}
+        if(j==values['ma'].length-1){bool1=true;bool2=true;$$("mylist").add({'zi':m[i][1],'ma':m[i][0]+' - http://www.yedict.com/zscontent.asp?uni='+m[i][1].charCodeAt().toString(16)})}
+      }
+      if(bool1&&!bool2){break}
+    }
+}
+function sx(){
+	location.reload()
+}
+webix.ui({
+	rows: [
+		{ view:"toolbar", id:"mybar", elements:[
+		{ view:"button", value:"查询号码", width:95, click:save_row1},
+		{ view:"button", value:"查询汉字", width:95, click:save_row2},
+		{ view:"button", value:"全部清空", width:95, click:sx}]
+		},
+		{ cols:[
+			{view:"form", id:"myform", width:200, elements:[
+			{ view:"text", name:"zi", placeholder:"请输入汉字", width:180, align:"center"}, 
+			{ view:"text", name:"ma", placeholder:"请输入号码", width:180, align:"center"} ]
+			},
+			{
+                view:"list", 
+                id:"mylist",
+                template:"#zi# - #ma#", 
+                select:true, 
+                height:900
+			} 
+		]}
+	]
+});
+        </script>
+    </body> 
+</html>
+});
