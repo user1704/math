@@ -134,7 +134,7 @@ function getMove () {
     document.getElementById("jiedian").innerHTML=positionCount
     document.getElementById("jssd").innerHTML=positionsPerS
     document.getElementById("time").innerHTML=moveTime
-    document.getElementById("move").innerHTML=bestMove
+    document.getElementById("move").innerHTML=JSON.stringify(bestMove)
     document.getElementById("val").innerHTML=value
     return bestMove;
 }
