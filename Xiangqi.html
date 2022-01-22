@@ -235,6 +235,7 @@ function getMove () {
     var value=0
     var alpha=-Infinity
     var beta=Infinity
+    var d=new Date().getTime()
     while(D<4&&Math.abs(value)<20000){
       D+=2
       var bestMoveandvalue = minimax(D, game,alpha,beta);
