@@ -22,16 +22,18 @@ document.body.addEventListener('touchmove', function(e){e.preventDefault();}, { 
 var game = new Draughts()
 var board = null
 var w=[105,108,111,108,105,91,94,97,94,91,78,81,84,81,78,66,69,72,69,66,55,58,61,58,55,45,48,51,48,45,36,39,42,39,36,28,31,34,31,28,21,24,27,24,21,15,18,21,18,15]
+var pos=['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50']
 function fenscore(){
   var wscore=0;
   var bscore=0;
-  for(var i=1;i<=50;i++){
-    var t=game.get(i.toString())
+  for(var i=0;i<50;i++){
+    var t=game.get(pos[i])
+    if(t!=''){
     if(t=='w'){
-      wscore+=w[i-1]
+      wscore+=w[i]
     }
     else if(t=='b'){
-      bscore+=w[50-i]
+      bscore+=w[49-i]
     }
     else if(t=='W'){
       wscore+=504
@@ -39,8 +41,9 @@ function fenscore(){
     else if(t=='B'){
       bscore+=504
     }
+  }
 }
-  if(wscore==0){
+if(wscore==0){
     bscore=30000
   }
   else if(bscore==0){
@@ -131,6 +134,7 @@ function getMove () {
     document.getElementById("jiedian").innerHTML=positionCount
     document.getElementById("jssd").innerHTML=positionsPerS
     document.getElementById("time").innerHTML=moveTime
+    document.getElementById("move").innerHTML=bestMove
     document.getElementById("val").innerHTML=value
     return bestMove;
 }
