@@ -1,0 +1,20 @@
+<body background="Background.png" onload="start()"></body>
+<a href="Passage00.html">返回主页</a>
+<div id="app">
+  <chessboard></chessboard>
+</div>
+
+<link rel="stylesheet" href="vue-chessboard.css"/>
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script src="vue-chessboard.browser.js"></script>
+
+<script>
+document.body.addEventListener('touchmove', function(e){e.preventDefault();}, { passive: false })
+
+new Vue({
+  el: '#app',
+  components: {
+    VueChessboard
+  }
+});
+</script>
