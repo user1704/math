@@ -165,14 +165,14 @@ function myFunction()
     Algebrite.run("x02i=0")
     Algebrite.run("x03i=0")
   }
-document.getElementById("input").value = 'x_1='+Algebrite.run("printlatex(x01r)")+'+(' +Algebrite.run("printlatex(x01i)")+')i,'+
-                                          'x_2='+Algebrite.run("printlatex(x02r)")+'+(' +Algebrite.run("printlatex(x02i)")+')i,'+
-                                          'x_3='+Algebrite.run("printlatex(x03r)")+'+(' +Algebrite.run("printlatex(x03i)")+')i,'
+document.getElementById("input").value = 'x_1='+Algebrite.run("printlatex(x01r)")+'+(' +Algebrite.run("printlatex(x01i)")+')i<br>'+
+                                          'x_2='+Algebrite.run("printlatex(x02r)")+'+(' +Algebrite.run("printlatex(x02i)")+')i<br>'+
+                                          'x_3='+Algebrite.run("printlatex(x03r)")+'+(' +Algebrite.run("printlatex(x03i)")+')i'
                                           
                                           
-document.getElementById("input2").value = 'x_1='+Algebrite.run("float(x01r)")+'+' +Algebrite.run("float(x01i)")+'i,'+
-                                          'x_2='+Algebrite.run("float(x02r)")+'+' +Algebrite.run("float(x02i)")+'i,'+
-                                          'x_3='+Algebrite.run("float(x03r)")+'+' +Algebrite.run("float(x03i)")+'i,'
+document.getElementById("input2").value = 'x_1='+Algebrite.run("float(x01r)")+'+' +Algebrite.run("float(x01i)")+'i<br>'+
+                                          'x_2='+Algebrite.run("float(x02r)")+'+' +Algebrite.run("float(x02i)")+'i<br>'+
+                                          'x_3='+Algebrite.run("float(x03r)")+'+' +Algebrite.run("float(x03i)")+'i'
   convert('input')
   convert('input2')
   
