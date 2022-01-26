@@ -200,8 +200,179 @@
 						display_debug();
 					}
 				});
+				var reverseArray = function(array) {
+					return array.slice().reverse();
+				};
+				var Pawn =
+				[
+					[0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
+					[5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0],
+					[1.0,  1.0,  2.0,  3.0,  3.0,  2.0,  1.0,  1.0],
+					[0.5,  0.5,  1.0,  2.5,  2.5,  1.0,  0.5,  0.5],
+					[0.0,  0.0,  0.0,  2.0,  2.0,  0.0,  0.0,  0.0],
+					[0.5, -0.5, -1.0,  0.0,  0.0, -1.0, -0.5,  0.5],
+					[0.5,  1.0, 1.0,  -2.0, -2.0,  1.0,  1.0,  0.5],
+					[0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0]
+				];
+
+				var pawn = reverseArray(Pawn);
+
+				var Knight =
+				[
+					[-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0],
+					[-4.0, -2.0,  0.0,  0.0,  0.0,  0.0, -2.0, -4.0],
+					[-3.0,  0.0,  1.0,  1.5,  1.5,  1.0,  0.0, -3.0],
+					[-3.0,  0.5,  1.5,  2.0,  2.0,  1.5,  0.5, -3.0],
+					[-3.0,  0.0,  1.5,  2.0,  2.0,  1.5,  0.0, -3.0],
+					[-3.0,  0.5,  1.0,  1.5,  1.5,  1.0,  0.5, -3.0],
+					[-4.0, -2.0,  0.0,  0.5,  0.5,  0.0, -2.0, -4.0],
+					[-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]
+				];
+				var knight=reverseArray(Knight)
+				var Bishop = [
+				[ -2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0],
+				[ -1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+				[ -1.0,  0.0,  0.5,  1.0,  1.0,  0.5,  0.0, -1.0],
+				[ -1.0,  0.5,  0.5,  1.0,  1.0,  0.5,  0.5, -1.0],
+				[ -1.0,  0.0,  1.0,  1.0,  1.0,  1.0,  0.0, -1.0],
+				[ -1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0, -1.0],
+				[ -1.0,  0.5,  0.0,  0.0,  0.0,  0.0,  0.5, -1.0],
+				[ -2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0]
+				];
+
+				var  bishop = reverseArray(Bishop);
+
+				 var Rook = [
+				[  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
+				[  0.5,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  0.5],
+				[ -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+				[ -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+				[ -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+				[ -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+				[ -0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+				[  0.0,   0.0, 0.0,  0.5,  0.5,  0.0,  0.0,  0.0]
+				];
+
+				var  rook = reverseArray(Rook);
+
+				 var Queen = [
+				[ -2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0],
+				[ -1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+				[ -1.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+				[ -0.5,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+				[  0.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+				[ -1.0,  0.5,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+				[ -1.0,  0.0,  0.5,  0.0,  0.0,  0.0,  0.0, -1.0],
+				[ -2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0]
+				];
+
+				var queen=reverseArray(Queen)
+
+				var King = [
+
+				[ -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+				[ -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+				[ -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+				[ -3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+				[ -2.0, -3.0, -3.0, -4.0, -4.0, -3.0, -3.0, -2.0],
+				[ -1.0, -2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -1.0],
+				[  2.0,  2.0,  0.0,  0.0,  0.0,  0.0,  2.0,  2.0 ],
+				[  2.0,  3.0,  1.0,  0.0,  0.0,  1.0,  3.0,  2.0 ]
+				];
+				var king=reverseArray(King)
+				var pos=['a8','b8','c8','d8','e8','f8','g8','h8','a7','b7','c7','d7','e7','f7','g7','h7','a6','b6','c6','d6','e6','f6','g6','h6','a5','b5','c5','d5','e5','f5','g5','h5','a4','b4','c4','d4','e4','f4','g4','h4','a3','b3','c3','d3','e3','f3','g3','h3','a2','b2','c2','d2','e2','f2','g2','h2','a1','b1','c1','d1','e1','f1','g1','h1']
+				function fenscore(){
+					var ws=0
+					var bs=0
+					for(var i=0;i<64;i++){
+						var t=Ic.getBoard("main").getSquare(pos[i])['val']
+						var a=Math.floor(i/8)
+            			var b=i%8
+						if(t==1){ws+=10+Pawn[a][b]}
+						else if(t==2){ws+=30+Knight[a][b]}
+						else if(t==3){ws+=30+Bishop[a][b]}
+						else if(t==4){ws+=50+Rook[a][b]}
+						else if(t==5){ws+=90+Queen[a][b]}
+						else if(t==6){ws+=King[a][b]}
+						else if(t==-1){bs+=10+pawn[a][b]}
+						else if(t==-2){bs+=30+knight[a][b]}
+						else if(t==-3){bs+=30+bishop[a][b]}
+						else if(t==-4){bs+=50+rook[a][b]}
+						else if(t==-5){bs+=90+queen[a][b]}
+						else if(t==-6){bs+=king[a][b]}
+					}
+					if(Ic.getBoard("main").fen.includes('w')){
+							return ws-bs
+						}
+					else{
+							return bs-ws
+					}
+				}
+				function minimax(depth,alpha,beta) {
+				var ffoundpv=false;
+				if (depth <= 0) {
+					return fenscore();
+				}
+				var newGameMoves = Ic.getBoard("main").legalUci;
+				if(newGameMoves==[]){
+					return -30000+D-depth
+				}
+				if(Ic.getBoard("main").isThreefold){
+					return 0
+				}
+				for (var i = 0; i < newGameMoves.length; i++) {
+					Ic.getBoard("main").playMove(newGameMoves[i]);
+					positionCount++
+					
+					if(ffoundpv){
+						bestMove=-minimax(depth - 1, -alpha-1, -alpha);
+						if(bestMove>alpha&&bestMove<beta){
+							bestMove = -minimax(depth - 1,  -beta, -alpha);
+						}
+					}
+					else{
+						bestMove = -minimax(depth - 1,-beta, -alpha);
+					}
+					Ic.getBoard("main").undoMove()
+					
+					if (bestMove>=beta) {
+						return beta;
+					}
+					if (bestMove>alpha) {
+						alpha=bestMove
+						bestMoveFound=newGameMoves[i]
+						ffoundpv=true
+					}
+				}
+				if(depth==D){return [bestMoveFound,alpha]}
+				return alpha
+				};
+				function getMove () {
+					positionCount = 0;
+					D = 0;
+					var d = new Date().getTime();
+					var value=0
+					var alpha=-Infinity
+					var beta=Infinity
+					while(D<2&&Math.abs(value)<20000){
+					D+=2
+					var bestMoveandvalue = minimax(D,alpha,beta);
+					var d2 = new Date().getTime();
+					var bestMove=bestMoveandvalue[0]
+					var value=bestMoveandvalue[1]
+					var moveTime = (d2 - d)/1000;
+					var positionsPerS = ( positionCount/ moveTime);
+					document.getElementById("d").innerHTML=D
+					document.getElementById("jiedian").innerHTML=positionCount
+					document.getElementById("jssd").innerHTML=positionsPerS
+					document.getElementById("time").innerHTML=moveTime
+					document.getElementById("move").innerHTML=bestMove
+					document.getElementById("val").innerHTML=value
+					}
+					return bestMove;
+				}
 				$("#ic_ui_solve").click(function(){
-					Ic.getBoard("main").playRandomMove()
+					Ic.getBoard("main").playMove(getMove(),{playSounds:true})
 				})
 			});
 		</script>
@@ -265,6 +436,12 @@
 					<div class="ic_ui_material_diff">
 						<div id="ic_ui_material_diff"></div>
 					</div>
+					<br>深度=<span id="d"></span>
+					<br>节点数=<span id="jiedian"></span>
+					<br>计算速度(节点/秒)=<span id="jssd"></span>
+					<br>时间=<span id="time"></span>
+					<br>着法=<span id="move"></span>
+					<br>分数=<span id="val"></span>
 				</div>
 			</div>
 		</div>
