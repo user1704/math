@@ -181,7 +181,6 @@
 					}
 					
 					if(parsed_correctly){
-						$("#parsetoggler").trigger("click");
 						
 						Ic.cloneBoard("main", "parsed");
 						
@@ -193,12 +192,6 @@
 					return false;
 				});
 				
-				$("#parsetoggler").click(function(){
-					$("#parsebox").toggle();
-					$(this).text($("#parsebox").is(":visible") ? "▲" : "▼");
-					
-					return false;
-				});
 				
 				$(".ic_ui_header h3").click(function(){
 					Debug_clic=((Debug_clic*1 || 0)+1);
@@ -207,10 +200,6 @@
 						display_debug();
 					}
 				});
-				
-				$("#parseinput").val("1. e4 e5 2. Nf3 Nc6 3. Bc4 f6 4. O-O");
-				
-				console.log("Note: to display the debug box call display_debug() or click the GitHub header a few times");
 			});
 		</script>
 	</head>
@@ -235,11 +224,8 @@
 					</div>
 				</div>
 				
-				<div id="parsetoggler">▲</div>
 				
 				<div class="padded">
-					
-					<br><hr><br>
 					
 					<div class="ic_ui_controls">
 						<div>
