@@ -1,0 +1,158 @@
+<html>
+  <body background="Background.png"></body>
+<script src="algebrite.bundle-for-browser.js"></script>
+</script>
+<font face="SimSun">
+  <div id="time" align="left"></div>
+  <a href="Passage00.html">返回主页</a>
+  <a href="https://wenku.baidu.com/view/0c4365fd04a1b0717fd5ddb6.html">公式</a>
+  <hr>
+一元五次方程求解器(若网页未响应则该程序找不到根式解)：<br>
+<input type="text" name="a" id="a"><span>x<sup>5</sup>+</span>
+<input type="text" name="b" id="b"><span>x<sup>4</sup>+</span>
+<input type="text" name="c" id="c"><span>x<sup>3</sup>+</span>
+<input type="text" name="d" id="d"><span>x<sup>2</sup>+</span>
+<input type="text" name="e" id="e"><span>x+</span>
+<input type="text" name="f" id="f"><span>=0</span>
+<br><button onclick="myFunction()">求解</button>
+<div id="frame">
+  <textarea id="input" rows="50" cols="200" >
+  </textarea>
+  <br clear="all" />
+  <div id="output"></div>
+  </div>
+<script>
+  
+  function sqrt(x){
+  var sim=Algebrite.run('simplify('+x+')')
+    if(!isNaN(x)){
+      var fac=Algebrite.run('factor('+x+')')
+      var anwser='('
+      for(var i=0;i<fac.length;i++){
+        if(fac[i]=='*'){
+          anwser+=')^(1/2)*('
+        }
+        else{
+          anwser+=fac[i]
+        }
+      }
+      anwser+=')^(1/2)'
+      return anwser
+    }
+  else if(Algebrite.run(x)!=sim){
+    var anwser1=''
+    var anwser2=''
+    var part=true
+    for(var i=0;i<sim.length;i++){
+      if(part&&sim[i]=='*'){
+        part=false
+      }
+      else if(part){
+        anwser1+=sim[i]
+      }
+      else{
+        anwser2+=sim[i]
+      }
+    }
+    return sqrt(anwser1)+'*'+sqrt(anwser2)
+  }
+  else{
+    return '('+x+')^(1/2)'
+  }
+}
+function rt5(x){
+    if(Algebrite.run(x+'==0')==1){
+      return '0'
+    }
+  var sim=Algebrite.run('simplify('+x+')')
+    if(!isNaN(x)){
+      var fac=Algebrite.run('factor(abs('+x+'))')
+      if(Algebrite.run(x+'>=0')==1){
+        var anwser='('
+        }
+      else{
+        var anwser='-('
+      }
+      
+      for(var i=0;i<fac.length;i++){
+        if(fac[i]=='*'){
+          anwser+=')^(1/5)*('
+        }
+        else{
+          anwser+=fac[i]
+        }
+      }
+      anwser+=')^(1/5)'
+      return anwser
+    }
+  else if(Algebrite.run(x)!=sim){
+    var anwser1=''
+    var anwser2=''
+    var part=true
+    for(var i=0;i<sim.length;i++){
+      if(part&&sim[i]=='*'){
+        part=false
+      }
+      else if(part){
+        anwser1+=sim[i]
+      }
+      else{
+        anwser2+=sim[i]
+      }
+    }
+    return cbrt(anwser1)+'*'+cbrt(anwser2)
+  }
+  else{
+    if(Algebrite.run(x+'>=0')==1){
+      return '('+x+')^(1/5)'
+    }
+    else{
+      return '(-(-('+x+'))^(1/5))'
+    }
+  }
+}
+function myFunction()
+{
+  document.getElementById("input").value=''
+  Algebrite.run("a="+Algebrite.run(document.getElementById("a").value))
+  Algebrite.run("b="+Algebrite.run(document.getElementById("b").value))
+  Algebrite.run("c="+Algebrite.run(document.getElementById("c").value))
+  Algebrite.run("d="+Algebrite.run(document.getElementById("d").value))
+  Algebrite.run("e="+Algebrite.run(document.getElementById("e").value))
+  Algebrite.run("f="+Algebrite.run(document.getElementById("f").value))
+  Algebrite.run("expr=a*(y-b/(5*a))^5+b*(y-b/(5*a))^4+c*(y-b/(5*a))^3+d*(y-b/(5*a))^2+e*(y-b/(5*a))+f")
+  Algebrite.run("C=(c-2*b^2/(5*a))/10")
+  Algebrite.run("D=(d+4*b^3/(25*a^2)-3*b*c/(5*a))/10")
+  Algebrite.run('E=(e-3*b^4/(125*a^3)+3*b^2*c/(25*a^2)-2*b*d/(5*a))/5')
+  Algebrite.run('F=f+4*b^5/(3125*a^4)-b^3*c/(125*a^3)+b^2*d/(25*a^2)-b*e/(5*a)')
+  document.getElementById("input").value +='令y='+Algebrite.run("x+b/(5*a)")+',得:' +Algebrite.run("expr")+'=0\n代入公式,得:C='+Algebrite.run("C")+',D='+Algebrite.run("D")+',E='+Algebrite.run("E")+',F='+Algebrite.run("F")+'\n'
+  Algebrite.run('delta=8250000*C^2*D^2*F^2+500000*C*E^2*F^2-375000*C*D*F^3-6750000*D^4*E^2-10000000*C^3*D^2*E^2-4500000*C^3*E*F^2+10800000*D^5*F+18000000*C*E^3*D^2+16000000*C^3*D^3*F+14000000*C^2*E^2*D*F-36000000*C^4*E*F*D-31500000*C*E*F*D^3+1125000*D^2*F^2*E-2000000*D*F*E^3+20000000*C^4*E^3-8000000*C^2*E^4+800000*E^5+3125*F^4+10800000*C^5*F^2')
+  Algebrite.run("K=E+3*C^2")
+  Algebrite.run("L=-2*D*F+3*E^2-2*C^2*E+8*C*D^2+15*C^4")
+  Algebrite.run("M=C*F^2-2*D*E*F+E^3-2*C^2*D*F-11*C^2*E^2+28*C*D^2*E-16*D^4+35*C^4*E-40*C^3*D^2-25*C^6")
+  Algebrite.run("hx=z^6-K/5*z^4+L/125*z^2-("+sqrt(Algebrite.run("5*delta"))+")/390625*z+M/3125")
+  Algebrite.run("hxs=roots(hx)")
+  document.getElementById("input").value +='delta='+Algebrite.run("delta")+',K='+Algebrite.run("K")+',L='+Algebrite.run("L")+',M='+Algebrite.run("M")+'\n解方程'+Algebrite.run("hx")+'=0,得z=:'+Algebrite.run("hxs")+'\n'
+  if(Algebrite.run("and(C==0,M==0)")==1){
+    if(Algebrite.run("and(D==0,E==0)")==1){
+      Algebrite.run("u1=-("+rt5(Algebrite.run("F"))+")")
+      Algebrite.run("u2=0")
+      Algebrite.run("u3=0")
+      Algebrite.run("u4=0")
+    }
+  }
+  Algebrite.run("w1=(-1+5^(1/2))/4+sqrt(10+2*sqrt(5))/4*i")
+  Algebrite.run("w2=(-1-5^(1/2))/4+sqrt(10-2*sqrt(5))/4*i")
+  Algebrite.run("w3=(-1-5^(1/2))/4-sqrt(10-2*sqrt(5))/4*i")
+  Algebrite.run("w4=(-1+5^(1/2))/4-sqrt(10+2*sqrt(5))/4*i")
+  Algebrite.run("x1=-b/(5*a)+u1+u2+u3+u4")
+  Algebrite.run("x2=-b/(5*a)+w1*u1+w2*u2+w3*u3+w4*u4")
+  Algebrite.run("x3=-b/(5*a)+w2*u1+w4*u2+w1*u3+w3*u4")
+  Algebrite.run("x4=-b/(5*a)+w3*u1+w1*u2+w4*u3+w2*u4")
+  Algebrite.run("x5=-b/(5*a)+w4*u1+w3*u2+w2*u3+w1*u4")
+  document.getElementById("input").value +='u1='+Algebrite.run("u1")+',u2='+Algebrite.run("u2")+',u3='+Algebrite.run("u3")+',u4='+Algebrite.run("u4")+'\nx1='+Algebrite.run("x1")+'\nx2='+Algebrite.run("x2")+'\nx3='+Algebrite.run("x3")+'\nx4='+Algebrite.run("x4")+'\nx5='+Algebrite.run("x5")
+}
+                                        
+</script>
+
+  
