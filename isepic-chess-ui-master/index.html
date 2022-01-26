@@ -200,6 +200,9 @@
 						display_debug();
 					}
 				});
+				$("#ic_ui_solve").click(function(){
+					Ic.getBoard("main").playRandomMove()
+				})
 			});
 		</script>
 	</head>
@@ -234,6 +237,7 @@
 							<input id="ic_ui_nav_next" value=">" type="button">
 							<input id="ic_ui_nav_last" value=">|" type="button">
 							<input id="ic_ui_rotate" value="rotate" type="button">
+							<input id="ic_ui_solve" value="solve" type="button">
 							
 							<select id="ic_ui_promote">
 								<option value="5" selected="selected">queen</option>
