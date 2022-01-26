@@ -1,20 +1,21 @@
+<script charset="utf-8" src="skin/js/layer/layer.js"></script>
 <html>
   <body background="Background.png"></body>
 <script src="algebrite.bundle-for-browser.js"></script>
 </script>
 <font face="SimSun">
   <div id="time" align="left"></div>
-  <a href="Passage00.html">·µ»ØÖ÷Ò³</a>
-  <a href="https://wenku.baidu.com/view/0c4365fd04a1b0717fd5ddb6.html">¹«Ê½</a>
+  <a href="Passage00.html">è¿”å›ä¸»é¡µ</a>
+  <a href="https://wenku.baidu.com/view/0c4365fd04a1b0717fd5ddb6.html">å…¬å¼</a>
   <hr>
-Ò»ÔªÎå´Î·½³ÌÇó½âÆ÷(ÈôÍøÒ³Î´ÏìÓ¦Ôò¸Ã³ÌĞòÕÒ²»µ½¸ùÊ½½â)£º<br>
+ä¸€å…ƒäº”æ¬¡æ–¹ç¨‹æ±‚è§£å™¨(è‹¥ç½‘é¡µæœªå“åº”åˆ™è¯¥ç¨‹åºæ‰¾ä¸åˆ°æ ¹å¼è§£)ï¼š<br>
 <input type="text" name="a" id="a"><span>x<sup>5</sup>+</span>
 <input type="text" name="b" id="b"><span>x<sup>4</sup>+</span>
 <input type="text" name="c" id="c"><span>x<sup>3</sup>+</span>
 <input type="text" name="d" id="d"><span>x<sup>2</sup>+</span>
 <input type="text" name="e" id="e"><span>x+</span>
 <input type="text" name="f" id="f"><span>=0</span>
-<br><button onclick="myFunction()">Çó½â</button>
+<br><button onclick="myFunction()">æ±‚è§£</button>
 <div id="frame">
   <textarea id="input" rows="50" cols="200" >
   </textarea>
@@ -125,14 +126,14 @@ function myFunction()
   Algebrite.run("D=(d+4*b^3/(25*a^2)-3*b*c/(5*a))/10")
   Algebrite.run('E=(e-3*b^4/(125*a^3)+3*b^2*c/(25*a^2)-2*b*d/(5*a))/5')
   Algebrite.run('F=f+4*b^5/(3125*a^4)-b^3*c/(125*a^3)+b^2*d/(25*a^2)-b*e/(5*a)')
-  document.getElementById("input").value +='Áîy='+Algebrite.run("x+b/(5*a)")+',µÃ:' +Algebrite.run("expr")+'=0\n´úÈë¹«Ê½,µÃ:C='+Algebrite.run("C")+',D='+Algebrite.run("D")+',E='+Algebrite.run("E")+',F='+Algebrite.run("F")+'\n'
+  document.getElementById("input").value +='ä»¤y='+Algebrite.run("x+b/(5*a)")+',å¾—:' +Algebrite.run("expr")+'=0\nä»£å…¥å…¬å¼,å¾—:C='+Algebrite.run("C")+',D='+Algebrite.run("D")+',E='+Algebrite.run("E")+',F='+Algebrite.run("F")+'\n'
   Algebrite.run('delta=8250000*C^2*D^2*F^2+500000*C*E^2*F^2-375000*C*D*F^3-6750000*D^4*E^2-10000000*C^3*D^2*E^2-4500000*C^3*E*F^2+10800000*D^5*F+18000000*C*E^3*D^2+16000000*C^3*D^3*F+14000000*C^2*E^2*D*F-36000000*C^4*E*F*D-31500000*C*E*F*D^3+1125000*D^2*F^2*E-2000000*D*F*E^3+20000000*C^4*E^3-8000000*C^2*E^4+800000*E^5+3125*F^4+10800000*C^5*F^2')
   Algebrite.run("K=E+3*C^2")
   Algebrite.run("L=-2*D*F+3*E^2-2*C^2*E+8*C*D^2+15*C^4")
   Algebrite.run("M=C*F^2-2*D*E*F+E^3-2*C^2*D*F-11*C^2*E^2+28*C*D^2*E-16*D^4+35*C^4*E-40*C^3*D^2-25*C^6")
   Algebrite.run("hx=z^6-K/5*z^4+L/125*z^2-("+sqrt(Algebrite.run("5*delta"))+")/390625*z+M/3125")
   Algebrite.run("hxs=roots(hx)")
-  document.getElementById("input").value +='delta='+Algebrite.run("delta")+',K='+Algebrite.run("K")+',L='+Algebrite.run("L")+',M='+Algebrite.run("M")+'\n½â·½³Ì'+Algebrite.run("hx")+'=0,µÃz=:'+Algebrite.run("hxs")+'\n'
+  document.getElementById("input").value +='delta='+Algebrite.run("delta")+',K='+Algebrite.run("K")+',L='+Algebrite.run("L")+',M='+Algebrite.run("M")+'\nè§£æ–¹ç¨‹'+Algebrite.run("hx")+'=0,å¾—z=:'+Algebrite.run("hxs")+'\n'
   if(Algebrite.run("and(C==0,M==0)")==1){
     if(Algebrite.run("and(D==0,E==0)")==1){
       Algebrite.run("u1=-("+rt5(Algebrite.run("F"))+")")
