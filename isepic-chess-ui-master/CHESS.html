@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <div style="height:650px; width:650px;"><!-- The parent must have defined height and width -->
+  <div style="height:650px; width:650px;">
     <div class="ic_ui_board">
       <div id="ic_ui_board"></div>
     </div>
@@ -11,14 +11,15 @@
 <script src="./js/isepic-chess.js"></script>
 <script src="./js/isepic-chess-ui.js"></script>
 <script>
-    IcUi.setCfg("soundEffects", false);
-    IcUi.setCfg("scrollNavigation", false);
-    IcUi.setCfg("animationTime", 150);
-    var board = Ic.initBoard({
+    $(function(){IcUi.setCfg("soundEffects", false)
+    IcUi.setCfg("scrollNavigation", false)
+    IcUi.setCfg("animationTime", 150)
+    board = Ic.initBoard({
       boardName: "main"
-    });
-    var makeMove=function(){
+    })
+    })
+    $("#solveBtn").click(function(){
     board.playRandomMove()
-  }
+    })
 </script>
 </html>
