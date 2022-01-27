@@ -1,55 +1,19 @@
-<html>
+<script charset="utf-8" src="skin/js/layer/layer.js"></script>
 <head>
-    <title>Othello</title>
-    <meta name="description" content="Online Othello">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="othello-board.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-</head>
-<body>
-    <div class="banner">
-        <h1 class="banner-text">Othello</h1>
-    </div>
-    <div id="info"></div>
-    <div style="text-align:center">
-        <button id="restart-btn" onclick="restart()" class="btn btn-primary">New Game</button>
-        <button id="undo-btn" onclick="undo()" class="btn btn-primary">Undo</button>
-        <button id="solve-btn" onclick="solve()" class="btn btn-primary">Solve</button>
-            <div id="board-area">
-            <table id="board"></table>
-        </div>
-    </div>
-</body>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="othello.js"></script>
-<script src="othello-board.js"></script>
+<title>主页</title>
 <script>
-    let othello = new Othello();
-    let board = new OthelloBoard(othello);
-    function restart() {
-        cancelMove = true;
-        let bScore = othello.getScore("b");
-        let wScore = othello.getScore("w");
-        console.log(bScore + " | " + wScore);
-        board.reset();
-    }
-    function undo() {
-        var l=othello.getHistory();
-        l.pop()
-        board.reset();
-        for(var i=0;i<l.length;i++){
-            board.move(l[i])
-        }
-    }
-    function solve() {
-        let moves = othello.getMoves();
-        let move = moves[Math.floor(Math.random() * moves.length)];
-        board.move(move);
-    }
-    
+function Equation0102(){document.getElementById("pic").innerHTML="<img src=Solution_0301.png width=560px><img src=Solution_0302.png width=560px>"}
+function Equation0304(){document.getElementById("pic").innerHTML="<img src=Solution_0303.png width=560px><img src=Solution_0304.png width=560px>"}
+function Equation0506(){document.getElementById("pic").innerHTML="<img src=Solution_0305.png width=560px><img src=Solution_0306.png width=560px>"}
+function Cancel(){document.getElementById("pic").innerHTML=""}
 </script>
+</head>
+<body background="Background.png" onload="start()">
+<font face="SimSun">
+<a href="Passage02.html">一元二次方程求根公式</a> <a href="Passage03.html">一元三次方程求根公式</a> <a href="Passage07.html">一元七次方程求根公式</a> <a href="Formula05.html">一元五次方程求解工具</a> <a href="RenjuAI.html">连珠棋AI</a> <a href="chessAI.html">国际象棋AI</a> <a href="othello.html">黑白棋AI</a> <a href="Xiangqi.html">中国象棋AI</a> <a href="draughtsai.html">国际跳棋AI</a>
+<hr>
+<table border="1"><tr><td>
+<font size=5>主页</font></td></tr></table>
+</font>
+</body>
 </html>
