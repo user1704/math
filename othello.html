@@ -16,6 +16,7 @@
     <div id="info"></div>
     <div style="text-align:center">
         <button id="restart-btn" onclick="restart()" class="btn btn-primary">New Game</button>
+        <button id="undo-btn" onclick="undo()" class="btn btn-primary">Undo</button>
         <button id="solve-btn" onclick="solve()" class="btn btn-primary">Solve</button>
             <div id="board-area">
             <table id="board"></table>
@@ -35,6 +36,14 @@
         let wScore = othello.getScore("w");
         console.log(bScore + " | " + wScore);
         board.reset();
+    }
+    function undo() {
+        var l=othello.getHistory();
+        l.pop()
+        board.reset();
+        for(var i=0;i<l.length;i++){
+            board.move(l[i])
+        }
     }
     function solve() {
         let moves = othello.getMoves();
