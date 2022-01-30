@@ -7,7 +7,6 @@ class OthelloBoard {
 
     constructor(othello, config = {}) {
         this.othello = othello;
-        this.lastBoard = this.othello.getBoard();
         this.boardId = "#" + (config.boardId != undefined ? config.boardId : "board");
         this.infoId = "#" + (config.infoId != undefined ? config.infoId : "info");
         this.boardVar = (config.boardVar != undefined ? config.boardVar : "board");
@@ -21,13 +20,12 @@ class OthelloBoard {
         } else {
             this.onWhiteMove();
         }
-
     }
 
     updateDisplay() {
         let showOptions = (this.displayMoves == this.othello.turn || this.displayMoves == "both");
-        let boardChanges = this._getChanges().map(sq => this._getId(sq));
         let history = this.othello.getHistory();
+        let boardChanges = this._getChanges().map(sq => this._getId(sq));
         var tableStr = "";
         for (var row = 0; row < this.othello.dim; row++) {
             tableStr += "<tr>";
@@ -39,7 +37,7 @@ class OthelloBoard {
                     cls = "o";
                 }
                 var bg = "mediumseagreen";
-                if (history.length > 0 && this._getId(history[history.length - 1]) == id) {
+                if (history.length > 0 && this._getId(history[history.length - 1].move) == id) {
                     bg = "#cc99ff";
                 } else if (boardChanges.includes(id)) {
                     bg = "pink";
@@ -86,23 +84,25 @@ class OthelloBoard {
 
     reset() {
         this.othello.reset();
-        this.lastBoard = this.othello.getBoard();
         this.updateDisplay();
         this.onBlackMove();
     }
 
     _getChanges() {
+        let history = this.othello.getHistory();
         var changes = [];
-        for (var row = 0; row < this.othello.dim; row++) {
-            for (var col = 0; col < this.othello.dim; col++) {
-                let lastSquare = this.lastBoard[row][col];
-                let curSquare = this.othello.getBoard()[row][col];
-                if (lastSquare != curSquare) {
-                    changes.push({ "row": row, "col": col })
+        if (history.length > 0) {
+            let lastBoard = Othello.fenToBoard(history[history.length - 1].fen);
+            for (var row = 0; row < this.othello.dim; row++) {
+                for (var col = 0; col < this.othello.dim; col++) {
+                    let lastSquare = lastBoard[row][col];
+                    let curSquare = this.othello.getBoard()[row][col];
+                    if (lastSquare != curSquare) {
+                        changes.push({ "row": row, "col": col });
+                    }
                 }
             }
         }
-        this.lastBoard = this.othello.getBoard();
         return changes;
     }
 
