@@ -22,6 +22,12 @@
             <table id="board"></table>
         </div>
     </div>
+<br>深度=<span id="d"></span>
+<br>节点数=<span id="jiedian"></span>
+<br>计算速度(节点/秒)=<span id="jssd"></span>
+<br>时间(秒)=<span id="time"></span>
+<br>着法=<span id="move"></span>
+<br>分数=<span id="val"></span>
 </body>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -38,18 +44,102 @@
         board.reset();
     }
     function undo() {
-        var l=othello.getHistory();
-        l.pop()
-        board.reset();
-        for(var i=0;i<l.length;i++){
-            board.move(l[i])
-        }
+        othello.undo()
+        board.updateDisplay()
     }
     function solve() {
-        let moves = othello.getMoves();
-        let move = moves[Math.floor(Math.random() * moves.length)];
-        board.move(move);
+        positionCount = 0;
+        D = 0;
+        var d = new Date().getTime();
+        var d2=0
+        var value=0
+        while(D<8&&Math.abs(value)<20000){
+        D+=2
+        var bestMoveandvalue = minimax(D,-Infinity,Infinity);
+        var d2 = new Date().getTime();
+        var bestMove=bestMoveandvalue[0]
+        var value=bestMoveandvalue[1]
+        var moveTime = (d2 - d)/1000;
+        var positionsPerS = ( positionCount/ moveTime);
     }
-    
+        document.getElementById("d").innerHTML=D
+        document.getElementById("jiedian").innerHTML=positionCount
+        document.getElementById("jssd").innerHTML=positionsPerS
+        document.getElementById("time").innerHTML=moveTime
+        document.getElementById("move").innerHTML=JSON.stringify(bestMove)
+        document.getElementById("val").innerHTML=value
+        board.move(bestMove);
+    }
+    let initVals = [
+    [10000, -1000, 500, 1, 1, 500, -1000, 10000],
+    [-1000, -1000, -1, -1, -1, -1, -1000, -1000],
+    [500, -1, 300, 100, 100, 300, -1, 500],
+    [1, -1, 100, 100, 100, 100, -1, 1],
+    [1, -1, 100, 100, 100, 100, -1, 1],
+    [500, -1, 300, 100, 100, 300, -1, 500],
+    [-1000, -1000, -1, -1, -1, -1, -1000, -1000],
+    [10000, -1000, 500, 100, 100, 500, -1000, 10000]
+];
+    function val(){
+        let board = othello.getBoard();
+        let bv=0;
+        let wv=0;
+        for(var i=0;i<8;i++){
+            for(var j=0;j<8;j++){
+                var t=board[i][j]
+                if(t=='b'){
+                    bv+=initVals[i][j]
+                }
+                else if(t=='w'){
+                    wv+=initVals[i][j]
+                }
+            }
+        }
+        if(othello.getOppColor()=='w'){
+            return bv-wv
+        }
+        else{
+            return wv-bv
+        }
+    }
+    function minimax(depth,alpha,beta) {
+        var ffoundpv=false;
+        if (depth <= 0) {
+            return val();
+        }
+        var newGameMoves = othello.getMoves();
+        if(newGameMoves.length==0){
+            if(othello.getOppColor()=='w'){
+                return (othello.getScore('w')-othello.getScore('b'))*100000000
+            }
+            else{
+                return (othello.getScore('b')-othello.getScore('w'))*100000000
+            }
+        }
+        for (var i = 0; i < newGameMoves.length; i++) {
+            othello.move(newGameMoves[i]);
+            positionCount++;
+            if(ffoundpv){
+                bestMove=-minimax(depth - 1,  -alpha-1, -alpha);
+                if(bestMove>alpha&&bestMove<beta){
+                    bestMove = -minimax(depth - 1, -beta, -alpha);
+                }
+            }
+            else{
+                bestMove = -minimax(depth - 1, -beta, -alpha);
+            };
+            othello.undo()
+            if (bestMove>=beta) {
+                return beta;
+            }
+            if (bestMove>alpha) {
+                alpha=bestMove
+                bestMoveFound=newGameMoves[i]
+                ffoundpv=true;
+            }
+        }
+        if(depth==D){return [bestMoveFound,alpha]}
+        return alpha
+};
 </script>
 </html>
