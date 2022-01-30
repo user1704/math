@@ -13,8 +13,32 @@ class Othello {
 
     constructor(config = {}) {
         let fen = (config.fen != undefined ? config.fen : this._startingPos);
-        this._board = this._fenToBoard(fen);
+        this._board = Othello.fenToBoard(fen);
         this.turn = fen.split(' ')[1];
+    }
+
+    static fenToBoard(fen) {
+        let f = fen.split(" ")[0];
+        var b = [[]];
+        var row = 0;
+        for (var i = 0; i < f.length; i++) {
+            let c = f.charAt(i);
+            switch (c) {
+                case 'b':
+                case 'w':
+                    b[row].push(c);
+                    break;
+                case '|':
+                    b.push([]);
+                    row++;
+                    break;
+                default:
+                    for (var j = 0; j < parseInt(c); j++) {
+                        b[row].push('e');
+                    }
+            }
+        }
+        return b;
     }
 
     getMoves(turn = this.turn) {
@@ -45,6 +69,7 @@ class Othello {
     }
 
     move(position) {
+        let startFen = this.fen();
         let row = position.row;
         let col = position.col;
         this._setSquare(row, col, this.turn);
@@ -70,7 +95,11 @@ class Othello {
                 }
             });
         });
-        this._history.push({ "row": row, "col": col, "color": this.turn });
+        this._history.push({
+            "fen": startFen,
+            "turn": this.turn,
+            "move": { "row": row, "col": col }
+        });
         this._switchTurn();
         if (this.getMoves().length == 0) {
             this._switchTurn();
@@ -89,12 +118,22 @@ class Othello {
         return this._deepCopy(this._history);
     }
 
+    undo() {
+        if (this._history.length > 0) {
+            let lastState = this._history.pop();
+            this._board = Othello.fenToBoard(lastState.fen);
+            this.turn = lastState.turn;
+            return lastState;
+        }
+        return null;
+    }
+
     fen() {
         var f = '';
         for (var row = 0; row < this.dim; row++) {
             var blankCount = 0;
             for (var col = 0; col < this.dim; col++) {
-                let sq = this._board[row][col]
+                let sq = this._board[row][col];
                 switch (sq) {
                     case 'e':
                         blankCount++;
@@ -118,7 +157,7 @@ class Othello {
     }
 
     reset() {
-        this._board = this._fenToBoard(this._startingPos);
+        this._board = Othello.fenToBoard(this._startingPos);
         this.turn = this._startingPos.split(' ')[1];
         this._history = [];
     }
@@ -175,29 +214,5 @@ class Othello {
 
     _switchTurn() {
         this.turn = (this.turn == 'b') ? 'w' : 'b';
-    }
-
-    _fenToBoard(fen) {
-        let f = fen.split(" ")[0];
-        var b = [[]];
-        var row = 0;
-        for (var i = 0; i < f.length; i++) {
-            let c = f.charAt(i);
-            switch (c) {
-                case 'b':
-                case 'w':
-                    b[row].push(c);
-                    break;
-                case '|':
-                    b.push([]);
-                    row++;
-                    break;
-                default:
-                    for (var j = 0; j < parseInt(c); j++) {
-                        b[row].push('e');
-                    }
-            }
-        }
-        return b;
     }
 }
