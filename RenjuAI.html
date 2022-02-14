@@ -3,7 +3,7 @@
 <a href="Passage00.html">返回主页</a>
 <hr>
 <canvas id="mycanvas" width="900px" height="900px"></canvas><br>
-版本：V1.2<br>
+版本：V1.3<br>
 <button onclick="newgame()">新局</button>
 <button onclick="retract()">悔棋</button>
 <button onclick="deeping()">计算</button>
@@ -445,6 +445,10 @@ function value(color){
         }
     }
     }
+    over=false
+    if(l51>=1||l52>=1){
+        over=true
+    }
     if (color == 1) {
         score1+=l51*10000000
         score1+=l41*1000000
@@ -532,7 +536,7 @@ function movelist(color){
 function search(color, depth, alpha, beta) {
     var ffp=false
     A+=1
-    if (depth <= 0||score>=5000000||score<=-5000000) {
+    if (depth <= 0||over) {
         return value(color)
     }
     l.push(-1)
@@ -676,10 +680,8 @@ function deeping(){
   if(find){selMoveList.add(createOption(color[l.length%2]+l.length.toString()+':find'))}
   else{
     var deep=4
-    BestMove=[-1,-1]
     for(D=1;D<=deep;D+=1){
     A=0
-    bm=BestMove[1]
       if(me){Bestmove=search(1,D,-50000001,50000001)
       }
       else{
@@ -690,15 +692,9 @@ function deeping(){
         break
     }
     }
-    if(bm==-1){
-        oneStep(Bestmove[1],me)
-    }
-    else{
-        oneStep(bm,me);
-    }
+    oneStep(Bestmove[1],me)
 }
     }
 </script>
 </html>
-
 
