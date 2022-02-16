@@ -469,7 +469,7 @@ function value(color){
         score2+=cl22*10
         score2+=jl22*9
         score2+=bjl22*8
-        score2+=s22*1
+        score2+=s22
     }
     else {
         score2+=l52*10000000
@@ -491,7 +491,7 @@ function value(color){
         score1+=cl21*10
         score1+=jl21*9
         score1+=bjl21*8
-        score1+=s21*1
+        score1+=s21
     }
 	//selMoveList.add(createOption([score1,score2]))
     if (color == 1) {
@@ -562,10 +562,9 @@ function search(color, depth, alpha, beta) {
             chessBox[i] = 0;
             l.pop()
             if (score >= beta) {
-                return beta;
+                return score;
             }
             if (score > alpha) {
-                
                 var alpha = score
                 var bestmove =i
                 ffp=true
@@ -594,7 +593,7 @@ function drawChessBoard(){
  }
 drawChessBoard()
 function oneStep(i,k){
-  if(!l.includes(i)){
+  if(!l.includes(i)&&i!=undefined){
   l.push(i)
   if(l.length%2==0){white.push(i)}
   if(l.length%2==1){black.push(i)}
@@ -614,12 +613,7 @@ function oneStep(i,k){
   if(100<=l.length){context.fillText(l.length,6+Math.floor(i/15)*60,859-i%15*60)}
   context.closePath()
   me=!me
-  if(me){
-    value(1)
-  }
-  else{
-	  value(2)
-  }
+
  }}
 chess.onclick=function(e){
   var x = e.offsetX
@@ -682,6 +676,7 @@ function deeping(){
     var deep=4
     for(D=1;D<=deep;D+=1){
     A=0
+    over=false
       if(me){Bestmove=search(1,D,-50000001,50000001)
       }
       else{
