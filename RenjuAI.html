@@ -79,11 +79,14 @@
             return;
         }
         if (mapChess[dx][dy] == '') {
-            drawChess((dx + 1) * 30, (dy + 1) * 30, color);
-            mapChess[dx][dy] = color;
-            list.push([dx,dy]);
-            step++;
+            xydraw(dx,dy,color)
         }
+    }
+    function xydraw(dx,dy,color){
+        drawChess((dx + 1) * 30, (dy + 1) * 30, color);
+        mapChess[dx][dy] = color;
+        list.push([dx,dy]);
+        step++;
     }
     function back(){
         if(step>0){
@@ -108,6 +111,7 @@
     function getType(x, y, color, mode) {
         var countBlock = 0;
         var count = 1;
+        var countJump=0;
         var i = 1;
         var j = 1;
         while ((x + i * mode[0]) < 15 && (y + i * mode[1]) < 15 &&
@@ -135,7 +139,6 @@
         if (count >= 5) {
             countBlock = 0;
         } else {
-            //两头都被堵住或者遇到边界的位置时这个方向下棋等于没下
             if (countBlock == 2 ||
                 (x + i * mode[0]) < 0 || (y + i * mode[1]) < 0 ||
                 (x + i * mode[0]) >= 15 || (y + i * mode[1]) >= 15 ||
@@ -145,27 +148,27 @@
                 countBlock = count;
             }
         }
-        return [countBlock, count];
+        return [countBlock, count,countJump];
     }
     function getPosval(x,y,color){
         var val=0
         for(var i=0;i<4;i++){
-            var b=getType(x,y,'black',mode[i]);
-            var w=getType(x,y,'white',mode[i]);
-            if(b[1]==5){
-                val+=823543;
+            var t=getType(x,y,color,mode[i]);
+            if(color=='black'){
+                if(t[1]>=6){
+                    return 'ban'
+                }
+                else if(t[1]==5){
+                    val+=823543;
+                }
             }
-            if(w[1]==5){
-                val+=823543;
+            else{
+                if(t[1]>=5){
+                    val+=823543;
+                }     
             }
-
         }
-        if(color=='black'){
-            return val;
-        }
-        else{
-            return -val;
-        }
+        return val
     }
     function n(x,y){
         var t=[1,-1,2,-2,3,-3]
@@ -182,15 +185,40 @@
     }
     function genmove(){
         var l=[]
+        var V5=null
+        var Xs4=null
         for(var i=0;i<15;i++){
             for(var j=0;j<15;j++){
                 if(mapChess[i][j]==0){
                     if(n(i,j)){
-                        l.push(i,j)
+                        var t1=getPosval(i,j,chessColor[step % 2])
+                        var t2=getPosval(i,j,chessColor[(step+1)%2])
+                        if(t1>=311270){
+                            V5=[[Infinity,i,j]];
+                        }
+                        if(t2>=311270){
+                            Xs4=[[Infinity,i,j]];
+                        }
+                        if(t1!='ban'){
+                            l.push([t1*3+t2*2,i,j]);
+                        }
                     }
                 }
             }
         }
+        if(V5!=null){
+            return V5
+        }
+        else if(Xs4!=null){
+            return Xs4
+        }
         return l
+    }
+    function solve(){
+        var t=genmove()
+        if(t.length==1){
+            xydraw(t[0][1],t[0][2],chessColor[step % 2])
+            document.getElementById('val').innerHTML='唯一着法'
+        }
     }
 </script>
