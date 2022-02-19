@@ -1,7 +1,7 @@
 ﻿<html>
 <body background="Background.png"></body>
 <font face="TH-Tshyn-P1">
-仓颉编码查询器，请输入汉字：<br>
+仓颉编码查询器，请输入汉字 V1.1 ：<br>
 <input type="text" name="a" id="a"><br>
 <button onclick="myFunction2()">汉字->三角编号</button><br>
 <span id="x"></span>
@@ -44,7 +44,7 @@ function cchai(a){
   var t=chai3(a,1)
   shen=[t[1]]
   var shen=[t[1]]
-  while(jg[t]==jg[a]&&t.length>1){
+  while(jg(t[0])==jg(a)&&t.length>1){
     var t=chai3(t[0],1)
     if(t[1]!=undefined){
       shen.push(t[1])
@@ -73,7 +73,7 @@ function cjhm(a){
       t2=t2.concat(chai3(t[1][i],3))
     }
     for(var i=0;i<t1.length;i++){
-      if(i==0||i==ti.length-1){
+      if(i==0||i==t1.length-1){
         ma+=h[h.indexOf(h1[h1.indexOf(t1[i])-1])+1]
       }
     }
