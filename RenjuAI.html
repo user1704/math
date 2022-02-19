@@ -22,13 +22,20 @@
 <button onclick="solve()">计算</button>
 <button onclick="zl()">指令</button>
 <input type="text" name="zltext" id="zltext">
-<br>评分:<span id ="val"></span>
+<div><select id="selMoveList" size="10" style="font-family:宋体">
+<option selected value=0>======== 开始 ========</option></select></div>
 <body>
     <canvas id="canvas" width="480" height="480">
     </canvas>
 </body>
 </html>
 <script>
+    function add(text) {
+        var opt = document.createElement("option")
+        opt.selected = true
+        opt.text = text
+        selMoveList.add(opt)
+    }
     var canvas = document.getElementById("canvas");
     var chessColor = ['black', 'white'];
     var mode = [
@@ -106,31 +113,32 @@
     }
     function zl(){
         var Text=document.getElementById('zltext').value;
-        alert(eval(Text))
+        add(eval(Text))
     }
     function getType(x, y, color, mode) {
         var countBlock = 0;
         var count = 1;
-        var countJump=0;
         var i = 1;
         var j = 1;
-        while ((x + i * mode[0]) < 15 && (y + i * mode[1]) < 15 &&
-            (x + i * mode[0]) >= 0 && (y + i * mode[1]) >= 0 &&
-            mapChess[x + i * mode[0]][y + i * mode[1]] != '') {
+        var l=0;
+        var r=0;
+        while ((x + i * mode[0]) < 14 && (y + i * mode[1]) < 14 &&
+            (x + i * mode[0]) >= 0 && (y + i * mode[1]) >= 0&&i<5) {
             if (mapChess[x + i * mode[0]][y + i * mode[1]] == color) {
                 count++;
-            } else {
+                var r=i
+            } else if (mapChess[x + i * mode[0]][y + i * mode[1]] != '') {
                 countBlock++;
                 break;
             }
             i++;
         }
         while ((x - j * mode[0]) >= 0 && (y - j * mode[1]) >= 0 &&
-            (x - j * mode[0]) < 15 && (y - j * mode[1]) < 15 &&
-            mapChess[x - j * mode[0]][y - j * mode[1]] != '') {
+            (x - j * mode[0]) < 14 && (y - j * mode[1]) < 14&&j+r<=4) {
             if (mapChess[x - j * mode[0]][y - j * mode[1]] == color) {
                 count++;
-            } else {
+                var l=j;
+            } else if (mapChess[x - j * mode[0]][y - j * mode[1]] != '') {
                 countBlock++;
                 break;
             }
@@ -138,67 +146,62 @@
         }
         if (count >= 5) {
             countBlock = 0;
-        } else {
-            if (countBlock == 2 ||
-                (x + i * mode[0]) < 0 || (y + i * mode[1]) < 0 ||
-                (x + i * mode[0]) >= 15 || (y + i * mode[1]) >= 15 ||
-                (x - j * mode[0]) < 0 || (y - j * mode[1]) < 0 ||
-                (x - j * mode[0]) >= 15 || (y - j * mode[1]) >= 15
-            ) {
-                countBlock = count;
-            }
         }
-        return [countBlock, count,countJump];
+        else if(l+r==4){
+            countBlock=1;
+        } 
+        else if(
+            (x + r * mode[0]) < 0 || (y + r * mode[1]) < 0 ||
+            (x + r * mode[0]) >= 15 || (y + r * mode[1]) >= 15 ||
+            (x - l * mode[0]) < 0 || (y - l * mode[1]) < 0 ||
+            (x - l * mode[0]) >= 15 || (y - l * mode[1]) >= 15
+        ) {
+            countBlock = 2;
+        }
+        return [countBlock, count];
     }
     function getPosval(x,y,color){
         var val=0;
+        var v6=0;
         var v5=0;
         var v4=0;
+        var v3=0;
         for(var i=0;i<4;i++){
             var t=getType(x,y,color,mode[i]);
-            if(color=='black'){
-                if(t[1]>=6){
-                    return 'ban'
-                }
-                else if(t[1]==5){
-                    val+=823543;
-                    v5+=1;
-                }
-                else if(t[1]==4&&t[0]==0){
-                    val+=117649;
-                    v4+=1;
-                }
-                else if(t[1]==4&&t[0]==1){
-                    val+=16807;
-                    v4+=1;
-                }
+            if(t[1]>=6){
+                v6+=1;
             }
-            else{
-                if(t[1]>=5){
-                    val+=823543;
-                } 
-                else if(t[1]==4&&t[0]==0){
-                    val+=117649;
-                    v4+=1
-                }   
-                else if(t[1]==4&&t[0]==1){
-                    val+=16807;
-                    v4+=1
-                } 
+            else if(t[1]==5){
+                v5+=1;
+            }
+            else if(t[1]==4&&t[0]<2){
+                v4+=1;
+            }
+            else if(t[1]==3&&t[0]==0){
+                v3+=1;
+            }
+            if(t[0]!=2){
+                val+=7**(t[1]*2-t[0]-1)/t[1]  
             }
         }
-        if(v5==0){
+        if(color=='black'&&v5==0){
+            if(v6>=1){
+                return 'ban'
+            }
             if(v4>=2){
                 return 'ban'
             }
-        }
-        return val
+            if(v3>=2){
+                return 'ban'
+            }
+        } 
+        return Math.round(val)
     }
     function n(x,y){
         var t=[1,-1,2,-2,3,-3]
         for(var h=0;h<4;h++){
             for(var i=0;i<6;i++){
-                if(0<=x+t[i]*mode[h][0]&&x+t[i]*mode[h][0]<14&&0<=y+t[i]*mode[h][1]&&y+t[i]*mode[h][1]<14){
+                if(0<=x+t[i]*mode[h][0]&&x+t[i]*mode[h][0]<15&&0<=y+t[i]*mode[h][1]&&y+t[i]*mode[h][1]<15){
                     if(mapChess[x+t[i]*mode[h][0]][y+t[i]*mode[h][1]]!=''){
                         return true
                     }
@@ -216,27 +219,27 @@
         var Xl3=[];
         for(var i=0;i<15;i++){
             for(var j=0;j<15;j++){
-                if(mapChess[i][j]==0){
+                if(mapChess[i][j]==''){
                     if(n(i,j)){
                         var t1=getPosval(i,j,chessColor[step % 2])
                         var t2=getPosval(i,j,chessColor[(step+1)%2])
                         if(t1!='ban'){
-                            if(t1>=311270){
+                            if(t1>=15000000){
                                 V5.push([t1*3+t2*2,i,j]);
                             }
-                            else if(t1>=44467){
+                            else if(t1>=2000000){
                                 Vl4.push([t1*3+t2*2,i,j]);
                             }
-                            else if(t1>=6352){
+                            else if(t1>=300000){
                                 Vs4.push([t1*3+t2*2,i,j]);
                             }
                             l.push([t1*3+t2*2,i,j]);
                         }
-                        if(t2!='ban'){
-                            if(t2>=311270){
+                        if(t1!='ban'&&t2!='ban'){
+                            if(t2>=15000000){
                                 Xs4.push([t1*3+t2*2,i,j]);
                             }
-                            else if(t2>=44467){
+                            else if(t2>=2000000){
                                 Xl3.push([t1*3+t2*2,i,j]);
                             }
                         }
@@ -245,39 +248,71 @@
             }
         }
         if(V5.length>0){
-            return V5.sort();
+            return V5.sort((a,b)=>b[0]-a[0]);
         }
         else if(Xs4.length>0){
-            return Xs4.sort();
+            return Xs4.sort((a,b)=>b[0]-a[0]);
         }
         else if(Vl4.length>0){
-            return Vl4.sort();
+            return Vl4.sort((a,b)=>b[0]-a[0]);
         }
         else if(Xl3.length>0){
-            return (Xl3.concat(Vs4)).sort();
+            return (Xl3.concat(Vs4)).sort((a,b)=>b[0]-a[0]);
         }
-        return l.sort();
+        return l.sort((a,b)=>b[0]-a[0]);
     }
     function val(color){
-        return 0;
+        var val=0;
+        for(var i=0;i<list.length;i++){
+            for(var j=0;j<4;j++){
+                var t=getType(list[i][0],list[i][1],chessColor[i % 2],mode[j]);
+                if(t[0]!=2){
+                    if(i%2==0){
+                        if(color=='black'){
+                            val+=7**(t[1]*2-t[0])/t[1]
+                        }
+                        else{
+                            val+=7**(t[1]*2-t[0]-1)/t[1]
+                        }
+                    }
+                    else{
+                        if(color=='white'){
+                            val-=7**(t[1]*2-t[0])/t[1]
+                        }
+                        else{
+                            val-=7**(t[1]*2-t[0]-2)/t[1]    
+                        }
+                    }
+                }
+            }
+        }
+        if(color=='black'){
+            return Math.round(val);
+        }
+        else{
+            return Math.round(-val);
+        }
     }
     function minimax(color,depth,alpha,beta){
-        if(depth<=0||vl>=311270||vl<=-311270){
+        a++
+        if(depth<=0){
             return val(color);
         }
         var ml=genmove();
         for(var i=0;i<ml.length;i++){
             mapChess[ml[i][1]][ml[i][2]]=color;
+            list.push([ml[i][1],ml[i][2]])
             if(color=='black'){
-                var vl=minimax('white',depth-1,-beta,-alpha);
+                var vl=-minimax('white',depth-1,-beta,-alpha);
             }
             else{
-                var vl=minimax('black',depth-1,-beta,-alpha);
+                var vl=-minimax('black',depth-1,-beta,-alpha);
             }
             mapChess[ml[i][1]][ml[i][2]]=0;
+            list.pop()
             if(vl>alpha){
-                alpha=vl;
-                best=[ml[i][1],ml[i][2]];
+                var alpha=vl;
+                var best=[ml[i][1],ml[i][2]];
                 if(alpha>=beta){
                     break;
                 }
@@ -289,14 +324,19 @@
     function solve(){
         var t=genmove()
         if(t.length==1){
-            xydraw(t[0][1],t[0][2],chessColor[step % 2])
-            document.getElementById('val').innerHTML='唯一着法'
+            xydraw(t[0][1],t[0][2],chessColor[step % 2]);
+            add('唯一着法');
         }
         else{
-            D=1
-            var t=minimax(chessColor[step % 2],D,-2178890,2178890)
+            a=0
+            for(D=1;D<=3;D++){
+                var t=minimax(chessColor[step % 2],D,-Infinity,Infinity)
+                add('评价:'+t[0].toString()+',着法:['+t[1]+'],节点:'+a+',深度:'+D)
+                if(t[0]>=15000000||t[0]<=-15000000){
+                    break;
+                }
+            }
             xydraw(t[1][0],t[1][1],chessColor[step % 2])
-            document.getElementById('val').innerHTML=t[0]
         }
     }
 </script>
