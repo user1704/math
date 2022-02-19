@@ -151,7 +151,9 @@
         return [countBlock, count,countJump];
     }
     function getPosval(x,y,color){
-        var val=0
+        var val=0;
+        var v5=0;
+        var v4=0;
         for(var i=0;i<4;i++){
             var t=getType(x,y,color,mode[i]);
             if(color=='black'){
@@ -160,12 +162,34 @@
                 }
                 else if(t[1]==5){
                     val+=823543;
+                    v5+=1;
+                }
+                else if(t[1]==4&&t[0]==0){
+                    val+=117649;
+                    v4+=1;
+                }
+                else if(t[1]==4&&t[0]==1){
+                    val+=16807;
+                    v4+=1;
                 }
             }
             else{
                 if(t[1]>=5){
                     val+=823543;
-                }     
+                } 
+                else if(t[1]==4&&t[0]==0){
+                    val+=117649;
+                    v4+=1
+                }   
+                else if(t[1]==4&&t[0]==1){
+                    val+=16807;
+                    v4+=1
+                } 
+            }
+        }
+        if(v5==0){
+            if(v4>=2){
+                return 'ban'
             }
         }
         return val
@@ -184,41 +208,95 @@
         return false
     }
     function genmove(){
-        var l=[]
-        var V5=null
-        var Xs4=null
+        var l=[];
+        var V5=[];
+        var Xs4=[];
+        var Vl4=[];
+        var Vs4=[];
+        var Xl3=[];
         for(var i=0;i<15;i++){
             for(var j=0;j<15;j++){
                 if(mapChess[i][j]==0){
                     if(n(i,j)){
                         var t1=getPosval(i,j,chessColor[step % 2])
                         var t2=getPosval(i,j,chessColor[(step+1)%2])
-                        if(t1>=311270){
-                            V5=[[Infinity,i,j]];
-                        }
-                        if(t2>=311270){
-                            Xs4=[[Infinity,i,j]];
-                        }
                         if(t1!='ban'){
+                            if(t1>=311270){
+                                V5.push([t1*3+t2*2,i,j]);
+                            }
+                            else if(t1>=44467){
+                                Vl4.push([t1*3+t2*2,i,j]);
+                            }
+                            else if(t1>=6352){
+                                Vs4.push([t1*3+t2*2,i,j]);
+                            }
                             l.push([t1*3+t2*2,i,j]);
+                        }
+                        if(t2!='ban'){
+                            if(t2>=311270){
+                                Xs4.push([t1*3+t2*2,i,j]);
+                            }
+                            else if(t2>=44467){
+                                Xl3.push([t1*3+t2*2,i,j]);
+                            }
                         }
                     }
                 }
             }
         }
-        if(V5!=null){
-            return V5
+        if(V5.length>0){
+            return V5.sort();
         }
-        else if(Xs4!=null){
-            return Xs4
+        else if(Xs4.length>0){
+            return Xs4.sort();
         }
-        return l
+        else if(Vl4.length>0){
+            return Vl4.sort();
+        }
+        else if(Xl3.length>0){
+            return (Xl3.concat(Vs4)).sort();
+        }
+        return l.sort();
+    }
+    function val(color){
+        return 0;
+    }
+    function minimax(color,depth,alpha,beta){
+        if(depth<=0||vl>=311270||vl<=-311270){
+            return val(color);
+        }
+        var ml=genmove();
+        for(var i=0;i<ml.length;i++){
+            mapChess[ml[i][1]][ml[i][2]]=color;
+            if(color=='black'){
+                var vl=minimax('white',depth-1,-beta,-alpha);
+            }
+            else{
+                var vl=minimax('black',depth-1,-beta,-alpha);
+            }
+            mapChess[ml[i][1]][ml[i][2]]=0;
+            if(vl>alpha){
+                alpha=vl;
+                best=[ml[i][1],ml[i][2]];
+                if(alpha>=beta){
+                    break;
+                }
+            }
+        }
+        if(depth==D){return [alpha,best]};
+        return alpha;
     }
     function solve(){
         var t=genmove()
         if(t.length==1){
             xydraw(t[0][1],t[0][2],chessColor[step % 2])
             document.getElementById('val').innerHTML='唯一着法'
+        }
+        else{
+            D=1
+            var t=minimax(chessColor[step % 2],D,-2178890,2178890)
+            xydraw(t[1][0],t[1][1],chessColor[step % 2])
+            document.getElementById('val').innerHTML=t[0]
         }
     }
 </script>
