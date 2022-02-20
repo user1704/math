@@ -267,6 +267,7 @@
         var Vl4=[];
         var Vs4=[];
         var Xl3=[];
+        var Vs4l3=[];
         for(var i=0;i<15;i++){
             for(var j=0;j<15;j++){
                 if(mapChess[i][j]==''){
@@ -279,6 +280,9 @@
                             }
                             else if(t1>=300000){
                                 Vl4.push([t1*3+t2*2,i,j]);
+                            }
+                            else if(t1>=50000){
+                                Vs4l3.push([t1*3+t2*2,i,j])
                             }
                             else if(t1>=45000){
                                 Vs4.push([t1*3+t2*2,i,j]);
@@ -309,7 +313,10 @@
             return Vl4.sort((a,b)=>b[0]-a[0]);
         }
         else if(Xl3.length>0){
-            return (Xl3.concat(Vs4)).sort((a,b)=>b[0]-a[0]);
+            return Vs4l3.sort((a,b)=>b[0]-a[0]).concat((Xl3.concat(Vs4)).sort((a,b)=>b[0]-a[0]));
+        }
+        else if(Vs4l3.length>0){
+            return Vs4l3.sort((a,b)=>b[0]-a[0]);
         }
         return l.sort((a,b)=>b[0]-a[0]);
     }
@@ -333,7 +340,7 @@
                                 val-=7**(t[1]*2-t[0])/t[1]
                             }
                             else{
-                                val-=7**(t[1]*2-t[0]-2)/t[1]    
+                                val-=7**(t[1]*2-t[0]-1)/t[1]    
                             }
                         }
                     }
