@@ -3,7 +3,7 @@
 <html>
   <body background="Background.png"></body>
   <font face="TH-Tshyn-P1">
-  仓颉编码查询器，请输入汉字 V1.2 ：<br>
+  仓颉编码查询器，请输入汉字 V1.3 ：<br>
   <input type="text" name="a" id="a"><br>
   <button onclick="myFunction1()">仓颉编码->汉字</button><br>
   <button onclick="myFunction2()">汉字->仓颉编码</button><br>
@@ -53,7 +53,6 @@
         var ma=cjhm(String.fromCharCode(i))
       for(var j=0;j<5;j++){
         if(ma[j]!=a[j]&&a[j]!='*'){break}
-        if(a[j]=='*'){l.push([ma,String.fromCharCode(i)])}
         if(j==4){l.push([ma,String.fromCharCode(i)])}
       }
     }
@@ -61,7 +60,6 @@
         var ma=cjhm(String.fromCharCode(i))
       for(var j=0;j<5;j++){
         if(ma[j]!=a[j]&&a[j]!='*'){break}
-        if(a[j]=='*'){l.push([ma,String.fromCharCode(i)])}
         if(j==4){l.push([ma,String.fromCharCode(i)])}
       }
     }
