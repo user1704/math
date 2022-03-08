@@ -130,6 +130,19 @@
           }
         }
       }
+      else{
+        var t0=''
+        var t1=cjhm(a[0])
+        t0+=t1[0]
+        var t2=cjhm(a[1])
+        t0+=t2[t2.length-1]
+        var t3=cjhm(a[2])
+        t0+=t3[0]
+        var t4=cjhm(a[a.length-2])
+        t0+=t4[t4.length-1]
+        var t5=cjhm(a[a.length-1])
+        t0+=t5[t5.length-1]
+      }
       x+=a+' - '+tocn(t0)+'<br>'
       x+='查询时间 '+((new Date()-t)/1000).toString()+'s'
       document.getElementById("x").innerHTML=x
