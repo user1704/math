@@ -1,0 +1,150 @@
+<html>
+一元四次方程求解器：<br>
+四次項係數請輸入非零實數，其餘請輸入任意實數。<br>
+<input type="text" name="a" id="a"><span>x<sup>4</sup>+</span>
+<input type="text" name="b" id="b"><span>x<sup>3</sup>+</span>
+<input type="text" name="c" id="c"><span>x<sup>2</sup>+</span>
+<input type="text" name="d" id="d"><span>x+</span>
+<input type="text" name="e" id="e"><span>=0</span>
+<br><button onclick="myFunction()">求解</button>
+<br>x<sub>01</sub>=<span id="x01"></span>
+<br>x<sub>02</sub>=<span id="x02"></span>
+<br>x<sub>03</sub>=<span id="x03"></span>
+<br>x<sub>04</sub>=<span id="x04"></span>
+<script>
+function myFunction()
+{
+  var a=Number(document.getElementById("a").value)
+  var b=Number(document.getElementById("b").value)
+  var c=Number(document.getElementById("c").value)
+  var d=Number(document.getElementById("d").value)
+  var e=Number(document.getElementById("e").value)
+  var C=3*b*b-8*a*c
+  var D=b*b*b-4*a*b*c+8*a*a*d
+  var E=3*b*b*b*b+16*a*a*c*c-16*a*b*b*c+16*a*a*b*d-64*a*a*a*e
+  var A=C*C-3*E
+  var B=2*C*C*C-9*C*E+27*D*D
+  var delta=B*B-4*A*A*A
+  if(C==0&&D==0&&E==0)
+  {
+    var x01=-b/(4*a)
+    var x02=-b/(4*a)
+    var x03=-b/(4*a)
+    var x04=-b/(4*a)
+  }
+  if(C!=0&&A==0&&B==0)
+  {
+    var x01=(-b*C-9*D)/(4*a*C)
+    var x02=(-b*C+3*D)/(4*a*C)
+    var x03=(-b*C+3*D)/(4*a*C)
+    var x04=(-b*C+3*D)/(4*a*C)
+  }
+  if(C!=0&&D==0&&E==0)
+  {
+    if(C>0)
+    {
+      var x01=(-b+Math.sqrt(C))/(4*a)
+      var x02=(-b+Math.sqrt(C))/(4*a)
+      var x03=(-b-Math.sqrt(C))/(4*a)
+      var x04=(-b-Math.sqrt(C))/(4*a)
+    }
+    if(C<0)
+    {
+      var x01=-b/(4*a)+"+"+Math.abs(Math.sqrt(-C)/(4*a))+"i"
+      var x02=-b/(4*a)+"+"+Math.abs(Math.sqrt(-C)/(4*a))+"i"
+      var x03=-b/(4*a)+"-"+Math.abs(Math.sqrt(-C)/(4*a))+"i"
+      var x04=-b/(4*a)+"-"+Math.abs(Math.sqrt(-C)/(4*a))+"i"
+    }
+  }
+  if((D!=0||E!=0)&&A!=0&&delta==0)
+  {
+    if(C>0&&E>0)
+    {
+      var x01=(-b-(6*A*D)/(2*A*C-B)+Math.sqrt(12*A*A*C-6*A*B)/(3*A))/(4*a)
+      var x02=(-b-(6*A*D)/(2*A*C-B)-Math.sqrt(12*A*A*C-6*A*B)/(3*A))/(4*a)
+      var x03=(-b+(6*A*D)/(2*A*C-B))/(4*a)
+      var x04=(-b+(6*A*D)/(2*A*C-B))/(4*a)
+    }
+    if(C<0||E<0)
+    {
+      var x01=(-b-(6*A*D)/(2*A*C-B))/(4*a)+"+"+Math.abs(Math.sqrt(-12*A*A*C+6*A*B)/(12*a*A))+"i"
+      var x02=(-b-(6*A*D)/(2*A*C-B))/(4*a)+"-"+Math.abs(Math.sqrt(-12*A*A*C+6*A*B)/(12*a*A))+"i"
+      var x03=(-b+(6*A*D)/(2*A*C-B))/(4*a)
+      var x04=(-b+(6*A*D)/(2*A*C-B))/(4*a)
+    }
+  }
+  if(delta>0)
+  {
+    if(D==0)
+    {
+      var x01=(-b+Math.sqrt(C+2*Math.sqrt(E)))/(4*a)
+      var x02=(-b-Math.sqrt(C+2*Math.sqrt(E)))/(4*a)
+      var x03=-b/(4*a)+"+"+Math.abs(Math.sqrt(-C+2*Math.sqrt(E))/(4*a))+"i"
+      var x04=-b/(4*a)+"-"+Math.abs(Math.sqrt(-C+2*Math.sqrt(E))/(4*a))+"i"
+    }
+    if(D!=0)
+    {
+      var z1=(B+Math.sqrt(delta))/2
+      var z2=(B-Math.sqrt(delta))/2
+      var z=C*C-C*(Math.cbrt(z1)+Math.cbrt(z2))+(Math.cbrt(z1)+Math.cbrt(z2))*(Math.cbrt(z1)+Math.cbrt(z2))-3*A
+      var x01=(-b-Math.sign(D)*Math.sqrt((C+Math.cbrt(z1)+Math.cbrt(z2))/3)+Math.sqrt((2*C-Math.cbrt(z1)-Math.cbrt(z2)+2*Math.sqrt(z))/3))/(4*a)
+      var x02=(-b-Math.sign(D)*Math.sqrt((C+Math.cbrt(z1)+Math.cbrt(z2))/3)-Math.sqrt((2*C-Math.cbrt(z1)-Math.cbrt(z2)+2*Math.sqrt(z))/3))/(4*a)
+      var x03=(-b+Math.sign(D)*Math.sqrt((C+Math.cbrt(z1)+Math.cbrt(z2))/3))/(4*a)+"+"+Math.abs(Math.sqrt((-2*C+Math.cbrt(z1)+Math.cbrt(z2)+2*Math.sqrt(z))/3)/(4*a))+"i"
+      var x04=(-b+Math.sign(D)*Math.sqrt((C+Math.cbrt(z1)+Math.cbrt(z2))/3))/(4*a)+"-"+Math.abs(Math.sqrt((-2*C+Math.cbrt(z1)+Math.cbrt(z2)+2*Math.sqrt(z))/3)/(4*a))+"i"
+    }
+   }
+  if(delta<0)
+  {
+    if(D==0)
+    {
+      if(C>0&&E>0)
+      {
+        var x01=(-b+Math.sqrt(C+2*Math.sqrt(E)))/(4*a)
+        var x02=(-b-Math.sqrt(C+2*Math.sqrt(E)))/(4*a)
+        var x03=(-b+Math.sqrt(C-2*Math.sqrt(E)))/(4*a)
+        var x04=(-b-Math.sqrt(C-2*Math.sqrt(E)))/(4*a)
+      }
+      if(C<0&&E>0)
+      {
+        var x01=-b/(4*a)+"+"+Math.abs(Math.sqrt(-C+2*Math.sqrt(E))/(4*a))+"i"
+        var x02=-b/(4*a)+"-"+Math.abs(Math.sqrt(-C+2*Math.sqrt(E))/(4*a))+"i"
+        var x03=-b/(4*a)+"+"+Math.abs(Math.sqrt(-C-2*Math.sqrt(E))/(4*a))+"i"
+        var x04=-b/(4*a)+"-"+Math.abs(Math.sqrt(-C-2*Math.sqrt(E))/(4*a))+"i"
+      }
+      if(E<0)
+      {
+        var x01=(-2*b+Math.sqrt(2*C+2*Math.sqrt(A-E)))/(4*a)+"+"+Math.abs(Math.sqrt(-2*C+2*Math.sqrt(A-E))/(4*a))+"i"
+        var x02=(-2*b+Math.sqrt(2*C+2*Math.sqrt(A-E)))/(4*a)+"-"+Math.abs(Math.sqrt(-2*C+2*Math.sqrt(A-E))/(4*a))+"i"
+        var x03=(-2*b-Math.sqrt(2*C+2*Math.sqrt(A-E)))/(4*a)+"+"+Math.abs(Math.sqrt(-2*C+2*Math.sqrt(A-E))/(4*a))+"i"
+        var x04=(-2*b-Math.sqrt(2*C+2*Math.sqrt(A-E)))/(4*a)+"-"+Math.abs(Math.sqrt(-2*C+2*Math.sqrt(A-E))/(4*a))+"i"
+      }
+    }
+    if(D!=0)
+    {
+      var theta=Math.acos(B*Math.sqrt(A)/(2*A*A))
+      var y1=(C+2*Math.sqrt(A)*Math.cos(theta/3))/3
+      var y2=(C-Math.sqrt(A)*(Math.cos(theta/3)+Math.sqrt(3)*Math.sin(theta/3)))/3
+      var y3=(C-Math.sqrt(A)*(Math.cos(theta/3)-Math.sqrt(3)*Math.sin(theta/3)))/3
+      if(C>0&&E>0)
+      {
+        var x01=(-b+Math.sign(D)*Math.sqrt(y1)+Math.sqrt(y2)-Math.sqrt(y3))/(4*a)
+        var x02=(-b+Math.sign(D)*Math.sqrt(y1)-Math.sqrt(y2)+Math.sqrt(y3))/(4*a)
+        var x03=(-b-Math.sign(D)*Math.sqrt(y1)+Math.sqrt(y2)+Math.sqrt(y3))/(4*a)
+        var x04=(-b-Math.sign(D)*Math.sqrt(y1)-Math.sqrt(y2)-Math.sqrt(y3))/(4*a)
+      }
+      if(C<0||E<0)
+      {
+        var x01=(-b+Math.sign(D)*Math.sqrt(y1))/(4*a)+"+"+Math.abs((Math.sqrt(-y2)+Math.sqrt(-y3))/(4*a))+"i"
+        var x02=(-b+Math.sign(D)*Math.sqrt(y1))/(4*a)+"-"+Math.abs((Math.sqrt(-y2)+Math.sqrt(-y3))/(4*a))+"i"
+        var x03=(-b-Math.sign(D)*Math.sqrt(y1))/(4*a)+"+"+Math.abs((Math.sqrt(-y2)-Math.sqrt(-y3))/(4*a))+"i"
+        var x04=(-b-Math.sign(D)*Math.sqrt(y1))/(4*a)+"-"+Math.abs((Math.sqrt(-y2)-Math.sqrt(-y3))/(4*a))+"i"
+      }
+    }
+   }
+  document.getElementById("x01").innerHTML=x01
+  document.getElementById("x02").innerHTML=x02
+  document.getElementById("x03").innerHTML=x03
+  document.getElementById("x04").innerHTML=x04
+}
+</script>
+</html>
