@@ -50,6 +50,16 @@
   a=b
     var x=""
     var l=[]
+    for(var i=12295;i<12296;i++){
+      var t=String.fromCharCode(i)
+      if(cj.includes(t)){
+        var ma=cjhm(t)
+      for(var j=0;j<5;j++){
+        if(ma[j]!=a[j]&&a[j]!='*'){break}
+        if(j==4){l.push([ma,t])}
+      }
+    }
+    }
     for(var i=13312;i<40870;i++){
       var t=String.fromCharCode(i)
       if(cj.includes(t)){
