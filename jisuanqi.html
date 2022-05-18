@@ -1,0 +1,14 @@
+<html>
+<textarea id="input" rows="5" cols="25" >
+</textarea>
+<br><button onclick="myFunction()">计算</button><br>
+<textarea id="output" rows="5" cols="25" >
+</textarea>
+<script src='m.js'></script>
+<script>
+function myFunction(){
+    var expr=document.getElementById("input").value
+    document.getElementById("output").value=eval(expr)
+}
+</script>
+</html>
