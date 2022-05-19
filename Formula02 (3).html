@@ -1,0 +1,50 @@
+﻿<html>
+一元二次方程求解器(a*x^2+b*x+c=0)：<br>
+a=
+<math-field id="a">
+</math-field>
+b=
+<math-field id="b">
+</math-field>
+c=
+<math-field id="c">
+</math-field>
+<br><button onclick='myFunction()'>求解</button>
+<math-field id="x1">
+  x_1=
+</math-field>
+<math-field id="x2">
+  x_2=
+</math-field>
+<script src="mathlive.js"></script>
+<script src="compute-engine.js"></script>
+<script>
+  const ce = new ComputeEngine.ComputeEngine()
+  function sq(a){
+    return ce.parse('('+a+')*('+a+')')
+  }
+  function myFunction()
+  {
+    var a='('+ce.parse(document.getElementById('a').value).simplify().toString()+')'
+    var b='('+ce.parse(document.getElementById('b').value).simplify().toString()+')'
+    var c='('+ce.parse(document.getElementById('c').value).simplify().toString()+')'
+    var delta='('+ce.parse(sq(b)+'-4*'+a+'*'+c).simplify().toString()+')'
+    if(ce.parse(delta).N()==0){
+      var x1=ce.parse('-'+b+'/(2*'+a+')').simplify()
+      var x2=ce.parse('-'+b+'/(2*'+a+')').simplify()
+    }
+    if(ce.parse(delta).N()>0){
+      var x1=ce.parse('-'+b+'/(2*'+a+')'+'+\\sqrt{'+delta+'}/(2*'+a+')').simplify()
+      var x2=ce.parse('-'+b+'/(2*'+a+')'+'-\\sqrt{'+delta+'}/(2*'+a+')').simplify()
+    }
+    if(ce.parse(delta).N()<0){
+      var x1=ce.parse('-'+b+'/(2*'+a+')'+'+\\sqrt{-'+delta+'}/(2*'+a+')*i').simplify()
+      var x2=ce.parse('-'+b+'/(2*'+a+')'+'-\\sqrt{-'+delta+'}/(2*'+a+')*i').simplify()
+    }
+    document.getElementById('x1').value='x_1='
+    document.getElementById('x2').value='x_2='
+    document.getElementById('x1').value+=x1.toString()
+    document.getElementById('x2').value+=x2.toString()
+  }    
+  </script>
+</html>
