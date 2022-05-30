@@ -1,0 +1,40 @@
+<html>
+<span id="chess"></span>
+<button onclick="back()">悔棋</button>
+<script>
+var board=[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
+var step=[]
+gengxin()
+function gengxin(){
+    document.getElementById("chess").innerHTML=''
+    for(var i=0;i<15;i++){
+        for(var j=0;j<15;j++){
+            if(board[i][j]==0){
+                document.getElementById("chess").innerHTML+='<img src="empty.png" width="57" height="57">'
+            }
+            else if(board[i][j]==1){
+                document.getElementById("chess").innerHTML+='<img src="black.png" width="57" height="57">'
+            }
+            else if(board[i][j]==2){
+                document.getElementById("chess").innerHTML+='<img src="white.png" width="57" height="57">'
+            }
+        }
+        document.getElementById("chess").innerHTML+='<br>'
+    }
+}
+function back(){
+    board[step[step.length-1][0]][step[step.length-1][1]]=0
+    step.pop()
+    gengxin()
+}
+document.addEventListener("click", function (e) {
+    if(board[Math.floor(e.clientY/57)][Math.floor(e.clientX/57)]==0){
+        board[Math.floor(e.clientY/57)][Math.floor(e.clientX/57)]=step.length%2+1
+        step.push([Math.floor(e.clientY/57),Math.floor(e.clientX/57)])
+        gengxin()
+    }
+})
+</script>
+</html>
