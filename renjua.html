@@ -1,0 +1,479 @@
+<html>
+<body background="Background.png"></body>
+<canvas id="mycanvas" width="900px" height="900px"></canvas><br>
+<button onclick="retract()">悔棋</button>
+<button onclick="solve()">计算</button><br>
+深度:<span id="depth"></span><br>
+节点:<span id="jied"></span><br>
+着法:<span id="move"></span><br>
+评价:<span id="score"></span><br>
+局势:<span id="jushi"></span>
+<script>
+var chess = document.getElementById("mycanvas")
+var context = chess.getContext('2d')
+var chessBox = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
+var step=[]
+function drawChessBoard(){
+  for(var i=0;i<15;i++){
+    context.moveTo(15+i*60,15)
+    context.lineTo(15+i*60,855)
+    context.stroke()
+    context.moveTo(15,15+i*60)
+    context.lineTo(855,15+i*60)
+    context.stroke()
+  }
+ }
+drawChessBoard()
+function oneStep(i,j){
+  chessBox[i][j]=step.length%2+1
+  step.push([i,j])
+  context.beginPath()
+  context.arc(15+i*60,855-j*60,26,0,2*Math.PI)
+  if(step.length%2==0){context.fillStyle='white'}
+  else{context.fillStyle='black'}
+  context.fill()
+  if(step.length%2==0){context.fillStyle='black'}
+  else{context.fillStyle='white'}
+  if(step.length<=9){context.fillText(step.length,12+i*60,859-j*60)}
+  if(10<=step.length&&step.length<=99){context.fillText(step.length,9+i*60,859-j*60)}
+  if(100<=step.length){context.fillText(step.length,6+i*60,859-j*60)}
+  context.closePath()
+ }
+ function retract()
+{
+	if(step.length!=0){
+  var i=step[step.length-1][0]
+  var j=step[step.length-1][1]
+  chessBox[i][j]=0
+  context.clearRect(i*60-15,825-j*60,60,60)
+  context.beginPath()
+  for(a=0;a<=1;a++)
+  {
+    context.moveTo(i*60+15,Math.max(825-j*60,15))
+    context.lineTo(i*60+15,Math.min(885-j*60,855))
+    context.stroke()
+    context.moveTo(Math.max(i*60-15,15),855-j*60)
+    context.lineTo(Math.min(i*60+45,855),855-j*60)
+    context.stroke()
+  }
+  step.pop()
+}
+}
+function linev(l,bool){
+  for(var k=0;k<6;k++){
+    if(k!=5&&l[k+0]==1&&l[k+1]==1&&l[k+2]==1&&l[k+3]==1&&l[k+4]==1&&l[k+5]==1){
+      if(bool){six++}
+    }
+    if(k!=5&&l[k+0]!=1&&l[k+1]==1&&l[k+2]==1&&l[k+3]==1&&l[k+4]==1&&l[k+5]==1&&l[k+6]!=1){
+      if(bool){five++}
+      else{Bw++}
+    }
+    if(k!=4&&k!=5&&l[k+1]!=1&&l[k+2]==1&&l[k+3]==1&&l[k+4]==1&&l[k+5]==1&&l[k+6]!=1){
+      var d=0
+      if(l[k+1]!=0||l[k+0]==1){
+        d++;
+      }
+      if(l[k+6]!=0||l[k+7]==1){
+        d++
+      }
+      if(d==0){
+        if(bool){four++}
+        else{Bu4++}
+      }
+      if(d==1){
+        if(bool){four++}
+        else{Bc4++}
+      }
+    }
+    if (k != 1 && k != 5 && l[k + 1] == 1 && l[k + 2] == 1 && l[k + 3] == 1 && l[k + 5] == 1 && l[k + 4] == 0 && l[k] != 1 && l[k + 6] != 1) { 
+      if(bool){four++}
+        else{Bc4++}
+    }
+    if (k != 3 && k != 5 && l[k + 1] == 1 && l[k + 3] == 1 && l[k + 4] == 1 && l[k + 5] == 1 && l[k + 2] == 0 && l[k] != 1 && l[k + 6] != 1) { 
+      if(bool){four++}
+        else{Bc4++}
+    }
+    if (k != 2 && k != 5 && l[k + 1] == 1 && l[k + 2] == 1 && l[k + 4] == 1 && l[k + 5] == 1 && l[k + 3] == 0 && l[k] != 1 && l[k + 6] != 1) { 
+      if(bool){four++}
+        else{Bc4++}
+   }
+   if (k != 3 && k != 4 && k != 5 && l[k + 3] == 1 && l[k + 4] == 1 && l[k + 5] == 1 && l[k + 2] != 1 && l[k + 6] != 1 && (l[k + 1] != 1 || (l[k + 2] != 0 && l[k + 2] != 1)) && (l[k + 7] != 1 || (l[k + 6] != 0 && l[k + 6] != 1))) {
+				 var t = 0
+         var u = 0
+				if (l[k + 2] != 0 || l[k + 1] == 1) { t += 1 }
+				else if (l[k + 1] != 0 && l[k + 1] != 1 || l[k] == 1) { u += 1 }
+				if (l[k + 6] != 0 || l[k + 7] == 1) { t += 1}
+				else if (l[k + 7] != 0 && l[k + 7] != 1 || l[k + 8] == 1) { u += 1}
+				if (t == 0 && u <= 1) { if(bool){three++}else{Bu3 += 1}}
+				if ((t == 0 && u == 2) || (t == 1 && u == 0)) { if(!bool){Bc3 += 1}}
+			}
+    if (k != 1 && k != 4 && k != 5 && l[k + 2] == 1 && l[k + 3] == 1 && l[k + 5] == 1 && l[k + 4] == 0 && l[k + 1] != 1 && l[k + 6] != 1) {
+				 var t = 0
+				if (l[k + 1] != 0 || l[k] == 1) { t += 1 }
+				if (l[k + 6] != 0 || l[k + 7] == 1) { t += 1}
+				if (t == 0) { if(bool){three++}else{Bu3 += 1} }
+				if (t == 1) { if(!bool){Bc3 += 1} }
+			}
+			if (k != 2 && k != 4 && k != 5 && l[k + 2] == 1 && l[k + 4] == 1 && l[k + 5] == 1 && l[k + 3] == 0 && l[k + 1] != 1 && l[k + 6] != 1) {
+				 var t = 0
+				if (l[k + 1] != 0 || l[k] == 1) { t += 1}
+				if (l[k + 6] != 0 || l[k + 7] == 1) { t += 1}
+				if (t == 0) { if(bool){three++}else{Bu3 += 1}}
+				if (t == 1) { if(!bool){Bc3+= 1} }
+			}
+      if (k != 1 && k != 2 && k != 5 && l[k + 1] == 1 && l[k + 2] == 1 && l[k + 5] == 1 && l[k + 3] == 0 && l[k + 4] == 0) { if(!bool){Bc3 += 1}}
+			if (k != 2 && k != 3 && k != 5 && l[k + 1] == 1 && l[k + 4] == 1 && l[k + 5] == 1 && l[k + 2] == 0 && l[k + 3] == 0) { if(!bool){Bc3 += 1}}
+			if (k != 1 && k != 3 && k != 5 && l[k + 1] == 1 && l[k + 3] == 1 && l[k + 5] == 1 && l[k + 2] == 0 && l[k + 4] == 0) { if(!bool){Bc3 += 1}}
+      if ((k == 0 || k == 1) && l[k + 4] == 1 && l[k + 5] == 1 && l[k + 3] == 0 && l[k + 6] == 0 && l[k + 2] != 1 && l[k + 7] != 1 && (l[k + 1] != 1 || (l[k + 2] == 2 && l[k + 1] == 1)) && (l[k + 8] != 1 || (l[k + 7] == 2 && l[k + 8] == 1))) { if(!bool){Bu2 += 1}; }
+			if ((k == 0 || k == 2) && l[k + 3] == 1 && l[k + 5] == 1 && l[k + 4] == 0 && l[k + 2] == 0 && l[k + 6] == 0 && l[k + 1] != 1 && l[k + 7] != 1) { if(!bool){Bu2 += 1}; }
+			if ((k == 0 || k == 3) && l[k + 2] == 1 && l[k + 5] == 1 && l[k + 3] == 0 && l[k + 4] == 0 && l[k + 1] == 0 && l[k + 6] == 0) { if(!bool){Bu2 += 1}; }
+
+    if(k!=5&&l[k+1]==2&&l[k+2]==2&&l[k+3]==2&&l[k+4]==2&&l[k+5]==2){
+      Ww++
+    }
+    if(k!=4&&k!=5&&l[k+1]!=2&&l[k+2]==2&&l[k+3]==2&&l[k+4]==2&&l[k+5]==2&&l[k+6]!=2){
+      var d=0
+      if(l[k+1]!=0){
+        d++;
+      }
+      if(l[k+6]!=0){
+        d++
+      }
+      if(d==0){
+        if(!bool){Wu4++}
+      }
+      if(d==1){
+        if(!bool){ Wc4++}
+      }
+    }
+    if (k != 1 && k != 5 && l[k + 1] == 2 && l[k + 2] == 2 && l[k + 3] == 2 && l[k + 5] == 2 && l[k + 4] == 0) { 
+      if(!bool){Wc4 += 1}
+    }
+    if (k != 3 && k != 5 && l[k + 1] == 2 && l[k + 3] == 2&& l[k + 4] == 2 && l[k + 5] == 2 && l[k + 2] == 0) { 
+      if(!bool){Wc4 += 1}
+    }
+    if (k != 2 && k != 5 && l[k + 1] == 2 && l[k + 2] == 2 && l[k + 4] == 2 && l[k + 5] == 2 && l[k + 3] == 0) { 
+      if(!bool){Wc4 += 1}
+   }
+   if (k != 3 && k != 4 && k != 5 && l[k + 3] == 2 && l[k + 4] == 2 && l[k + 5] == 2 && l[k + 2] != 2 && l[k + 6] != 2 && (l[k + 1] != 2 || (l[k + 2] != 0 && l[k + 2] != 2) && (l[k + 7] != 2 || (l[k + 6] != 0 && l[k + 6] != 2)))) {
+				 var t = 0
+         var u = 0
+				if (l[k + 2] != 0) { t += 1 }
+				else if (l[k + 1] != 0 && l[k + 1] != 2) { u += 1}
+				if (l[k + 6] != 0) { t += 1}
+				else if (l[k + 7] != 0 && l[k + 7] != 2) { u += 1}
+				if (t == 0 && u <= 1) { if(!bool){Wu3 += 1}}
+				if ((t == 0 && u == 2) || (t == 1 && u == 0)) { if(!bool){Wc3 += 1}}
+			}
+      if (k != 1 && k != 4 && k != 5 && l[k + 2] == 2 && l[k + 3] == 2 && l[k + 5] == 2 && l[k + 4] == 0 && l[k + 1] != 2 && l[k + 6] != 2) {
+				 var t = 0
+				if (l[k + 1] != 0) { t += 1 }
+				if (l[k + 6] != 0) { t += 1 }
+				if (t == 0) { if(!bool){Wu3 += 1 }}
+				if (t == 1) { if(!bool){Wc3 += 1} }
+			}
+			if (k != 2 && k != 4 && k != 5 && l[k + 2] == 2 && l[k + 4] == 2 && l[k + 5] == 2 && l[k + 3] == 0 && l[k + 1] != 2 && l[k + 6] != 2) {
+				 var t = 0;
+				if (l[k + 1] != 0) { t += 1}
+				if (l[k + 6] != 0) { t += 1 }
+				if (t == 0) { if(!bool){Wu3 += 1}}
+				if (t == 1) { if(!bool){Wc3 += 1}}
+			}
+      if (k != 1 && k != 2 && k != 5 && l[k + 1] == 2 && l[k + 2] == 2 && l[k + 5] == 2 && l[k + 3] == 0 && l[k + 4] == 0) { if(!bool){Wc3 += 1}}
+			if (k != 2 && k != 3 && k != 5 && l[k + 1] == 2 && l[k + 4] == 2 && l[k + 5] == 2 && l[k + 2] == 0 && l[k + 3] == 0) { if(!bool){Wc3 += 1}}
+			if (k != 1 && k != 3 && k != 5 && l[k + 1] == 2 && l[k + 3] == 2 && l[k + 5] == 2 && l[k + 2] == 0 && l[k + 4] == 0) { if(!bool){Wc3 += 1}}
+  }
+  if ((k == 0 || k == 2) && l[k + 4] == 2 && l[k + 5] == 2 && l[k + 3] == 0 && l[k + 6] == 0 && l[k + 2] != 2 && l[k + 7] != 2 && (l[k + 1] != 2 || (l[k + 2] == 2 && l[k + 1] == 2)) && (l[k + 8] != 2 || (l[k + 7] == 2 && l[k + 8] == 2))) { if(!bool){Wu2 += 1}; }
+	if ((k == 0 || k == 2) && l[k + 3] == 2 && l[k + 5] == 2 && l[k + 4] == 0 && l[k + 2] == 0 && l[k + 6] == 0 && l[k + 1] != 2 && l[k + 7] != 2) { if(!bool){Wu2 += 1}; }
+	if ((k == 0 || k == 3) && l[k + 2] == 2 && l[k + 5] == 2 && l[k + 3] == 0 && l[k + 4] == 0 && l[k + 1] == 0 && l[k + 6] == 0) { if(!bool){Wu2 += 1}; }
+}
+function getv(w, u2, u3, u4, c3, c4,bool){
+  var v=0
+  if(bool==2){
+    v+=w*250000
+    v+=u4*10000
+    v+=c4*250
+    v+=u3*175
+    v+=c3*75
+    v+=u2*20
+  }
+  if(bool==1){
+    v+=u3*10000/3
+    v+=c3*125/3
+    v+=u2*35/2
+  }
+  if(bool==0){
+    v+=c4*250/4
+    v+=u3*175/3
+    v+=c3*75/3
+    v+=u2*20/2
+  }
+  return v
+}
+var rangen=[1,-1,2,-2,3,-3]
+function getmove(){
+  var ml=[]
+  var tml=[]
+  for(var i=0;i<step.length;i++){
+      var x=step[i][0];var y=step[i][1]
+      for(var N=0;N<rangen.length;N++){
+          var n=rangen[N]
+      if(0<=x+n&&x+n<15){
+      if(chessBox[x+n][y]==0&&!tml.includes(15*(x+n)+y)){
+          ml.push([posv(x+n,y),[x+n,y]])
+          tml.push(15*(x+n)+y)
+      }
+      }
+      if(0<=x+n&&x+n<15&&0<=y+n&&y+n<15){
+      if(chessBox[x+n][y+n]==0&&!tml.includes(15*(x+n)+y+n)){
+          ml.push([posv(x+n,y+n),[x+n,y+n]])
+          tml.push(15*(x+n)+y+n)
+      }
+      }
+      if(0<=y+n&&y+n<15){
+      if(chessBox[x][y+n]==0&&!tml.includes(15*x+y+n)){
+          ml.push([posv(x,y+n),[x,y+n]])
+          tml.push(15*x+y+n)
+      }
+      }
+      if(0<=x-n&&x-n<15&&0<=y+n&&y+n<15){
+      if(chessBox[x-n][y+n]==0&&!tml.includes(15*(x-n)+y+n)){
+          ml.push([posv(x-n,y+n),[x-n,y+n]])
+          tml.push(15*(x-n)+y+n)
+      }
+      }
+  }
+  }
+  return ml.sort((a,b)=>b[0]-a[0])
+}
+function value(c){
+  Bw = 0
+  Bu2 = 0
+  Bu3 = 0
+  Bu4 = 0
+  Bc3 = 0
+  Bc4 = 0
+  Ww = 0
+  Wu2 = 0
+  Wu3 = 0
+  Wu4 = 0
+  Wc3 = 0
+  Wc4 = 0
+  var tbox=[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
+  for(var i=0;i<step.length;i++){
+    var x=step[i][0]
+    var y=step[i][1]
+    tbox[x][y]=i%2+1
+    three=0
+    four=0
+    five=0
+    six=0
+    l0 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+		l1 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+		l2 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+		l3 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+    l4 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+		l5 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+		l6 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+		l7 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+		for (var k = 0; k < 11; k++) {
+			if (0 <= x - 5 + k && x - 5 + k < 15) {
+				l0[k] = chessBox[x - 5+k][y];
+        l4[k] = tbox[x - 5+k][y];
+			}
+			if (0 <= x - 5 + k && x - 5 + k < 15 && 0 <= y - 5 + k && y - 5 + k < 15) {
+				l1[k] = chessBox[x - 5 + k][y - 5 + k];
+        l5[k] = tbox[x - 5 + k][y - 5 + k];
+			}
+			if (0 <= y - 5 + k && y - 5 + k < 15) {
+				l2[k] = chessBox[x][y - 5 + k];
+        l6[k] = tbox[x][y - 5 + k];
+			}
+			if (0 <= x + 5 - k && x + 5 - k < 15 && 0 <= y - 5 + k && y- 5 + k < 15) {
+				l3[k] = chessBox[x + 5 - k][y - 5 + k];
+        l7[k] = tbox[x + 5 - k][y - 5 + k];
+			}
+		}
+    linev(l0,false)
+    linev(l1,false)
+    linev(l2,false)
+    linev(l3,false)
+    linev(l4,true)
+    linev(l5,true)
+    linev(l6,true)
+    linev(l7,true)
+    if(five==0){
+      if(six>0||four>1||three>1){
+        if(c==1){return -250000}
+        else{return 250000}
+      }
+    }
+  }
+  if(c==1){
+    if(Bw>0){
+      return 250000
+    }
+    if(Ww>0){
+      return -250000
+    }
+    if(Bu4>0||Bc4>0){
+      return 249999
+    }
+    if(Wu4>0||Wc4>4){
+      return -249998
+    }
+    return getv(Bw, Bu2, Bu3, Bu4, Bc3, Bc4,1)-getv(Ww, Wu2, Wu3, Wu4, Wc3, Wc4,0)
+  }
+  else{
+    if(Ww>0){
+      return 250000
+    }
+    if(Bw>0){
+      return -250000
+    }
+    if(Wu4>0||Wc4>0){
+      return 249999
+    }
+    if(Bu4>0||Bc4>4){
+      return -249998
+    }
+    return getv(Ww, Wu2, Wu3, Wu4, Wc3, Wc4,1)-getv(Bw, Bu2, Bu3, Bu4, Bc3, Bc4,0)
+  }
+}
+function posv(x,y){
+  var v=0
+  Bw = 0
+  Bu2 = 0
+  Bu3 = 0
+  Bu4 = 0
+  Bc3 = 0
+  Bc4 = 0
+  Ww = 0
+  Wu2 = 0
+  Wu3 = 0
+  Wu4 = 0
+  Wc3 = 0
+  Wc4 = 0
+  l0 = [-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1]
+	l1 = [-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1]
+	l2 = [-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1]
+	l3 = [-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1]
+  for (var k = 0; k < 11; k++) {
+    if(k!=5){
+			if (0 <= x - 5 + k && x - 5 + k < 15) {
+				l0[k] = chessBox[x - 5+k][y];
+			}
+			if (0 <= x - 5 + k && x - 5 + k < 15 && 0 <= y - 5 + k && y - 5 + k < 15) {
+				l1[k] = chessBox[x - 5 + k][y - 5 + k];
+			}
+			if (0 <= y - 5 + k && y - 5 + k < 15) {
+				l2[k] = chessBox[x][y - 5 + k];
+			}
+			if (0 <= x + 5 - k && x + 5 - k < 15 && 0 <= y - 5 + k && y- 5 + k < 15) {
+				l3[k] = chessBox[x + 5 - k][y - 5 + k];
+			}
+    }
+		}
+    linev(l0,false)
+    linev(l1,false)
+    linev(l2,false)
+    linev(l3,false)
+  v+=getv(Bw, Bu2, Bu3, Bu4, Bc3, Bc4,2)
+  l0[5]=2
+  l1[5]=2
+  l2[5]=2
+  l3[5]=2
+    linev(l0,false)
+    linev(l1,false)
+    linev(l2,false)
+    linev(l3,false)
+  v+=getv(Ww, Wu2, Wu3, Wu4, Wc3, Wc4,2)
+  chessBox[x][y]=0
+  return v
+}
+function search(a,b,c,d,D){
+  if(d<=0){
+    A++
+    return value(c)
+  }
+  var movelist=getmove()
+  for(var i=0;i<movelist.length;i++){
+    chessBox[movelist[i][1][0]][movelist[i][1][1]]=c
+    step.push(movelist[i][1])
+    var score=-search(-b,-a,3-c,d-1,D)
+    chessBox[movelist[i][1][0]][movelist[i][1][1]]=0
+    step.pop()
+    if(score>=b){
+      return b
+    }
+    if(score>a){
+      var best=[movelist[i][1][0],movelist[i][1][1]]
+      a=score
+    }
+  }
+  if(d==D){
+    return [best,a]
+  }
+  return a
+}
+function solve(){
+  if(step.length==0){
+    oneStep(7,7)
+  }
+  else{
+    var deep=3
+    A=0
+    for(depth=1;depth<=deep;depth++){
+      var result=search(-250001,250001,step.length%2+1,depth,depth)
+      if(result[1]>=200000||result[1]<=-200000){
+        result[1]=result[1]-Math.sign(result[1])*(depth-1)
+        break
+      }
+    }
+    oneStep(result[0][0],result[0][1])
+    document.getElementById("depth").innerHTML = deep
+    document.getElementById("jied").innerHTML = A
+    document.getElementById("move").innerHTML = "["+result[0][0]+","+result[0][1]+"]"
+    document.getElementById("score").innerHTML = Math.round(result[1])
+    if(step.length%2==1){var Bscore=result[1]}
+    else{var Bscore=-result[1]}
+    if(Bscore<=-200000){
+      document.getElementById("jushi").innerHTML = "白棋必胜波~"
+    }
+    if(-200000<=Bscore&&Bscore<=-250){
+      document.getElementById("jushi").innerHTML = "白棋大优"
+    }
+    if(-250<=Bscore&&Bscore<=-175){
+      document.getElementById("jushi").innerHTML = "白棋小优"
+    }
+    if(-175<=Bscore&&Bscore<=-100){
+      document.getElementById("jushi").innerHTML = "白棋略优"
+    }
+    if(-100<=Bscore&&Bscore<=100){
+      document.getElementById("jushi").innerHTML = "平衡"
+    }
+    if(175>=Bscore&&Bscore>=100){
+      document.getElementById("jushi").innerHTML = "黑棋略优"
+    }
+    if(250>=Bscore&&Bscore>=175){
+      document.getElementById("jushi").innerHTML = "黑棋小优"
+    }
+    if(200000>=Bscore&&Bscore>=250){
+      document.getElementById("jushi").innerHTML = "黑棋大优"
+    }
+    if(Bscore>=200000){
+      document.getElementById("jushi").innerHTML = "黑棋必胜波~"
+    }
+  }
+}
+chess.onclick=function(e){
+  var x = e.offsetX
+  var y = 855-e.offsetY
+  var i = Math.round(x/60)
+  var j = Math.round(y/60)
+  if( chessBox[i][j] == 0&&0<=i&&i<15&&0<=j&&j<15 ){
+    oneStep(i,j)
+  }
+ }
+</script>
+</html>
