@@ -1,14 +1,13 @@
 <html>
-<meta charset="utf-8">
 <body background="Background.png"></body>
 <canvas id="mycanvas" width="900px" height="900px"></canvas><br>
-<button onclick="retract()">»ÚÆå</button>
-<button onclick="solve()">¼ÆËã</button><br>
-Éî¶È:<span id="depth"></span><br>
-½Úµã:<span id="jied"></span><br>
-×Å·¨:<span id="move"></span><br>
-ÆÀ¼Û:<span id="score"></span><br>
-¾ÖÊÆ:<span id="jushi"></span>
+<button onclick="retract()">æ‚”æ£‹</button>
+<button onclick="solve()">è®¡ç®—</button><br>
+æ·±åº¦:<span id="depth"></span><br>
+èŠ‚ç‚¹:<span id="jied"></span><br>
+ç€æ³•:<span id="move"></span><br>
+è¯„ä»·:<span id="score"></span><br>
+å±€åŠ¿:<span id="jushi"></span>
 <script>
 var chess = document.getElementById("mycanvas")
 var context = chess.getContext('2d')
@@ -422,31 +421,31 @@ function solve(){
     if(step.length%2==1){var Bscore=result[1]}
     else{var Bscore=-result[1]}
     if(Bscore<=-200000){
-      document.getElementById("jushi").innerHTML = "°×Æå±ØÊ¤²¨~"
+      document.getElementById("jushi").innerHTML = "ç™½æ£‹å¿…èƒœæ³¢~"
     }
     if(-200000<=Bscore&&Bscore<=-250){
-      document.getElementById("jushi").innerHTML = "°×Æå´óÓÅ"
+      document.getElementById("jushi").innerHTML = "ç™½æ£‹å¤§ä¼˜"
     }
     if(-250<=Bscore&&Bscore<=-175){
-      document.getElementById("jushi").innerHTML = "°×ÆåĞ¡ÓÅ"
+      document.getElementById("jushi").innerHTML = "ç™½æ£‹å°ä¼˜"
     }
     if(-175<=Bscore&&Bscore<=-100){
-      document.getElementById("jushi").innerHTML = "°×ÆåÂÔÓÅ"
+      document.getElementById("jushi").innerHTML = "ç™½æ£‹ç•¥ä¼˜"
     }
     if(-100<=Bscore&&Bscore<=100){
-      document.getElementById("jushi").innerHTML = "Æ½ºâ"
+      document.getElementById("jushi").innerHTML = "å¹³è¡¡"
     }
     if(175>=Bscore&&Bscore>=100){
-      document.getElementById("jushi").innerHTML = "ºÚÆåÂÔÓÅ"
+      document.getElementById("jushi").innerHTML = "é»‘æ£‹ç•¥ä¼˜"
     }
     if(250>=Bscore&&Bscore>=175){
-      document.getElementById("jushi").innerHTML = "ºÚÆåĞ¡ÓÅ"
+      document.getElementById("jushi").innerHTML = "é»‘æ£‹å°ä¼˜"
     }
     if(200000>=Bscore&&Bscore>=250){
-      document.getElementById("jushi").innerHTML = "ºÚÆå´óÓÅ"
+      document.getElementById("jushi").innerHTML = "é»‘æ£‹å¤§ä¼˜"
     }
     if(Bscore>=200000){
-      document.getElementById("jushi").innerHTML = "ºÚÆå±ØÊ¤²¨~"
+      document.getElementById("jushi").innerHTML = "é»‘æ£‹å¿…èƒœæ³¢~"
     }
   }
 }
