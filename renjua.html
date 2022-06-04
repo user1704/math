@@ -1,13 +1,13 @@
 <html>
 <body background="Background.png"></body>
 <canvas id="mycanvas" width="900px" height="900px"></canvas><br>
-<button onclick="retract()">ÊÇîÊ£ã</button>
-<button onclick="solve()">ËÆ°ÁÆó</button><br>
-Ê∑±Â∫¶:<span id="depth"></span><br>
-ËäÇÁÇπ:<span id="jied"></span><br>
-ÁùÄÊ≥ï:<span id="move"></span><br>
-ËØÑ‰ª∑:<span id="score"></span><br>
-Â±ÄÂäø:<span id="jushi"></span>
+<button onclick="retract()">ª⁄∆Â</button>
+<button onclick="solve()">º∆À„</button><br>
+…Ó∂»:<span id="depth"></span><br>
+Ω⁄µ„:<span id="jied"></span><br>
+◊≈∑®:<span id="move"></span><br>
+∆¿º€:<span id="score"></span><br>
+æ÷ ∆:<span id="jushi"></span>
 <script>
 var chess = document.getElementById("mycanvas")
 var context = chess.getContext('2d')
@@ -176,13 +176,31 @@ function linev(l){
       if (k != 1 && k != 2 && k != 5 && l[k + 1] == 2 && l[k + 2] == 2 && l[k + 5] == 2 && l[k + 3] == 0 && l[k + 4] == 0) {Wc3 ++}
 			if (k != 2 && k != 3 && k != 5 && l[k + 1] == 2 && l[k + 4] == 2 && l[k + 5] == 2 && l[k + 2] == 0 && l[k + 3] == 0) { Wc3 ++}
 			if (k != 1 && k != 3 && k != 5 && l[k + 1] == 2 && l[k + 3] == 2 && l[k + 5] == 2 && l[k + 2] == 0 && l[k + 4] == 0) { Wc3 ++}
-  if ((k == 0 || k == 2) && l[k + 4] == 2 && l[k + 5] == 2 && l[k + 3] == 0 && l[k + 6] == 0 && l[k + 2] != 2 && l[k + 7] != 2 && (l[k + 1] != 2 || (l[k + 2] == 2 && l[k + 1] == 2)) && (l[k + 8] != 2 || (l[k + 7] == 2 && l[k + 8] == 2))) { Wu2 ++}
+  if ((k == 0 || k == 1) && l[k + 4] == 2 && l[k + 5] == 2 && l[k + 3] == 0 && l[k + 6] == 0 && l[k + 2] != 2 && l[k + 7] != 2 && (l[k + 1] != 2 || (l[k + 2] == 2 && l[k + 1] == 2)) && (l[k + 8] != 2 || (l[k + 7] == 2 && l[k + 8] == 2))) { Wu2 ++}
 	if ((k == 0 || k == 2) && l[k + 3] == 2 && l[k + 5] == 2 && l[k + 4] == 0 && l[k + 2] == 0 && l[k + 6] == 0 && l[k + 1] != 2 && l[k + 7] != 2) { Wu2 ++}
 	if ((k == 0 || k == 3) && l[k + 2] == 2 && l[k + 5] == 2 && l[k + 3] == 0 && l[k + 4] == 0 && l[k + 1] == 0 && l[k + 6] == 0) { Wu2 ++}
+  if ((k == 0 || k == 1) && l[k + 4] == 1 && l[k + 5] == 1 && l[k + 3] != 0 && l[k + 3] != 1 && l[k + 6] == 0 && l[k + 7] == 0 && l[k + 8] == 0&& l[k + 9] != 1) { Bc2 += 1}
+	if ((k == 0 || k == 1) && l[k + 4] == 1 && l[k + 5] == 1 && l[k + 6] != 0 && l[k + 6] != 1 && l[k + 3] == 0 && l[k + 2] == 0 && l[k + 1] == 0&& l[k] != 1) { Bc2 += 1}
+  
+  if ((k == 0 || k == 2) && l[k + 3] == 1 && l[k + 5] == 1 && l[k+4]==0&&l[k+2]!=0&&l[k+2]!=1&&l[k+6]==0&&l[k+7]==0&&l[k+8]!=1) { Bc2 += 1}
+	if ((k == 0 || k == 2)&& l[k + 3] == 1 && l[k + 5] == 1 && l[k+4]==0&&l[k+6]!=0&&l[k+6]!=1&&l[k+2]==0&&l[k+1]==0&&l[k]!=1) { Bc2 += 1}
+
+  if ((k == 0 || k == 3) && l[k + 2] == 1 && l[k + 5] == 1 && l[k+3]==0&& l[k+4]==0&&l[k+1]!=0&&l[k+1]!=1&&l[k+6]==0&&l[k+7]!=1) { Bc2 += 1}
+	if ((k == 0 || k == 3)&& l[k + 2] == 1 && l[k + 5] == 1 && l[k+3]==0&& l[k+4]==0&&l[k+6]!=0&&l[k+6]!=1&&l[k+1]==0&&l[k]!=1) { Bc2 += 1}
+
+  if ((k == 0 || k == 1) && l[k + 4] == 2 && l[k + 5] == 2 && l[k + 3] != 0 && l[k + 3] != 2 && l[k + 6] == 0 && l[k + 7] == 0 ) { Wc2 += 1}
+	if ((k == 0 || k == 1) && l[k + 4] == 2 && l[k + 5] == 2 && l[k + 6] != 0 && l[k + 6] != 2 && l[k + 3] == 0 && l[k + 2] == 0) { Wc2 += 1}
+
+  if ((k == 0 || k == 2) && l[k + 3] == 2&& l[k + 5] == 2 && l[k+4]==0&&l[k+2]!=0&&l[k+2]!=2&&l[k+6]==0&&l[k+7]==0) { Wc2 += 1}
+	if ((k == 0 || k == 2)&& l[k + 3] == 2 && l[k + 5] == 2 && l[k+4]==0&&l[k+6]!=0&&l[k+6]!=2&&l[k+2]==0&&l[k+1]==0) { Wc2 += 1}
+
+  if ((k == 0 || k == 3) && l[k + 2] == 2 && l[k + 5] == 2 && l[k+3]==0&& l[k+4]==0&&l[k+1]!=0&&l[k+1]!=2&&l[k+6]==0) { Wc2 += 1}
+	if ((k == 0 || k == 3)&& l[k + 2] == 2 && l[k + 5] == 2 && l[k+3]==0&& l[k+4]==0&&l[k+6]!=0&&l[k+6]!=2&&l[k+1]==0) { Wc2 += 1}
+
 }
 }
 
-function getv(w, u2, u3, u4, c3, c4,bool){
+function getv(w,c2, u2, u3, u4, c3, c4,bool){
   var v=0
   if(bool==2){
     v+=w*250000
@@ -190,18 +208,21 @@ function getv(w, u2, u3, u4, c3, c4,bool){
     v+=c4*250
     v+=u3*175
     v+=c3*75
-    v+=u2*20
+    v+=u2*32
+    v+=c2*14
   }
   if(bool==1){
     v+=u3*10000/3
     v+=c3*125/3
-    v+=u2*35/2
+    v+=u2*53/2
+    v+=c2*20/2
   }
   if(bool==0){
     v+=c4*250/4
     v+=u3*175/3
     v+=c3*75/3
-    v+=u2*20/2
+    v+=u2*32/2
+    v+=c2*14/2
   }
   return v
 }
@@ -250,39 +271,43 @@ function value(c){
   Bu2 = 0
   Bu3 = 0
   Bu4 = 0
+  Bc2=0
   Bc3 = 0
   Bc4 = 0
   Ww = 0
   Wu2 = 0
   Wu3 = 0
   Wu4 = 0
+  Wc2=0
   Wc3 = 0
   Wc4 = 0
   for(var i=0;i<step.length;i++){
-    var x=step[i][0]
-    var y=step[i][1]
-    l0 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-		l1 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-		l2 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-		l3 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
-		for (var k = 0; k < 11; k++) {
-			if (0 <= x - 5 + k && x - 5 + k < 15) {
-				l0[k] = chessBox[x - 5+k][y];
-			}
-			if (0 <= x - 5 + k && x - 5 + k < 15 && 0 <= y - 5 + k && y - 5 + k < 15) {
-				l1[k] = chessBox[x - 5 + k][y - 5 + k];
-			}
-			if (0 <= y - 5 + k && y - 5 + k < 15) {
-				l2[k] = chessBox[x][y - 5 + k];
-			}
-			if (0 <= x + 5 - k && x + 5 - k < 15 && 0 <= y - 5 + k && y- 5 + k < 15) {
-				l3[k] = chessBox[x + 5 - k][y - 5 + k];
-			}
-		}
-    linev(l0)
-    linev(l1)
-    linev(l2)
-    linev(l3)
+    if(step[i]!=-1){
+      var x=step[i][0]
+      var y=step[i][1]
+      l0 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+      l1 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+      l2 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+      l3 = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
+      for (var k = 0; k < 11; k++) {
+        if (0 <= x - 5 + k && x - 5 + k < 15) {
+          l0[k] = chessBox[x - 5+k][y];
+        }
+        if (0 <= x - 5 + k && x - 5 + k < 15 && 0 <= y - 5 + k && y - 5 + k < 15) {
+          l1[k] = chessBox[x - 5 + k][y - 5 + k];
+        }
+        if (0 <= y - 5 + k && y - 5 + k < 15) {
+          l2[k] = chessBox[x][y - 5 + k];
+        }
+        if (0 <= x + 5 - k && x + 5 - k < 15 && 0 <= y - 5 + k && y- 5 + k < 15) {
+          l3[k] = chessBox[x + 5 - k][y - 5 + k];
+        }
+      }
+      linev(l0)
+      linev(l1)
+      linev(l2)
+      linev(l3)
+    }
   }
   if(c==1){
     if(Bw>0){
@@ -297,7 +322,7 @@ function value(c){
     if(Wu4>0||Wc4>4){
       return -249998
     }
-    return getv(Bw, Bu2, Bu3, Bu4, Bc3, Bc4,1)-getv(Ww, Wu2, Wu3, Wu4, Wc3, Wc4,0)
+    return getv(Bw,Bc2, Bu2, Bu3, Bu4, Bc3, Bc4,1)-getv(Ww,Wc2, Wu2, Wu3, Wu4, Wc3, Wc4,0)
   }
   else{
     if(Ww>0){
@@ -312,7 +337,7 @@ function value(c){
     if(Bu4>0||Bc4>4){
       return -249998
     }
-    return getv(Ww, Wu2, Wu3, Wu4, Wc3, Wc4,1)-getv(Bw, Bu2, Bu3, Bu4, Bc3, Bc4,0)
+    return getv(Ww,Wc2, Wu2, Wu3, Wu4, Wc3, Wc4,1)-getv(Bw,Bc2, Bu2, Bu3, Bu4, Bc3, Bc4,0)
   }
 }
 function posv(x,y,c){
@@ -322,12 +347,14 @@ function posv(x,y,c){
   Bu2 = 0
   Bu3 = 0
   Bu4 = 0
+  Bc2=0
   Bc3 = 0
   Bc4 = 0
   Ww = 0
   Wu2 = 0
   Wu3 = 0
   Wu4 = 0
+  Wc2=0
   Wc3 = 0
   Wc4 = 0
   l0 = [-1,-1,-1,-1,-1,1,-1,-1,-1,-1,-1]
@@ -361,7 +388,7 @@ function posv(x,y,c){
       }
     }
   }
-  v+=getv(Bw, Bu2, Bu3, Bu4, Bc3, Bc4,2)
+  v+=getv(Bw, Bc2,Bu2, Bu3, Bu4, Bc3, Bc4,2)
   l0[5]=2
   l1[5]=2
   l2[5]=2
@@ -370,20 +397,35 @@ function posv(x,y,c){
     linev(l1)
     linev(l2)
     linev(l3)
-  v+=getv(Ww, Wu2, Wu3, Wu4, Wc3, Wc4,2)
+  v+=getv(Ww, Wc2,Wu2, Wu3, Wu4, Wc3, Wc4,2)
   chessBox[x][y]=0
   return v
 }
 function search(a,b,c,d,D){
+  var ffp=false
   if(d<=0){
     A++
     return value(c)
+  }
+  step.push(-1)
+  var score=-search(-b,-b+1,3-c,d-3,D)
+  step.pop()
+  if(score>=b){
+    return b
   }
   var movelist=getmove(c)
   for(var i=0;i<movelist.length;i++){
     chessBox[movelist[i][1][0]][movelist[i][1][1]]=c
     step.push(movelist[i][1])
-    var score=-search(-b,-a,3-c,d-1,D)
+    if(ffp){
+      var score=-search(-a-1,-a,3-c,d-1,D)
+      if(score>a&&score<b){
+        var score=-search(-b,-a,3-c,d-1,D)
+      }
+    }
+    else{
+      var score=-search(-b,-a,3-c,d-1,D)
+    }
     chessBox[movelist[i][1][0]][movelist[i][1][1]]=0
     step.pop()
     if(score>=b){
@@ -392,6 +434,7 @@ function search(a,b,c,d,D){
     if(score>a){
       var best=[movelist[i][1][0],movelist[i][1][1]]
       a=score
+      ffp=true
     }
   }
   if(d==D){
@@ -421,31 +464,31 @@ function solve(){
     if(step.length%2==1){var Bscore=result[1]}
     else{var Bscore=-result[1]}
     if(Bscore<=-200000){
-      document.getElementById("jushi").innerHTML = "ÁôΩÊ£ãÂøÖËÉúÊ≥¢~"
+      document.getElementById("jushi").innerHTML = "∞◊∆Â±ÿ §≤®~"
     }
     if(-200000<=Bscore&&Bscore<=-250){
-      document.getElementById("jushi").innerHTML = "ÁôΩÊ£ãÂ§ß‰ºò"
+      document.getElementById("jushi").innerHTML = "∞◊∆Â¥Û”≈"
     }
     if(-250<=Bscore&&Bscore<=-175){
-      document.getElementById("jushi").innerHTML = "ÁôΩÊ£ãÂ∞è‰ºò"
+      document.getElementById("jushi").innerHTML = "∞◊∆Â–°”≈"
     }
     if(-175<=Bscore&&Bscore<=-100){
-      document.getElementById("jushi").innerHTML = "ÁôΩÊ£ãÁï•‰ºò"
+      document.getElementById("jushi").innerHTML = "∞◊∆Â¬‘”≈"
     }
     if(-100<=Bscore&&Bscore<=100){
-      document.getElementById("jushi").innerHTML = "Âπ≥Ë°°"
+      document.getElementById("jushi").innerHTML = "∆Ω∫‚"
     }
     if(175>=Bscore&&Bscore>=100){
-      document.getElementById("jushi").innerHTML = "ÈªëÊ£ãÁï•‰ºò"
+      document.getElementById("jushi").innerHTML = "∫⁄∆Â¬‘”≈"
     }
     if(250>=Bscore&&Bscore>=175){
-      document.getElementById("jushi").innerHTML = "ÈªëÊ£ãÂ∞è‰ºò"
+      document.getElementById("jushi").innerHTML = "∫⁄∆Â–°”≈"
     }
     if(200000>=Bscore&&Bscore>=250){
-      document.getElementById("jushi").innerHTML = "ÈªëÊ£ãÂ§ß‰ºò"
+      document.getElementById("jushi").innerHTML = "∫⁄∆Â¥Û”≈"
     }
     if(Bscore>=200000){
-      document.getElementById("jushi").innerHTML = "ÈªëÊ£ãÂøÖËÉúÊ≥¢~"
+      document.getElementById("jushi").innerHTML = "∫⁄∆Â±ÿ §≤®~"
     }
   }
 }
