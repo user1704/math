@@ -838,12 +838,6 @@ var ffoundpv=false;
 if (depth <= 0) {
 	return score(color,board2);
 }
-step.push(0)
-var kzscore=-minimax(depth - 3,  -beta, -beta+1,color=='r'?'b':'r',board2,D);
-step.pop()
-if(kzscore>=beta){
-    return beta
-  }
 var newGameMoves = hefamove(color,board2);
 for (var i = 0; i < newGameMoves.length; i++) {
     var flag1=board2[newGameMoves[i][0]+newGameMoves[i][1]]
@@ -853,13 +847,13 @@ for (var i = 0; i < newGameMoves.length; i++) {
     step.push(board2)
     positionCount++;
     if(ffoundpv){
-        bestMove=-minimax(depth - 1,  -alpha-1, -alpha,color=='r'?'b':'r',board2,D);
+        var bestMove=-minimax(depth - 1,  -alpha-1, -alpha,color=='r'?'b':'r',board2,D);
         if(bestMove>alpha&&bestMove<beta){
-            bestMove = -minimax(depth - 1,  -beta, -alpha,color=='r'?'b':'r',board2,D);
+            var bestMove = -minimax(depth - 1,  -beta, -alpha,color=='r'?'b':'r',board2,D);
         }
     }
     else{
-        bestMove = -minimax(depth - 1, -beta, -alpha,color=='r'?'b':'r',board2,D);
+        var bestMove = -minimax(depth - 1, -beta, -alpha,color=='r'?'b':'r',board2,D);
     }
     board2[newGameMoves[i][3]+newGameMoves[i][4]]=flag2
     board2[newGameMoves[i][0]+newGameMoves[i][1]]=flag1
@@ -885,7 +879,7 @@ function getMove (color,board2) {
     var alpha=-30001
     var beta=30001
     var depth=0
-    while(d2-d<=1000&&Math.abs(value)<20000){
+    while(d2-d<=3000&&Math.abs(value)<20000){
       depth++
       var bestMoveandvalue = minimax(depth,alpha,beta,color,board2,depth);
       var d2 = new Date().getTime();
