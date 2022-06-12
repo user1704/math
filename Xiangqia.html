@@ -23,6 +23,7 @@
 document.body.addEventListener('touchmove', function(e){e.preventDefault();}, { passive: false })
   var letter=['a','b','c','d','e','f','g','h','i']
   var number=['0','1','2','3','4','5','6','7','8','9']
+  var n1=[4,5,3,6,2,7,1,8,0,9]
   var step=[{"a9":"bR","b9":"bN","c9":"bB","d9":"bA","e9":"bK","f9":"bA","g9":"bB","h9":"bN","i9":"bR","b7":"bC","h7":"bC","a6":"bP","c6":"bP","e6":"bP","g6":"bP","i6":"bP","a3":"rP","c3":"rP","e3":"rP","g3":"rP","i3":"rP","b2":"rC","h2":"rC","a0":"rR","b0":"rN","c0":"rB","d0":"rA","e0":"rK","f0":"rA","g0":"rB","h0":"rN","i0":"rR"}]
 function onDrop (source, target, piece, newPos, oldPos, orientation) {
   step.push(newPos)
@@ -43,8 +44,10 @@ $('#setBtn').on('click', function () {
 $('#flipOrientationBtn').on('click', board.flip)
 function hefamove(color,board2){
   var move=[]
-  for(var i=0;i<9;i++){
-    for(var j=0;j<10;j++){
+  for(var i1=0;i1<9;i1++){
+    for(var j1=0;j1<10;j1++){
+      var i=n1[i1]
+      var j=n1[j1]
       var name=board2[letter[i]+number[j]]
       if(color=='r'){
         if(name=='rR'){
@@ -835,6 +838,12 @@ var ffoundpv=false;
 if (depth <= 0) {
 	return score(color,board2);
 }
+step.push(0)
+var kzscore=-minimax(depth - 3,  -beta, -beta+1,color=='r'?'b':'r',board2);
+step.pop()
+if(kzscore>=beta){
+    return b
+  }
 var newGameMoves = hefamove(color,board2);
 for (var i = 0; i < newGameMoves.length; i++) {
     var flag1=board2[newGameMoves[i][0]+newGameMoves[i][1]]
