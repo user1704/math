@@ -20,6 +20,7 @@
 <br>分数=<span id="val"></span>
 </html>
 <script>
+document.body.addEventListener('touchmove', function(e){e.preventDefault();}, { passive: false })
   var letter=['a','b','c','d','e','f','g','h','i']
   var number=['0','1','2','3','4','5','6','7','8','9']
   var step=[{"a9":"bR","b9":"bN","c9":"bB","d9":"bA","e9":"bK","f9":"bA","g9":"bB","h9":"bN","i9":"bR","b7":"bC","h7":"bC","a6":"bP","c6":"bP","e6":"bP","g6":"bP","i6":"bP","a3":"rP","c3":"rP","e3":"rP","g3":"rP","i3":"rP","b2":"rC","h2":"rC","a0":"rR","b0":"rN","c0":"rB","d0":"rA","e0":"rK","f0":"rA","g0":"rB","h0":"rN","i0":"rR"}]
