@@ -833,16 +833,16 @@ function score(color,board2){
       return bscore-rscore
     }
 }
-var minimax =function(depth, alpha,beta,color,board2) {
+var minimax =function(depth, alpha,beta,color,board2,D) {
 var ffoundpv=false;
 if (depth <= 0) {
 	return score(color,board2);
 }
 step.push(0)
-var kzscore=-minimax(depth - 3,  -beta, -beta+1,color=='r'?'b':'r',board2);
+var kzscore=-minimax(depth - 3,  -beta, -beta+1,color=='r'?'b':'r',board2,D);
 step.pop()
 if(kzscore>=beta){
-    return b
+    return beta
   }
 var newGameMoves = hefamove(color,board2);
 for (var i = 0; i < newGameMoves.length; i++) {
@@ -853,13 +853,13 @@ for (var i = 0; i < newGameMoves.length; i++) {
     step.push(board2)
     positionCount++;
     if(ffoundpv){
-        bestMove=-minimax(depth - 1,  -alpha-1, -alpha,color=='r'?'b':'r',board2);
+        bestMove=-minimax(depth - 1,  -alpha-1, -alpha,color=='r'?'b':'r',board2,D);
         if(bestMove>alpha&&bestMove<beta){
-            bestMove = -minimax(depth - 1,  -beta, -alpha,color=='r'?'b':'r',board2);
+            bestMove = -minimax(depth - 1,  -beta, -alpha,color=='r'?'b':'r',board2,D);
         }
     }
     else{
-        bestMove = -minimax(depth - 1, -beta, -alpha,color=='r'?'b':'r',board2);
+        bestMove = -minimax(depth - 1, -beta, -alpha,color=='r'?'b':'r',board2,D);
     }
     board2[newGameMoves[i][3]+newGameMoves[i][4]]=flag2
     board2[newGameMoves[i][0]+newGameMoves[i][1]]=flag1
@@ -878,22 +878,22 @@ return alpha
 };
 function getMove (color,board2) {
     positionCount = 0;
-    D = 0;
 
     var d = new Date().getTime();
     var d2= new Date().getTime();
     var value=0
-    var alpha=-Infinity
-    var beta=Infinity
+    var alpha=-30001
+    var beta=30001
+    var depth=0
     while(d2-d<=1000&&Math.abs(value)<20000){
-      D++
-      var bestMoveandvalue = minimax(D,alpha,beta,color,board2);
+      depth++
+      var bestMoveandvalue = minimax(depth,alpha,beta,color,board2,depth);
       var d2 = new Date().getTime();
       var bestMove=bestMoveandvalue[0]
       var value=bestMoveandvalue[1]
       var moveTime = (d2 - d)/1000;
     }
-    document.getElementById("d").innerHTML=D
+    document.getElementById("d").innerHTML=depth
     document.getElementById("jiedian").innerHTML=positionCount
     document.getElementById("time").innerHTML=moveTime
     document.getElementById("move").innerHTML=bestMove
