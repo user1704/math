@@ -3,7 +3,7 @@
 <script src="jquery-3.6.0.min.js"></script>
 <script src="xiangqi.js"></script>
 <script src="xiangqiboard-0.3.3.js"></script>
-<div id="myBoard" style="width: 400px"></div>
+<div id="myBoard" style="width: 450px"></div>
 <button id="startPositionBtn">初始</button>
 <button id="clearBoardBtn">清空</button>
 <input type="text" name="settext" id="settext">
@@ -815,20 +815,14 @@ function score(color,board2){
     }
   }
     if(color=='r'){
-      if(K1==0&&k1>0){
+      if(K1==0){
         return -30000
-      }
-      if(k1==0&&K1>0){
-        return 30000
       }
       return rscore-bscore
     }
     else{
-      if(k1==0&&K1>0){
+      if(k1==0){
         return -30000
-      }
-      if(K1==0&&k1>0){
-        return 30000
       }
       return bscore-rscore
     }
