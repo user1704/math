@@ -836,8 +836,15 @@ function score(color,board2){
 var minimax =function(depth, alpha,beta,color,board2,D) {
 var ffoundpv=false;
 if (depth <= 0) {
+  positionCount++
 	return score(color,board2);
 }
+step.push(0)
+var bestMove=-minimax(depth - 3,  -beta, -beta+1,color=='r'?'b':'r',board2,D);
+step.pop()
+if(bestMove>=beta){
+    return beta
+  }
 var newGameMoves = hefamove(color,board2);
 for (var i = 0; i < newGameMoves.length; i++) {
     var flag1=board2[newGameMoves[i][0]+newGameMoves[i][1]]
@@ -845,7 +852,6 @@ for (var i = 0; i < newGameMoves.length; i++) {
     board2[newGameMoves[i][3]+newGameMoves[i][4]]=flag1
     board2[newGameMoves[i][0]+newGameMoves[i][1]]=undefined
     step.push(board2)
-    positionCount++;
     if(ffoundpv){
         var bestMove=-minimax(depth - 1,  -alpha-1, -alpha,color=='r'?'b':'r',board2,D);
         if(bestMove>alpha&&bestMove<beta){
@@ -863,7 +869,7 @@ for (var i = 0; i < newGameMoves.length; i++) {
     }
     if (bestMove>alpha) {
         alpha=bestMove
-        bestMoveFound=newGameMoves[i]
+        if(depth==D){bestMoveFound=newGameMoves[i]}
         ffoundpv=true;
     }
 }
