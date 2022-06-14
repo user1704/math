@@ -869,7 +869,7 @@ for (var i = 0; i < newGameMoves.length; i++) {
     }
     if (bestMove>alpha) {
         alpha=bestMove
-        if(depth==D){bestMoveFound=newGameMoves[i]}
+        var bestMoveFound=newGameMoves[i]
         ffoundpv=true;
     }
 }
