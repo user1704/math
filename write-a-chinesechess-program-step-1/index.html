@@ -1,7 +1,6 @@
 <html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=gbk">
-    <title>ÏóÆåĞ¡Î×Ê¦</title>
+    <title>è±¡æ£‹å°å·«å¸ˆ</title>
     <script type="text/javascript" src="board.js"></script>
 	<script type="text/javascript" src="position.js"></script>
 	<script type="text/javascript" src="search.js"></script>
@@ -40,47 +39,47 @@ label {
     </style>
   </head>
   <body>
-    <div style="text-align:center;font-size:28px;font-family:ºÚÌå">ÏóÆåĞ¡Î×Ê¦</div>
+    <div style="text-align:center;font-size:28px;font-family:é»‘ä½“">è±¡æ£‹å°å·«å¸ˆ</div>
     <div style="height:16px"></div>
     <div style="text-align:center;white-space:nowrap">
       <span class="td" style="margin-right:10px">
         <div id="container"></div>
       </span><span class="td" style="vertical-align:top;width:120px;"><div style="text-align:left">
-	  <div class="label">Ë­ÏÈ×ß</div>
+	  <div class="label">è°å…ˆèµ°</div>
       <div><select id="selMoveMode" size="3">
-        <option selected value="0">ÎÒÏÈ×ß</option>
-        <option value="1">µçÄÔÏÈ×ß</option>
-        <option value="2">²»ÓÃµçÄÔ</option>
+        <option selected value="0">æˆ‘å…ˆèµ°</option>
+        <option value="1">ç”µè„‘å…ˆèµ°</option>
+        <option value="2">ä¸ç”¨ç”µè„‘</option>
       </select></div>
       FEN:<input type="text" name="fen" id="fen">
-	  <div style="padding-top:2px"><input type="button" class="button" value="ÖØĞÂ¿ªÊ¼" onclick="restart_click()"></div>
-      <div style="padding-top:2px"><input type="button" class="button" value="»ÚÆå" onclick="retract_click()"></div>
+	  <div style="padding-top:2px"><input type="button" class="button" value="é‡æ–°å¼€å§‹" onclick="restart_click()"></div>
+      <div style="padding-top:2px"><input type="button" class="button" value="æ‚”æ£‹" onclick="retract_click()"></div>
     </div>
     <script type="text/javascript">
 "use strict";
 
-// ¿É¹©Ñ¡ÔñµÄ¿ª¾Ö¾ÖÃæ
+// å¯ä¾›é€‰æ‹©çš„å¼€å±€å±€é¢
 var STARTUP_FEN = [
   "rcnkncr/p1ppp1p/7/7/7/P1PPP1P/RCNKNCR w",
 ];
 
-var board = new Board(container, "images/");	// ÊµÀı»¯ÆåÅÌ¶ÔÏó
-board.setSearch();								// ÉèÖÃËÑË÷Ëã·¨
-board.computer = 1;								// µçÄÔÄ¬ÈÏÖ´ºÚ
+var board = new Board(container, "images/");	// å®ä¾‹åŒ–æ£‹ç›˜å¯¹è±¡
+board.setSearch();								// è®¾ç½®æœç´¢ç®—æ³•
+board.computer = 1;								// ç”µè„‘é»˜è®¤æ‰§é»‘
 
-// ÖØĞÂ¿ªÊ¼
+// é‡æ–°å¼€å§‹
 function restart_click() {
   var fen=document.getElementById("fen").value
-  board.computer = 1 - selMoveMode.selectedIndex;			// ¸ù¾İÓÃ»§Ñ¡Ôñ£¬¾ö¶¨µçÄÔÖ´ºÚ»¹ÊÇÖ´ºì
+  board.computer = 1 - selMoveMode.selectedIndex;			// æ ¹æ®ç”¨æˆ·é€‰æ‹©ï¼Œå†³å®šç”µè„‘æ‰§é»‘è¿˜æ˜¯æ‰§çº¢
   if(fen==''){
     board.restart("rcnkncr/p1ppp1p/7/7/7/P1PPP1P/RCNKNCR w");
   }
   else{
-    board.restart(fen);	// Ê¹ÓÃÓÃ»§Ñ¡ÔñµÄ¿ª¾Ö¾ÖÃæ£¬³õÊ¼»¯Æå¾Ö
+    board.restart(fen);	// ä½¿ç”¨ç”¨æˆ·é€‰æ‹©çš„å¼€å±€å±€é¢ï¼Œåˆå§‹åŒ–æ£‹å±€
   }
 }
 
-// »ÚÆå
+// æ‚”æ£‹
 function retract_click() {
   board.retract();
 }
