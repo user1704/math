@@ -12,7 +12,6 @@
 <button id="setBtn" onclick="Set()">设定</button>
 <br>深度=<span id="d"></span>
 <br>节点数=<span id="jiedian"></span>
-<br>计算速度(节点/秒)=<span id="jssd"></span>
 <br>时间=<span id="time"></span>
 <br>着法=<span id="move"></span>
 <br>分数=<span id="val"></span>
@@ -178,25 +177,23 @@ function fenscore(){
     }
   }
     if(game.turn()=='r'){
-        rscore+=3
         return rscore-bscore
     }
     else{
-        bscore+=3
         return bscore-rscore
     }
 }
 var minimax =function(depth, game,alpha,beta) {
 var ffoundpv=false;
-if (depth <= 0) {
-	return fenscore();
-}
 var newGameMoves = game.moves();
 if(newGameMoves.length==0){
-    return -29999+D-depth
+    return -30000+D-depth-1
 }
 if(game.in_threefold_repetition()){
-    return -30000+D-depth
+    return -30000+D-depth-1
+}
+if (depth <= 0) {
+	return fenscore();
 }
 for (var i = 0; i < newGameMoves.length; i++) {
     game.move(newGameMoves[i]);
@@ -227,27 +224,27 @@ var makeMove = function () {
     var bestMove = getMove();
     game.move(bestMove);
     board.position(game.fen());
-    renderMoveHistory(game.history());
 };
 function getMove () {
     positionCount = 0;
     D = 0;
+
+    var d = new Date().getTime();
+    var d2= new Date().getTime();
     var value=0
     var alpha=-Infinity
     var beta=Infinity
-    var d=new Date().getTime()
-    while(D<4&&Math.abs(value)<20000){
-      D+=2
+    while(d2-d<=1000){
+      D++
       var bestMoveandvalue = minimax(D, game,alpha,beta);
       var d2 = new Date().getTime();
       var bestMove=bestMoveandvalue[0]
       var value=bestMoveandvalue[1]
       var moveTime = (d2 - d)/1000;
-      var positionsPerS = ( positionCount/ moveTime);
+      console.log('深度:'+D+' 节点数:'+positionCount+' 时间:'+moveTime+' 着法:'+bestMove+' 分数:'+value);
     }
     document.getElementById("d").innerHTML=D
     document.getElementById("jiedian").innerHTML=positionCount
-    document.getElementById("jssd").innerHTML=positionsPerS
     document.getElementById("time").innerHTML=moveTime
     document.getElementById("move").innerHTML=bestMove
     document.getElementById("val").innerHTML=value
@@ -279,6 +276,7 @@ function onSnapEnd () {
 let config = {
   draggable: true,
   position: 'start',
+  showNotation: true,
   onDragStart: onDragStart,
   onDrop: onDrop,
   onSnapEnd: onSnapEnd
