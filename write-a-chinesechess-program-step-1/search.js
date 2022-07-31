@@ -70,6 +70,158 @@ function MoveSort(mvHash, pos, killerTable, historyTable) {
   }
 }
 
+"use strict";
+"use strict";
+var PIECE_NAME_CHN = [
+  null, null, null, null, null, null, null, null,
+  "帥", "仕", "相", "馬", "車", "砲", "兵", null,
+  "将", "士", "象", "馬", "車", "炮", "卒", null,
+];
+var hanzi=['一','二','三','四','五','六','七','八','九']
+var number=['1','2','3','4','5','6','7','8','9']
+
+//中文着法
+function Hanzi_move(move){
+  var str='';
+  var src=SRC(move);
+  var dst=DST(move);
+  str+=PIECE_NAME_CHN[board.pos.squares[src]];
+  board.pos.squares[src]>>3==1?str+=hanzi[10-FILE_X(src)]:str+=number[FILE_X(src)-4];
+  if(board.pos.squares[src]>>3==1){
+    if(RANK_Y(dst)>RANK_Y(src)){
+      str+='退';
+    }
+    else if(RANK_Y(dst)<RANK_Y(src)){
+      str+='进';
+    }   
+  }
+  else{
+    if(RANK_Y(dst)>RANK_Y(src)){
+      str+='进';
+    }
+    else if(RANK_Y(dst)<RANK_Y(src)){
+      str+='退';
+    }
+  }
+  if(RANK_Y(dst)==RANK_Y(src)){
+    str+='平';
+  }
+  if((board.pos.squares[src]&7)==1||(board.pos.squares[src]&7)==2||(board.pos.squares[src]&7)==3){
+    board.pos.squares[src]>>3==1?str+=hanzi[10-FILE_X(dst)]:str+=number[FILE_X(dst)-4];
+  }
+  else{
+    if(board.pos.squares[src]>>3==1){
+      if(RANK_Y(dst)>RANK_Y(src)){
+        board.pos.squares[src]>>3==1?str+=hanzi[RANK_Y(dst)-RANK_Y(src)-1]:str+=number[RANK_Y(dst)-RANK_Y(src)-1];
+      }
+      else if(RANK_Y(dst)<RANK_Y(src)){
+        board.pos.squares[src]>>3==1?str+=hanzi[RANK_Y(src)-RANK_Y(dst)-1]:str+=number[RANK_Y(src)-RANK_Y(dst)-1];
+      }   
+    }
+    else{
+      if(RANK_Y(dst)>RANK_Y(src)){
+        board.pos.squares[src]>>3==1?str+=hanzi[RANK_Y(dst)-RANK_Y(src)-1]:str+=number[RANK_Y(dst)-RANK_Y(src)-1];
+      }
+      else if(RANK_Y(dst)<RANK_Y(src)){
+        board.pos.squares[src]>>3==1?str+=hanzi[RANK_Y(src)-RANK_Y(dst)-1]:str+=number[RANK_Y(src)-RANK_Y(dst)-1];
+      }
+    }
+    if(RANK_Y(dst)==RANK_Y(src)){
+      board.pos.squares[src]>>3==1?str+=hanzi[10-FILE_X(dst)]:str+=number[FILE_X(dst)-4];
+    }
+  }
+  return str;
+}
+
+//中文分数
+function Hanzi_value(color,value){
+  if(color==0){
+    if(value>=0){
+      return '红优'+value
+    }
+    else{
+      return '黑优'+(-value)
+    }
+  }
+  else{
+    if(value>=0){
+      return '黑优'+value
+    }
+    else{
+      return '红优'+(-value)
+    }
+  }
+}
+// 希尔排序
+var SHELL_STEP = [0, 1, 4, 13, 40, 121, 364, 1093];
+function shellSort(mvs, vls) {
+  var stepLevel = 1;
+  while (SHELL_STEP[stepLevel] < mvs.length) {
+    stepLevel ++;
+  }
+  stepLevel --;
+  while (stepLevel > 0) {
+    var step = SHELL_STEP[stepLevel];
+    for (var i = step; i < mvs.length; i ++) {
+      var mvBest = mvs[i];
+      var vlBest = vls[i];
+      var j = i - step;
+      while (j >= 0 && vlBest > vls[j]) {
+        mvs[j + step] = mvs[j];
+        vls[j + step] = vls[j];
+        j -= step;
+      }
+      mvs[j + step] = mvBest;
+      vls[j + step] = vlBest;
+    }
+    stepLevel --;
+  }
+}
+
+// 走法排序阶段
+var PHASE_HASH = 0;
+var PHASE_KILLER_1 = 1;
+var PHASE_KILLER_2 = 2;
+var PHASE_GEN_MOVES = 3;
+var PHASE_REST = 4;
+
+// 对走法排序
+function MoveSort(mvHash, pos, killerTable, historyTable) {
+  this.mvs = [];										// 走法数组
+  this.vls = [];										// 走法分值
+  this.mvHash = this.mvKiller1 = this.mvKiller2 = 0;	// 置换表走法和两个杀手走法
+  this.pos = pos;
+  this.historyTable = historyTable;
+  this.phase = PHASE_HASH;								// 当前阶段
+  this.index = 0;										// 当前是第几个走法
+  this.singleReply = false;								// 局面是否只有一种着法
+
+  if (pos.inCheck()) {
+    // 处于被将军的状态，直接生产所有走法，只使用置换表和历史表启发
+	
+	this.phase = PHASE_REST;
+    var mvsAll = pos.generateMoves(null);
+    for (var i = 0; i < mvsAll.length; i ++) {
+      var mv = mvsAll[i]
+      if (!pos.makeMove(mv)) {
+        continue;
+      }
+      pos.undoMakeMove();
+      this.mvs.push(mv);
+      // 这行代码是要使用置换表启发，把置换表中的走法排在最前面
+	  this.vls.push(mv == mvHash ? 0x7fffffff :
+          historyTable[pos.historyIndex(mv)]);
+    }
+    shellSort(this.mvs, this.vls);
+    this.singleReply = this.mvs.length == 1;			//　是否只有一着回棋
+  } else {
+    // 没有处于被将军的状态，才考虑杀手启发
+	this.mvHash = mvHash;
+    this.mvKiller1 = killerTable[pos.distance][0];
+    this.mvKiller2 = killerTable[pos.distance][1];
+  }
+}
+
 // 获得一步排序后的走法。如果走法已经全部获取，则返回0
 MoveSort.prototype.next = function() {
   switch (this.phase) {
@@ -127,8 +279,8 @@ MoveSort.prototype.next = function() {
 }
 
 var LIMIT_DEPTH = 64;	// 最大搜索深度
+var LIMIT_TIME=1024;// 最大搜索时间
 var NULL_DEPTH = 2;		// 空步搜索多减去的搜索值
-var RANDOMNESS = 8;
 
 // 节点类型
 var HASH_ALPHA = 1;
@@ -474,7 +626,17 @@ Search.prototype.searchUnique = function(vlBeta, depth) {
 
 // 迭代加深搜索
 Search.prototype.searchMain = function(depth, millis) {
-
+  // 搜索开局库
+  this.mvResult = this.pos.bookMove();
+  if (this.mvResult > 0) {
+    this.pos.makeMove(this.mvResult);
+    // 判断开局库中搜到的走法，是否会造成长将以及和棋
+	if (this.pos.repStatus(3) == 0) {
+      this.pos.undoMakeMove();
+      return this.mvResult;
+    }
+    this.pos.undoMakeMove();
+  }
   
   this.hashTable = [];		// 置换表
   for (var i = 0; i <= this.hashMask; i ++) {
@@ -494,11 +656,13 @@ Search.prototype.searchMain = function(depth, millis) {
   this.mvResult = 0; 			// 搜索出的走法
   this.pos.distance = 0;		// 初始化搜索深度
   var t = new Date().getTime();	// 当前时间距离1970-01-01的毫秒数
-
+  document.getElementById("think").innerHTML='\n'+document.getElementById("think").value;
  // 迭代加深搜索
  for (var i = 1; i <= depth; i ++) {
    var vl = this.searchRoot(i);
     this.allMillis = new Date().getTime() - t;	// 已经花费的时间
+    document.getElementById("think").innerHTML='深度:'+i+'层 着法:'+Hanzi_move(this.mvResult)+' 分数:'+Hanzi_value(board.pos.sdPlayer,vl)+' 时间:'+this.allMillis+'毫秒\n'+document.getElementById("think").value
+
     if (this.allMillis > millis) {				// 时间用完了
       break;
     }
@@ -514,7 +678,6 @@ Search.prototype.searchMain = function(depth, millis) {
     if (this.searchUnique(1 - WIN_VALUE, i)) {
       break;
     }
-    console.log('depth:'+i+' cd:'+vl.toFixed(2))
  }
 
   return this.mvResult;

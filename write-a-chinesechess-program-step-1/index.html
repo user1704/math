@@ -1,4 +1,4 @@
-<html>
+﻿<html>
   <head>
     <title>象棋小巫师</title>
     <script type="text/javascript" src="board.js"></script>
@@ -45,32 +45,21 @@ label {
       <span class="td" style="margin-right:10px">
         <div id="container"></div>
       </span><span class="td" style="vertical-align:top;width:120px;"><div style="text-align:left">
-	  <div class="label">谁先走</div>
-      <div><select id="selMoveMode" size="3">
-        <option selected value="0">我先走</option>
-        <option value="1">电脑先走</option>
-        <option value="2">不用电脑</option>
-      </select></div>
       FEN:<input type="text" name="fen" id="fen">
 	  <div style="padding-top:2px"><input type="button" class="button" value="重新开始" onclick="restart_click()"></div>
       <div style="padding-top:2px"><input type="button" class="button" value="悔棋" onclick="retract_click()"></div>
+      <div style="padding-top:2px"><input type="button" class="button" value="计算" onclick="calc_click()"></div>
+      <textarea id="think" name="think" rows="30" cols="50"></textarea>
     </div>
     <script type="text/javascript">
 "use strict";
 
-// 可供选择的开局局面
-var STARTUP_FEN = [
-  "rcnkncr/p1ppp1p/7/7/7/P1PPP1P/RCNKNCR w",
-];
-
 var board = new Board(container, "images/");	// 实例化棋盘对象
 board.setSearch();								// 设置搜索算法
-board.computer = 1;								// 电脑默认执黑
 
 // 重新开始
 function restart_click() {
   var fen=document.getElementById("fen").value
-  board.computer = 1 - selMoveMode.selectedIndex;			// 根据用户选择，决定电脑执黑还是执红
   if(fen==''){
     board.restart("rcnkncr/p1ppp1p/7/7/7/P1PPP1P/RCNKNCR w");
   }
@@ -82,6 +71,10 @@ function restart_click() {
 // 悔棋
 function retract_click() {
   board.retract();
+}
+
+function calc_click(){
+  board.response();
 }
     </script>
   </body>
