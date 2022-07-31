@@ -1,0 +1,84 @@
+﻿
+
+<html>
+  <head>
+    <title>象棋小巫师</title>
+    <script type="text/javascript" src="board.js"></script>
+	<script type="text/javascript" src="position.js"></script>
+	<script type="text/javascript" src="search.js"></script>
+  <script type="text/javascript" src="book.js"></script>
+    <style type="text/css">
+body {
+  background: url(images/background.gif);
+}
+	
+span.td {
+  display: inline-block;
+}
+
+div.label {
+  font-size: 14px;
+  padding:2px;
+}
+
+select {
+  font-size: 14px;
+  width: 108px;
+  padding:2px;
+}
+
+option {
+  font-size: 14px;
+}
+
+input.button {
+  font-size: 14px;
+  width: 108px;
+}
+
+label {
+  font-size: 14px;
+}
+    </style>
+  </head>
+  <body>
+    <div style="text-align:center;font-size:28px;font-family:黑体">象棋小巫师</div>
+    <div style="height:16px"></div>
+    <div style="text-align:center;white-space:nowrap">
+      <span class="td" style="margin-right:10px">
+        <div id="container"></div>
+      </span><span class="td" style="vertical-align:top;width:120px;"><div style="text-align:left">
+      FEN:<input type="text" name="fen" id="fen">
+	  <div style="padding-top:2px"><input type="button" class="button" value="重新开始" onclick="restart_click()"></div>
+      <div style="padding-top:2px"><input type="button" class="button" value="悔棋" onclick="retract_click()"></div>
+      <div style="padding-top:2px"><input type="button" class="button" value="计算" onclick="calc_click()"></div>
+      <textarea id="think" name="think" rows="30" cols="50"></textarea>
+    </div>
+    <script type="text/javascript">
+"use strict";
+
+var board = new Board(container, "images/");	// 实例化棋盘对象
+board.setSearch();								// 设置搜索算法
+
+// 重新开始
+function restart_click() {
+  var fen=document.getElementById("fen").value
+  if(fen==''){
+    board.restart("rnbakabnr/9/1c5c1/p1p1p1p1p/9/9/P1P1P1P1P/1C5C1/9/RNBAKABNR w");
+  }
+  else{
+    board.restart(fen);	// 使用用户选择的开局局面，初始化棋局
+  }
+}
+
+// 悔棋
+function retract_click() {
+  board.retract();
+}
+
+function calc_click(){
+  board.response();
+}
+    </script>
+  </body>
+</html>
