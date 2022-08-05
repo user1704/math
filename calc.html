@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<script src="https://unpkg.com/mathlive@0.77.0/dist/mathlive.min.js"></script>
+<script src="https://unpkg.com/@cortex-js/compute-engine@0.6.0/dist/compute-engine.min.js"></script>
+<script src="box.js"></script>
+请输入表达式:<br>
+<math-field id="input"></math-field>
+<button id='calc' onclick="calc()">-></button>
+<br>结果(精确):<br>
+<math-field id="output1"></math-field>
+<br>结果(近似):<br>
+<math-field id="output2"></math-field>
+<script>
+function calc(){
+    ce = new ComputeEngine.ComputeEngine()
+    var input=ce.parse(document.getElementById('input').value).json
+    var output=boxparse(input)
+    document.getElementById('output1').value=ce.box(output).toString()
+    document.getElementById('output2').value=ce.box(output).N().toString()
+}
+
+</script>
+</html>
