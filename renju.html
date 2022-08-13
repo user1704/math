@@ -1,0 +1,91 @@
+<html>
+<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+<script>eruda.init();</script>
+<script src="score.js"></script>
+<script src="role.js"></script>
+<script src="neighbor.js"></script>
+<script src="gen.js"></script>
+<script src="countev.js"></script>
+<script src="ev.js"></script>
+<script src="evline.js"></script>
+<script src="evpoint.js"></script>
+<script src="search.js"></script>
+<canvas id="mycanvas" width="900px" height="900px"></canvas>
+<button onclick="back()">回退</button>
+<button onclick="calc()">计算</button>
+<script>
+var chess = document.getElementById("mycanvas")
+var context = chess.getContext("2d")
+var chessBox = []
+var steps=[]
+var color=['黑','白']
+var letter=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O']
+var number=['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']
+var five;var four;var three;
+for(var i=0;i<15;i++){
+  chessBox[i]=[]
+  for(var j=0;j<15;j++){
+   chessBox[i][j]=0
+  }
+ }
+function name(point){return letter[point[0]]+number[point[1]]}
+function drawChessBoard(){
+  for(var i=0;i<=14;i++){
+  for(a=0;a<=1;a++)
+   {
+    context.moveTo(15+i*60,15)
+    context.lineTo(15+i*60,855)
+    context.stroke()
+    context.moveTo(15,15+i*60)
+    context.lineTo(855,15+i*60)
+    context.stroke()}
+   }
+ }
+drawChessBoard()
+function onesteps(i,j){
+  if(chessBox[i][j]==0){
+  context.beginPath()
+  context.arc(15+i*60,855-j*60,26,0,2*Math.PI)
+  var g=context.createRadialGradient(15+i*60,855-j*60,26,15+i*60,855-j*60,0)
+  if(steps.length%2==0){g.addColorStop(0,'#0A0A0A');g.addColorStop(1,'#636766');chessBox[i][j]=1}
+  else{g.addColorStop(0,'#D1D1D1');g.addColorStop(1,'#F9F9F9');chessBox[i][j]=2}
+  context.fillStyle=g
+  context.fill()
+  if(steps.length%2==0){context.fillStyle='white'}
+  else{context.fillStyle='black'}
+  if(steps.length+1<10){context.fillText(steps.length+1,12+i*60,859-j*60)}
+  if(10<=steps.length+1&&steps.length+1<100){context.fillText(steps.length+1,9+i*60,859-j*60)}
+  if(100<=steps.length+1){context.fillText(steps.length+1,6+i*60,859-j*60)}
+  steps.push([i,j])
+}
+ }
+chess.onclick=function(e){
+  var x = e.offsetX
+  var y = 855-e.offsetY
+  var i = Math.round(x/60)
+  var j = Math.round(y/60)
+  onesteps(i,j)}
+function back()
+{
+  var i=steps[steps.length-1][0]
+  var j=steps[steps.length-1][1]
+  chessBox[i][j]=0
+  context.clearRect(i*60-15,825-j*60,60,60)
+  context.beginPath()
+  for(a=0;a<=1;a++)
+  {
+    context.moveTo(i*60+15,Math.max(825-j*60,15))
+    context.lineTo(i*60+15,Math.min(885-j*60,855))
+    context.stroke()
+    context.moveTo(Math.max(i*60-15,15),855-j*60)
+    context.lineTo(Math.min(i*60+45,855),855-j*60)
+    context.stroke()
+  }
+  steps.pop()
+}
+function calc(){
+  var result=deep();
+  onesteps(result[0],result[1]);
+}
+</script>
+</html>
