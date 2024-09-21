@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="data.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中国地理 Wordle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #cityInput {
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        table {
+            width: 50%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>中国地理 Wordle</h1>
+    <label for="cityInput">输入城市名称:</label>
+    <input type="text" id="cityInput" list="cityList">
+    <datalist id="cityList"></datalist>
+    <button onclick="guessCity()">猜测</button>
+
+    <table id="outputTable">
+        <thead>
+            <tr>
+                <th>猜测城市</th>
+                <th>距离</th>
+                <th>结果</th>
+            </tr>
+        </thead>
+        <tbody id="output">
+        </tbody>
+    </table>
+
+    <script>
+
+        // 读取area为空的城市作为候选答案
+        let candidateCities = data.filter(item => item.area === "").map(item => ({
+            city: item.city === "市辖区" ? item.province : item.city,
+            lat: parseFloat(item.lat),
+            lng: parseFloat(item.lng)
+        }));
+        let targetCityData = candidateCities[Math.floor(Math.random() * candidateCities.length)];
+        // 填充候选城市列表
+        const cityList = document.getElementById("cityList");
+        candidateCities.forEach(cityData => {
+            let option = document.createElement("option");
+            option.value = cityData.city;
+            cityList.appendChild(option);
+        });
+
+        function toRadians(degrees) {
+            return degrees * Math.PI / 180;
+        }
+
+        // 计算两点间的距离（Haversine公式）
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // 地球半径，单位为公里
+            const dLat = toRadians(lat2 - lat1);
+            const dLon = toRadians(lon2 - lon1);
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c; // 返回距离，单位为公里
+        }
+
+        function guessCity() {
+            let cityInput = document.getElementById("cityInput").value;
+            let guessCityData = candidateCities.find(item => item.city === cityInput);
+
+            if (!guessCityData) {
+                alert("请输入有效的城市名称！");
+                return;
+            }
+
+            // 判断是否猜对
+            if (cityInput === targetCityData) {
+                addRow(cityInput, 0, "正确");
+                return;
+            }
+
+            // 直接计算猜测城市与目标城市的距离
+            let distance = calculateDistance(
+                targetCityData.lat, targetCityData.lng,
+                guessCityData.lat, guessCityData.lng
+            );
+
+            // 将结果添加到表格中
+            addRow(cityInput, distance.toFixed(0) + "km", "错误");
+        }
+
+        function addRow(city, distance, result) {
+            let outputTableBody = document.getElementById("output");
+            let newRow = document.createElement("tr");
+
+            let cityCell = document.createElement("td");
+            cityCell.textContent = city;
+            newRow.appendChild(cityCell);
+
+            let distanceCell = document.createElement("td");
+            distanceCell.textContent = distance;
+            newRow.appendChild(distanceCell);
+
+            let resultCell = document.createElement("td");
+            resultCell.textContent = result;
+            newRow.appendChild(resultCell);
+
+            outputTableBody.appendChild(newRow);
+        }
+    </script>
+</body>
+
+</html>
