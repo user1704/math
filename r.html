@@ -116,9 +116,8 @@
                 alert("请输入有效的城市名称！");
                 return;
             }
-
             // 判断是否猜对
-            if (cityInput === targetCityData) {
+            if (cityInput === targetCityData.city) {
                 addRow(cityInput, 0, "正确");
                 return;
             }
