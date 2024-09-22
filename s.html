@@ -67,7 +67,7 @@
         <thead>
             <tr>
                 <th>猜测城市</th>
-                <th>猜测城市在目标城市的什么方位</th>
+                <th>目标城市在猜测城市的什么方位</th>
                 <th>结果</th>
             </tr>
         </thead>
@@ -152,8 +152,8 @@
 
             // 直接计算猜测城市与目标城市的距离
             let azimuth = formatAzimuth(calculateAzimuth(
-                targetCityData.lat, targetCityData.lng,
-                guessCityData.lat, guessCityData.lng
+                guessCityData.lat, guessCityData.lng,
+                targetCityData.lat, targetCityData.lng
             ));
 
             // 将结果添加到表格中
