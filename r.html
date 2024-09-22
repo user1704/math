@@ -78,8 +78,8 @@
     <script>
 
         // 读取area为空的城市作为候选答案
-        let candidateCities = data.filter(item => item.area === "" || item.city === "省直辖县级行政区划" || item.city === "自治区直辖县级行政区划").map(item => ({
-            city: item.city === "市辖区" ? item.province : (item.city === "省直辖县级行政区划" || item.city === "自治区直辖县级行政区划" ? item.area : item.city),
+        let candidateCities = data.filter(item => item.area === "").map(item => ({
+            city: item.city === "市辖区" ? item.province : item.city,
             lat: parseFloat(item.lat),
             lng: parseFloat(item.lng)
         }));
